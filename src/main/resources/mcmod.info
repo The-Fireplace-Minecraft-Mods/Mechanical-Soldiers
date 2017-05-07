@@ -1,0 +1,16 @@
+[
+{
+  "modid": "mechsoldiers",
+  "name": "Mechanical Soldiers",
+  "description": "Adds mechanical soldiers to Overlord",
+  "version": "${version}",
+  "mcversion": "",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["The_Fireplace"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

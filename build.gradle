@@ -1,0 +1,186 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "Modmuss50"
+            url = "http://maven.modmuss50.me/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'ModsIOUpload:ModsIOUpload:+'
+    }
+}
+
+plugins {
+    id "com.matthewprenger.cursegradle" version "1.0.8"
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.cazzar.gradle.modsio'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+version = "1.0.0"
+group= "the_fireplace.mechsoldiers"
+archivesBaseName = "MechSoldiers-1.10.2"
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+minecraft {
+    version = "1.10.2-12.18.3.2185"
+    runDir = "run"
+    replace '${version}', project.version
+    mappings = "stable_29"
+    useDepAts = true
+}
+
+dependencies {
+	deobfCompile group: "mezz.jei", name: "jei_1.10.2", version: "3.13.6.389"
+	deobfCompile "info.amerifrance.guideapi:Guide-API:1.10.2-2.0.3-46"
+	compile "the_fireplace.overlord:Overlord-1.10.2:2.3.7:deobf"
+}
+
+repositories{
+    maven { //JEI, Natura, Mantle, TiCon
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+    maven { //Guide API
+		url "http://tehnut.info/maven/"
+	}
+    maven { //Overlord
+		url "http://maven.brainstonemod.com/"
+	}
+}
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+task showVersion {
+    description "Displays the current version"
+    group "help"
+    
+    compileJava.dependsOn showVersion
+    deobfCompileDummyTask.dependsOn showVersion
+    extractMcpMappings.dependsOn showVersion
+  
+    doLast {
+        def versionFile = new File(buildDir, '.version')
+    
+        versionFile.getParentFile().mkdirs()
+        versionFile.text = version
+    }
+    
+    outputs.upToDateWhen { false }
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+artifacts {
+    archives jar
+    archives deobfJar
+    archives sourceJar
+}
+
+curseforge {
+  apiKey = project.hasProperty("curseForgeApiKey")? project.curseForgeApiKey : "empty"
+  project {
+    id = '000000'
+    changelog = file('changelog.txt')
+    releaseType = 'beta'
+    addGameVersion '1.10.2'
+    addGameVersion '1.10'
+	addGameVersion 'Java 8'
+    mainArtifact(jar) {
+        displayName = jar.archiveName.replace(".jar", "")
+        relations{
+			requiredLibrary 'overlord'
+		}
+    }
+    addArtifact(sourceJar) {
+        displayName = sourceJar.archiveName.replace(".jar", "")
+        changelog = "*This is a file for mod developers. If you don't know what to do with it, don't use it!*"
+    }
+    addArtifact(deobfJar) {
+        displayName = deobfJar.archiveName.replace(".jar", "")
+        changelog = "*This is a file for mod developers. If you don't know what to do with it, don't use it!*"
+    }
+  }
+}
+
+modsIO {
+    key = project.hasProperty("modsioApiKey")? project.modsioApiKey : "empty"
+    project{
+		artifact = new File(jar.destinationDir, archivesBaseName+"-"+version+".jar")
+		modid = "0000"
+		minecraft = "1.10.2"
+		try{changelog = file('changelog.txt').text}catch(Exception e){changelog=""}
+		tag = ""
+		current = true
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            if (project.hasProperty("local_maven")) {
+                repository(url: "file://${local_maven}")
+                pom {
+                    groupId = project.group
+                    version = project.version
+                    artifactId = project.archivesBaseName
+                    project {
+                        name project.archivesBaseName
+                        packaging "jar"
+                        description "Mechanical-Soldiers"
+                        url "https://github.com/The-Fireplace/Mechanical-Soldiers"
+                        issueManagement {
+                            system "github"
+                            url "https://github.com/The-Fireplace/Mechanical-Soldiers/issues"
+                        }
+                        licenses {
+                            license {
+                                name "License"
+                                url "https://github.com/The-Fireplace/Mechanical-Soldiers/blob/master/LICENSE"
+                                distribution "repo"
+                            }
+                        }
+                        developers {
+                            developer {
+                                id "fireplace"
+                                name "The_Fireplace"
+                                roles {
+                                    role "owner"
+                                    role "developer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

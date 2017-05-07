@@ -1,0 +1,21 @@
+# eclipse
+bin
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+runclient
+libs/*
