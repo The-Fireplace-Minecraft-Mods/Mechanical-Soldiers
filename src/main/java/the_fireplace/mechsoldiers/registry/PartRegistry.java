@@ -81,7 +81,10 @@ public final class PartRegistry {
             return part;
         for(ItemStack stack:instance.partBehaviors.keySet())
             if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || stack.getMetadata() == OreDictionary.WILDCARD_VALUE))
-                return instance.partBehaviors.get(stack).getDamagedItemStack(part, source, amount, instance.partMaterials.get(stack), entity);
+                for (ItemStack mat:instance.partMaterials.keySet()) {
+                    if(mat.getItem() == part.getItem() && (mat.getMetadata() == part.getMetadata() || mat.getMetadata() == OreDictionary.WILDCARD_VALUE))
+                        return instance.partBehaviors.get(stack).getDamagedItemStack(part, source, amount, instance.partMaterials.get(mat), entity);
+                }
         return part;
     }
 

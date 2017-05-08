@@ -3,11 +3,14 @@ package the_fireplace.mechsoldiers.entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import the_fireplace.mechsoldiers.items.IBrain;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.mechsoldiers.util.EnumPartType;
+import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.entity.EntityArmyMember;
 import the_fireplace.overlord.network.PacketDispatcher;
 import the_fireplace.overlord.network.packets.RequestAugmentMessage;
@@ -23,6 +26,7 @@ import java.util.UUID;
  */
 @ParametersAreNonnullByDefault
 public class EntityMechSkeleton extends EntityArmyMember {
+    public boolean cachedClientParts = false;
     /*
     0: Main hand
     1: Off hand
@@ -35,6 +39,11 @@ public class EntityMechSkeleton extends EntityArmyMember {
     2: Brain
      */
     public final InventoryBasic partInventory;
+
+    public EntityMechSkeleton(World world){
+        this(world, null);
+    }
+
     public EntityMechSkeleton(World world, @Nullable UUID owner) {
         super(world, owner);
         this.equipInventory = new InventoryBasic("Equipment", false, 3) {
@@ -113,6 +122,8 @@ public class EntityMechSkeleton extends EntityArmyMember {
     @Override
     protected void damageEntity(DamageSource damageSrc, float damageAmount)
     {
+        if(ticksExisted <= 3)
+            initEntityAI();//Refreshes the AI after the brain has loaded
         if (!this.isEntityInvulnerable(damageSrc))
         {
             if(damageSrc != DamageSource.outOfWorld)
@@ -158,9 +169,9 @@ public class EntityMechSkeleton extends EntityArmyMember {
             setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount/3, this));
             setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount/3, this));
         }else{
-            setBrain(PartRegistry.damagePart(getBrain(), damageSrc, damageAmount/9, this));
+            setBrain(PartRegistry.damagePart(getBrain(), damageSrc, damageAmount/12, this));
             setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, 3*damageAmount/4, this));
-            setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount/3, this));
+            setJoints(PartRegistry.damagePart(getJoints(), damageSrc, 3*damageAmount/7, this));
         }
     }
 
@@ -226,5 +237,85 @@ public class EntityMechSkeleton extends EntityArmyMember {
                 }
             }
         }
+    }
+
+    @Override
+    public void readEntityFromNBT(@Nonnull NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+
+        NBTTagList mainInv = (NBTTagList) compound.getTag("SkeletonParts");
+        if (mainInv != null) {
+            for (int i = 0; i < mainInv.tagCount(); i++) {
+                NBTTagCompound item = (NBTTagCompound) mainInv.get(i);
+                int slot = item.getByte("SlotSkeletonParts");
+                if (slot >= 0 && slot < partInventory.getSizeInventory()) {
+                    partInventory.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+                }
+            }
+        } else {
+            Overlord.logWarn("List was null when reading Mechanical Skeleton's Inventory");
+        }
+        NBTTagList armorInv = (NBTTagList) compound.getTag("SkeletonEquipment");
+        if (armorInv != null) {
+            for (int i = 0; i < armorInv.tagCount(); i++) {
+                NBTTagCompound item = (NBTTagCompound) armorInv.get(i);
+                int slot = item.getByte("SlotSkeletonEquipment");
+                if (slot >= 0 && slot < equipInventory.getSizeInventory()) {
+                    equipInventory.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+                }
+            }
+        } else {
+            Overlord.logWarn("List was null when reading Mechanical Skeleton's Equipment");
+        }
+    }
+
+    @Override
+    public void writeEntityToNBT(@Nonnull NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+
+        NBTTagList mainInv = new NBTTagList();
+        for (int i = 0; i < partInventory.getSizeInventory(); i++) {
+            ItemStack is = partInventory.getStackInSlot(i);
+            if (is != null) {
+                NBTTagCompound item = new NBTTagCompound();
+
+                item.setByte("SlotSkeletonParts", (byte) i);
+                is.writeToNBT(item);
+
+                mainInv.appendTag(item);
+            }
+        }
+        compound.setTag("SkeletonParts", mainInv);
+
+        NBTTagList armorInv = new NBTTagList();
+        for (int i = 0; i < equipInventory.getSizeInventory(); i++) {
+            ItemStack is = equipInventory.getStackInSlot(i);
+            if (is != null) {
+                NBTTagCompound item = new NBTTagCompound();
+
+                item.setByte("SlotSkeletonEquipment", (byte) i);
+                is.writeToNBT(item);
+
+                armorInv.appendTag(item);
+            }
+        }
+        compound.setTag("SkeletonEquipment", armorInv);
+    }
+
+    @Override
+    public float getEyeHeight()
+    {
+        return 1.74F;
+    }
+
+    /**
+     * Returns the Y Offset of this entity.
+     */
+    @Override
+    public double getYOffset()
+    {
+        return -0.35D;
     }
 }

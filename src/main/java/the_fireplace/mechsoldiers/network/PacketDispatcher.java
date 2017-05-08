@@ -8,6 +8,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.network.packets.ConstructRobotMessage;
+import the_fireplace.mechsoldiers.network.packets.RequestPartsMessage;
+import the_fireplace.mechsoldiers.network.packets.SetPartsMessage;
 
 /**
  * @author The_Fireplace
@@ -19,6 +21,8 @@ public final class PacketDispatcher {
 
     public static final void registerPackets() {
         registerMessage(ConstructRobotMessage.Handler.class, ConstructRobotMessage.class, Side.SERVER);
+        registerMessage(RequestPartsMessage.Handler.class, RequestPartsMessage.class, Side.SERVER);
+        registerMessage(SetPartsMessage.Handler.class, SetPartsMessage.class, Side.CLIENT);
     }
 
     @SuppressWarnings("unchecked")

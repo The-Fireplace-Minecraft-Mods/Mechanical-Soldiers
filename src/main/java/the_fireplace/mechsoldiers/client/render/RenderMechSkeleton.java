@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
+import the_fireplace.mechsoldiers.network.packets.RequestPartsMessage;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.network.PacketDispatcher;
@@ -40,6 +41,8 @@ public class RenderMechSkeleton extends RenderBiped<EntityMechSkeleton>
     {
         if(!entity.cachedClientAugment)
             PacketDispatcher.sendToServer(new RequestAugmentMessage(entity));
+        if(!entity.cachedClientParts)
+            the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new RequestPartsMessage(entity));
         return PartRegistry.getTexLocation(entity.getSkeleton());
     }
 
@@ -52,6 +55,8 @@ public class RenderMechSkeleton extends RenderBiped<EntityMechSkeleton>
         if(Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Overlord.crown){
             if(!entityMechSkeleton.cachedClientAugment)
                 PacketDispatcher.sendToServer(new RequestAugmentMessage(entityMechSkeleton));
+            if(!entityMechSkeleton.cachedClientParts)
+                the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new RequestPartsMessage(entityMechSkeleton));
             RenderTools.renderItemStackOverEntity(entityMechSkeleton, entityMechSkeleton.getAugmentDisplayStack(), this, partialTicks, x, y, z);
         }
     }

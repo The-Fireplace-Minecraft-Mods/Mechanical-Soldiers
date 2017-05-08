@@ -19,12 +19,12 @@ public final class ComponentDamageGeneric extends ComponentDamageBehavior {
             case "wood":
                 if(source.isFireDamage())
                     amount *= 2;
-                itemToDamage.damageItem((int)Math.floor(amount), entity);
+                itemToDamage.damageItem(Math.round(amount), entity);
                 return itemToDamage;
             case "iron":
                 if(source == DamageSource.drown)
                     amount *= 1.5;
-                itemToDamage.damageItem((int)Math.floor(amount), entity);
+                itemToDamage.damageItem(Math.round(amount), entity);
                 return itemToDamage;
             case "copper_redstone":
             case "gold_redstone":
@@ -35,7 +35,7 @@ public final class ComponentDamageGeneric extends ComponentDamageBehavior {
                 if(source.isFireDamage())
                     amount *= 1.1F;
             default:
-                itemToDamage.damageItem((int)Math.floor(amount), entity);
+                itemToDamage.damageItem(Math.round(amount), entity);
                 return itemToDamage;
         }
     }

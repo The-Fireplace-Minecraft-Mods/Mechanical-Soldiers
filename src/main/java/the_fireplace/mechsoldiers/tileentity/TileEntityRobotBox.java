@@ -23,6 +23,7 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
     Random rand;
     public TileEntityRobotBox(){
         //Only for use when world is loading.
+        rand = new Random();
     }
 
     public TileEntityRobotBox(NBTTagCompound skeletonData, int ticksToWait){
@@ -73,9 +74,11 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        ticksRemaining--;
-        if(ticksRemaining <= 0)
-            spawnRobot();
+        if(!world.isRemote) {
+            ticksRemaining--;
+            if (ticksRemaining <= 0)
+                spawnRobot();
+        }
     }
 
     private void spawnRobot(){

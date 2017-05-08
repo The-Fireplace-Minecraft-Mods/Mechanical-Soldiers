@@ -83,11 +83,11 @@ public class MechSoldiers {
         GameRegistry.registerTileEntity(TileEntityRobotConstructor.class, "robot_constructor");
         GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
 
-        PartRegistry.registerPart(skeleton_iron, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton"));
-        PartRegistry.registerPart(skeleton_gold, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "gold", new ResourceLocation(MODID, "textures/entity/gold_skeleton"));
-        PartRegistry.registerPart(skeleton_wood, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "wood", new ResourceLocation(MODID, "textures/entity/wood_skeleton"));
-        PartRegistry.registerPart(joints_iron, EnumPartType.JOINTS, ComponentDamageGeneric.instance, "iron", new ResourceLocation(MODID, "textures/entity/iron_joints"));
-        PartRegistry.registerPart(joints_gold, EnumPartType.JOINTS, ComponentDamageGeneric.instance, "gold", new ResourceLocation(MODID, "textures/entity/gold_joints"));
+        PartRegistry.registerPart(skeleton_iron, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
+        PartRegistry.registerPart(skeleton_gold, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "gold", new ResourceLocation(MODID, "textures/entity/gold_skeleton.png"));
+        PartRegistry.registerPart(skeleton_wood, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "wood", new ResourceLocation(MODID, "textures/entity/wood_skeleton.png"));
+        PartRegistry.registerPart(joints_iron, EnumPartType.JOINTS, ComponentDamageGeneric.instance, "iron", new ResourceLocation(MODID, "textures/entity/iron_joints.png"));
+        PartRegistry.registerPart(joints_gold, EnumPartType.JOINTS, ComponentDamageGeneric.instance, "gold", new ResourceLocation(MODID, "textures/entity/gold_joints.png"));
         PartRegistry.registerPart(brain_copper_redstone, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "copper_redstone", null);
         PartRegistry.registerPart(brain_gold_redstone, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "gold_redstone", null);
         PartRegistry.registerPart(Items.POTATO, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "potato", null);//TODO: Custom damage handler to cook the potato if fire damage
