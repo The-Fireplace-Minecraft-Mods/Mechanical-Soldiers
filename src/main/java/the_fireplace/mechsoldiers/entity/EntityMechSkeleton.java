@@ -165,28 +165,40 @@ public class EntityMechSkeleton extends EntityArmyMember {
     }
 
     public ItemStack getBrain(){
+        if(partInventory == null)
+            return null;
         return partInventory.getStackInSlot(2);
     }
 
     public EntityMechSkeleton setBrain(ItemStack brain){
+        if(partInventory == null)
+            return this;
         partInventory.setInventorySlotContents(2, brain);
         return this;
     }
 
     public ItemStack getJoints(){
+        if(partInventory == null)
+            return null;
         return partInventory.getStackInSlot(1);
     }
 
     public EntityMechSkeleton setJoints(ItemStack joints){
+        if(partInventory == null)
+            return this;
         partInventory.setInventorySlotContents(1, joints);
         return this;
     }
 
     public ItemStack getSkeleton(){
+        if(partInventory == null)
+            return null;
         return partInventory.getStackInSlot(0);
     }
 
     public EntityMechSkeleton setSkeleton(ItemStack skeleton){
+        if(partInventory == null)
+            return this;
         partInventory.setInventorySlotContents(0, skeleton);
         return this;
     }

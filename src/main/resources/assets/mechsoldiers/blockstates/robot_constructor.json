@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "normal": { "model": "mechsoldiers:robot_constructor" }
+  }
+}

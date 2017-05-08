@@ -1,11 +1,9 @@
 package the_fireplace.mechsoldiers.client.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,7 +25,7 @@ public class RenderMechSkeleton extends RenderBiped<EntityMechSkeleton>
 {
     public RenderMechSkeleton(RenderManager renderManagerIn)
     {
-        super(renderManagerIn, new ModelBiped(), 0.5F);
+        super(renderManagerIn, new ModelMechSkeleton(), 0.5F);
         this.addLayer(new LayerJoints(this));
     }
 
@@ -50,6 +48,7 @@ public class RenderMechSkeleton extends RenderBiped<EntityMechSkeleton>
     {
         super.doRender(entityMechSkeleton, x, y, z, entityYaw, partialTicks);
 
+        if(Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null)
         if(Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Overlord.crown){
             if(!entityMechSkeleton.cachedClientAugment)
                 PacketDispatcher.sendToServer(new RequestAugmentMessage(entityMechSkeleton));

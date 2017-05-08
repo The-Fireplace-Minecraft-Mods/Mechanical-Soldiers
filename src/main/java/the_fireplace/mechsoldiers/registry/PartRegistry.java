@@ -62,7 +62,7 @@ public final class PartRegistry {
         if(part == null)
             return false;
         for(ItemStack stack:instance.partTypes.keySet())
-            if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || part.getMetadata() == OreDictionary.WILDCARD_VALUE))
+            if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || stack.getMetadata() == OreDictionary.WILDCARD_VALUE))
                 return true;
         return false;
     }
@@ -71,7 +71,7 @@ public final class PartRegistry {
         if(part == null || slotType == null || !isPart(part))
             return false;
         for(ItemStack stack:instance.partTypes.keySet())
-            if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || part.getMetadata() == OreDictionary.WILDCARD_VALUE))
+            if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || stack.getMetadata() == OreDictionary.WILDCARD_VALUE))
                 return instance.partTypes.get(stack) == slotType;
         return false;
     }
@@ -80,7 +80,7 @@ public final class PartRegistry {
         if(!isPart(part) || !part.isItemStackDamageable())
             return part;
         for(ItemStack stack:instance.partBehaviors.keySet())
-            if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || part.getMetadata() == OreDictionary.WILDCARD_VALUE))
+            if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || stack.getMetadata() == OreDictionary.WILDCARD_VALUE))
                 return instance.partBehaviors.get(stack).getDamagedItemStack(part, source, amount, instance.partMaterials.get(stack), entity);
         return part;
     }
@@ -90,7 +90,7 @@ public final class PartRegistry {
         if(!isPart(part))
             return null;
         for(ItemStack stack:instance.partTextures.keySet())
-            if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || part.getMetadata() == OreDictionary.WILDCARD_VALUE))
+            if(stack.getItem() == part.getItem() && (stack.getMetadata() == part.getMetadata() || stack.getMetadata() == OreDictionary.WILDCARD_VALUE))
                 return instance.partTextures.get(stack);
         return null;
     }

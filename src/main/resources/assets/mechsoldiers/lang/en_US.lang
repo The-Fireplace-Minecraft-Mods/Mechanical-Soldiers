@@ -8,3 +8,6 @@ item.joints_iron.name=Iron Joints
 item.joints_gold.name=Gold Joints
 item.brain_copper_redstone.name=Copper-Redstone Brain
 item.brain_gold_redstone.name=Gold-Redstone Brain
+
+tile.robot_box.name=Robot Crate
+tile.robot_constructor.name=Robot Builder

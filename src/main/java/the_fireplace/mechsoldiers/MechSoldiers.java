@@ -2,24 +2,33 @@ package the_fireplace.mechsoldiers;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import the_fireplace.mechsoldiers.blocks.BlockRobotBox;
+import the_fireplace.mechsoldiers.blocks.BlockRobotConstructor;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.items.ItemBrain;
 import the_fireplace.mechsoldiers.items.ItemJoints;
 import the_fireplace.mechsoldiers.items.ItemSkeleton;
 import the_fireplace.mechsoldiers.network.CommonProxy;
+import the_fireplace.mechsoldiers.network.MSGuiHandler;
+import the_fireplace.mechsoldiers.network.PacketDispatcher;
 import the_fireplace.mechsoldiers.registry.MechCraftingRecipes;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
+import the_fireplace.mechsoldiers.tileentity.TileEntityRobotBox;
+import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.mechsoldiers.util.ComponentDamageGeneric;
 import the_fireplace.mechsoldiers.util.EnumPartType;
 import the_fireplace.overlord.Overlord;
@@ -46,8 +55,13 @@ public class MechSoldiers {
     public static final Item brain_copper_redstone = new ItemBrain("copper_redstone", 16);
     public static final Item brain_gold_redstone = new ItemBrain("gold_redstone", 64);
 
+    public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
+    public static final Block robot_box = new BlockRobotBox("robot_box");
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
+        PacketDispatcher.registerPackets();
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new MSGuiHandler());
         new PartRegistry();
         new ComponentDamageGeneric();
         GameRegistry.register(skeleton_iron);
@@ -57,6 +71,18 @@ public class MechSoldiers {
         GameRegistry.register(joints_gold);
         GameRegistry.register(brain_copper_redstone);
         GameRegistry.register(brain_gold_redstone);
+
+        GameRegistry.register(robot_box);
+        ItemBlock robotBoxItem = new ItemBlock(robot_box);
+        robotBoxItem.setMaxStackSize(1);
+        robotBoxItem.setRegistryName(robot_box.getRegistryName());
+        GameRegistry.register(robotBoxItem);
+        GameRegistry.register(robot_constructor);
+        GameRegistry.register(new ItemBlock(robot_constructor).setRegistryName(robot_constructor.getRegistryName()));
+
+        GameRegistry.registerTileEntity(TileEntityRobotConstructor.class, "robot_constructor");
+        GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
+
         PartRegistry.registerPart(skeleton_iron, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton"));
         PartRegistry.registerPart(skeleton_gold, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "gold", new ResourceLocation(MODID, "textures/entity/gold_skeleton"));
         PartRegistry.registerPart(skeleton_wood, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "wood", new ResourceLocation(MODID, "textures/entity/wood_skeleton"));
@@ -64,6 +90,7 @@ public class MechSoldiers {
         PartRegistry.registerPart(joints_gold, EnumPartType.JOINTS, ComponentDamageGeneric.instance, "gold", new ResourceLocation(MODID, "textures/entity/gold_joints"));
         PartRegistry.registerPart(brain_copper_redstone, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "copper_redstone", null);
         PartRegistry.registerPart(brain_gold_redstone, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "gold_redstone", null);
+        PartRegistry.registerPart(Items.POTATO, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "potato", null);//TODO: Custom damage handler to cook the potato if fire damage
 
         int eid=-1;
         EntityRegistry.registerModEntity(/*new ResourceLocation(MODID+":mechanical_skeleton"), */EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
@@ -85,6 +112,9 @@ public class MechSoldiers {
         rmm(joints_iron);
         rmm(brain_copper_redstone);
         rmm(brain_gold_redstone);
+
+        rmm(robot_constructor);
+        rmm(robot_box);
     }
 
     @SideOnly(Side.CLIENT)
