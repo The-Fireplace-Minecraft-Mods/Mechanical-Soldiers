@@ -57,24 +57,23 @@ public class ModelMechSkeleton extends ModelBiped
             this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
         } else {
             this.leftElbow = new ModelRenderer(this, 32, 48);
-            this.leftElbow.addBox(-1.0F, -9.0F, -2.0F, 4, 4, 4, modelSize);
+            this.leftElbow.addBox(-1.0F, -4.0F, -2.0F, 4, 4, 4, modelSize);
             this.leftElbow.setRotationPoint(2.0F, 2.0F, 0.0F);
-            //TODO: Adjust the rest of them, add textures
             this.rightElbow = new ModelRenderer(this, 40, 16);
-            this.rightElbow.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
+            this.rightElbow.addBox(-3.0F, -2.0F, -2.0F, 4, 4, 4, modelSize);
             this.rightElbow.setRotationPoint(-5.0F, 2.5F, 0.0F);
-
             this.leftKnee = new ModelRenderer(this, 16, 48);
-            this.leftKnee.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize);
+            this.leftKnee.addBox(-2.0F, 0.0F, -2.0F, 4, 4, 4, modelSize);
             this.leftKnee.setRotationPoint(1.9F, 12.0F, 0.0F);
             this.neck = new ModelRenderer(this, 0, 0);
-            this.neck.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, modelSize);
+            this.neck.addBox(-4.0F, -2.0F, -4.0F, 8, 2, 8, modelSize);
             this.neck.setRotationPoint(0.0F, 0.0F, 0.0F);
             this.shouldersAndHips = new ModelRenderer(this, 16, 16);
-            this.shouldersAndHips.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, modelSize);
+            this.shouldersAndHips.addBox(-4.0F, 0.0F, -2.0F, 4, 4, 4, modelSize);
+            this.shouldersAndHips.addBox(4.0F, 0.0F, -2.0F, 4, 4, 4, modelSize);
             this.shouldersAndHips.setRotationPoint(0.0F, 0.0F, 0.0F);
             this.rightKnee = new ModelRenderer(this, 0, 16);
-            this.rightKnee.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize);
+            this.rightKnee.addBox(-2.0F, 0.0F, -2.0F, 4, 4, 4, modelSize);
             this.rightKnee.setRotationPoint(-1.9F, 12.0F, 0.0F);
         }
     }
@@ -108,7 +107,8 @@ public class ModelMechSkeleton extends ModelBiped
     @Override
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        if(!isJointLayer)
+            super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         GlStateManager.pushMatrix();
         if(isJointLayer){
             if (entityIn.isSneaking())
