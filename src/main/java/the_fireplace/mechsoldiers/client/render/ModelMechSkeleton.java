@@ -39,42 +39,54 @@ public class ModelMechSkeleton extends ModelBiped
 
         this.isJointLayer = isJointLayer;
 
-        if (!isJointLayer)
-        {
-            this.bipedRightArm = new ModelRenderer(this, 40, 16);
-            this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelSize);
-            this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
-            this.bipedLeftArm = new ModelRenderer(this, 40, 16);
-            this.bipedLeftArm.mirror = true;
-            this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelSize);
-            this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-            this.bipedRightLeg = new ModelRenderer(this, 0, 16);
-            this.bipedRightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelSize);
-            this.bipedRightLeg.setRotationPoint(-2.0F, 12.0F, 0.0F);
-            this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
-            this.bipedLeftLeg.mirror = true;
-            this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelSize);
-            this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
-        } else {
+
+        this.bipedHead = new ModelRenderer(this, 0, 0);
+        this.bipedHead.addBox(-4.0F, -9.0F, -4.0F, 8, 8, 8, modelSize);
+        this.bipedHead.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.bipedHeadwear = new ModelRenderer(this, 32, 0);
+        this.bipedHeadwear.addBox(-4.0F, -9.0F, -4.0F, 8, 8, 8, modelSize + 0.5F);
+        this.bipedHeadwear.setRotationPoint(0.0F, 0.0F, 0.0F);
+
+        this.bipedRightArm = new ModelRenderer(this, 40, 16);
+        this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelSize);
+        this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
+        this.bipedLeftArm = new ModelRenderer(this, 40, 16);
+        this.bipedLeftArm.mirror = true;
+        this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelSize);
+        this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
+        this.bipedRightLeg = new ModelRenderer(this, 0, 16);
+        this.bipedRightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelSize);
+        this.bipedRightLeg.setRotationPoint(-2.0F, 12.0F, 0.0F);
+        this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
+        this.bipedLeftLeg.mirror = true;
+        this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelSize);
+        this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
+        if (isJointLayer) {
             this.leftElbow = new ModelRenderer(this, 32, 48);
-            this.leftElbow.addBox(-1.0F, -4.0F, -2.0F, 4, 4, 4, modelSize);
+            this.leftElbow.addBox(2.1F, 2.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
             this.leftElbow.setRotationPoint(2.0F, 2.0F, 0.0F);
             this.rightElbow = new ModelRenderer(this, 40, 16);
-            this.rightElbow.addBox(-3.0F, -2.0F, -2.0F, 4, 4, 4, modelSize);
+            this.rightElbow.addBox(-1.1F, 2.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
             this.rightElbow.setRotationPoint(-5.0F, 2.5F, 0.0F);
             this.leftKnee = new ModelRenderer(this, 16, 48);
-            this.leftKnee.addBox(-2.0F, 0.0F, -2.0F, 4, 4, 4, modelSize);
+            this.leftKnee.addBox(-1.0F, 4.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
             this.leftKnee.setRotationPoint(1.9F, 12.0F, 0.0F);
             this.neck = new ModelRenderer(this, 0, 0);
-            this.neck.addBox(-4.0F, -2.0F, -4.0F, 8, 2, 8, modelSize);
+            this.neck.addBox(-3.0F, -1.0F, -3.0F, 6, 1, 6, modelSize);
             this.neck.setRotationPoint(0.0F, 0.0F, 0.0F);
             this.shouldersAndHips = new ModelRenderer(this, 16, 16);
-            this.shouldersAndHips.addBox(-4.0F, 0.0F, -2.0F, 4, 4, 4, modelSize);
-            this.shouldersAndHips.addBox(4.0F, 0.0F, -2.0F, 4, 4, 4, modelSize);
+            this.shouldersAndHips.addBox(-4.5F, -0.1F, -1.5F, 1, 2, 3, modelSize);//Right shoulder
+            this.shouldersAndHips.addBox(3.5F, -0.1F, -1.5F, 1, 2, 3, modelSize);//Left shoulder
             this.shouldersAndHips.setRotationPoint(0.0F, 0.0F, 0.0F);
             this.rightKnee = new ModelRenderer(this, 0, 16);
-            this.rightKnee.addBox(-2.0F, 0.0F, -2.0F, 4, 4, 4, modelSize);
+            this.rightKnee.addBox(-1.0F, 4.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
             this.rightKnee.setRotationPoint(-1.9F, 12.0F, 0.0F);
+
+            this.bipedHead.addChild(neck);
+            this.bipedRightLeg.addChild(rightKnee);
+            this.bipedLeftLeg.addChild(leftKnee);
+            this.bipedRightArm.addChild(rightElbow);
+            this.bipedLeftArm.addChild(leftElbow);
         }
     }
 
@@ -109,8 +121,8 @@ public class ModelMechSkeleton extends ModelBiped
     {
         if(!isJointLayer)
             super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        GlStateManager.pushMatrix();
-        if(isJointLayer){
+        else{
+            GlStateManager.pushMatrix();
             if (entityIn.isSneaking())
             {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
@@ -121,8 +133,8 @@ public class ModelMechSkeleton extends ModelBiped
             this.leftElbow.render(scale);
             this.rightKnee.render(scale);
             this.leftKnee.render(scale);
+            GlStateManager.popMatrix();
         }
-        GlStateManager.popMatrix();
     }
 
     @Override
