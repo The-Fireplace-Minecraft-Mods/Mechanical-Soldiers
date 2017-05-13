@@ -22,7 +22,8 @@ import the_fireplace.overlord.entity.EntityArmyMember;
 public class ModelMechSkeleton extends ModelBiped
 {
     public ModelRenderer neck;
-    public ModelRenderer shouldersAndHips;
+    public ModelRenderer rightShoulder;
+    public ModelRenderer leftShoulder;
     public ModelRenderer rightElbow;
     public ModelRenderer leftElbow;
     public ModelRenderer rightKnee;
@@ -30,12 +31,12 @@ public class ModelMechSkeleton extends ModelBiped
     public boolean isJointLayer;
     public ModelMechSkeleton()
     {
-        this(0.0F, false, 1);
+        this(0.0F, false);
     }
 
-    public ModelMechSkeleton(float modelSize, boolean isJointLayer, int texScale)
+    public ModelMechSkeleton(float modelSize, boolean isJointLayer)
     {
-        super(modelSize, 0.0F, 64, 32*texScale);
+        super(modelSize, 0.0F, isJointLayer ? 24 : 64, isJointLayer ? 12 : 32);
 
         this.isJointLayer = isJointLayer;
 
@@ -62,31 +63,27 @@ public class ModelMechSkeleton extends ModelBiped
         this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelSize);
         this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
         if (isJointLayer) {
-            this.leftElbow = new ModelRenderer(this, 32, 48);
-            this.leftElbow.addBox(2.1F, 2.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
-            this.leftElbow.setRotationPoint(2.0F, 2.0F, 0.0F);
-            this.rightElbow = new ModelRenderer(this, 40, 16);
-            this.rightElbow.addBox(-1.1F, 2.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
-            this.rightElbow.setRotationPoint(-5.0F, 2.5F, 0.0F);
-            this.leftKnee = new ModelRenderer(this, 16, 48);
-            this.leftKnee.addBox(-1.0F, 4.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
-            this.leftKnee.setRotationPoint(1.9F, 12.0F, 0.0F);
             this.neck = new ModelRenderer(this, 0, 0);
             this.neck.addBox(-3.0F, -1.0F, -3.0F, 6, 1, 6, modelSize);
-            this.neck.setRotationPoint(0.0F, 0.0F, 0.0F);
-            this.shouldersAndHips = new ModelRenderer(this, 16, 16);
-            this.shouldersAndHips.addBox(-4.5F, -0.1F, -1.5F, 1, 2, 3, modelSize);//Right shoulder
-            this.shouldersAndHips.addBox(3.5F, -0.1F, -1.5F, 1, 2, 3, modelSize);//Left shoulder
-            this.shouldersAndHips.setRotationPoint(0.0F, 0.0F, 0.0F);
-            this.rightKnee = new ModelRenderer(this, 0, 16);
-            this.rightKnee.addBox(-1.0F, 4.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
-            this.rightKnee.setRotationPoint(-1.9F, 12.0F, 0.0F);
-
-            this.bipedHead.addChild(neck);
-            this.bipedRightLeg.addChild(rightKnee);
-            this.bipedLeftLeg.addChild(leftKnee);
-            this.bipedRightArm.addChild(rightElbow);
-            this.bipedLeftArm.addChild(leftElbow);
+            this.leftElbow = new ModelRenderer(this, 8, 8);
+            this.leftElbow.addBox(-1.1F, 3.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
+            this.leftElbow.setRotationPoint(5.0F, 2.0F, 0.0F);
+            this.rightElbow = new ModelRenderer(this, 8, 8);
+            this.rightElbow.addBox(-1.1F, 3.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
+            this.rightElbow.setRotationPoint(-5.0F, 2.0F, 0.0F);
+            this.rightElbow.mirror=true;
+            this.leftKnee = new ModelRenderer(this, 0, 8);
+            this.leftKnee.addBox(-1.0F, 5.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
+            this.leftKnee.setRotationPoint(2.0F, 12.0F, 0.0F);
+            this.rightKnee = new ModelRenderer(this, 0, 8);
+            this.rightKnee.addBox(-1.0F, 5.0F, -1.0F, 2, 2, 2, modelSize*1.1F);
+            this.rightKnee.setRotationPoint(-2.0F, 12.0F, 0.0F);
+            this.rightKnee.mirror=true;
+            this.leftShoulder = new ModelRenderer(this, 16, 7);
+            this.leftShoulder.addBox(3.5F, -0.1F, -1.5F, 1, 2, 3, modelSize);
+            this.rightShoulder = new ModelRenderer(this, 16, 7);
+            this.rightShoulder.addBox(-4.5F, -0.1F, -1.5F, 1, 2, 3, modelSize);
+            this.rightShoulder.mirror=true;
         }
     }
 
@@ -122,13 +119,15 @@ public class ModelMechSkeleton extends ModelBiped
         if(!isJointLayer)
             super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         else{
+            this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
             GlStateManager.pushMatrix();
             if (entityIn.isSneaking())
             {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
             this.neck.render(scale);
-            this.shouldersAndHips.render(scale);
+            this.rightShoulder.render(scale);
+            this.leftShoulder.render(scale);
             this.rightElbow.render(scale);
             this.leftElbow.render(scale);
             this.rightKnee.render(scale);
@@ -166,7 +165,8 @@ public class ModelMechSkeleton extends ModelBiped
             copyModelAngles(this.bipedRightLeg, this.rightKnee);
             copyModelAngles(this.bipedLeftArm, this.leftElbow);
             copyModelAngles(this.bipedRightArm, this.rightElbow);
-            copyModelAngles(this.bipedBody, this.shouldersAndHips);
+            copyModelAngles(this.bipedBody, this.rightShoulder);
+            copyModelAngles(this.bipedBody, this.leftShoulder);
             copyModelAngles(this.bipedHead, this.neck);
         }
     }

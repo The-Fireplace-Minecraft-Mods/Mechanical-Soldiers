@@ -18,7 +18,7 @@ public class LayerJoints implements LayerRenderer<EntityMechSkeleton> {
     public LayerJoints(RenderLivingBase<?> renderer)
     {
         this.renderer = renderer;
-        this.model = new ModelMechSkeleton(0.25F, true, 2);
+        this.model = new ModelMechSkeleton(0.25F, true);
     }
 
     @Override
