@@ -41,11 +41,11 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
         }else{
             robotData.setString("OwnerUUID", "0b1ec5ad-cb2a-43b7-995d-889320eb2e5b");
         }
-        ItemStack oneBrain = getStackInSlot(1);
+        ItemStack oneBrain = getStackInSlot(1).copy();
         oneBrain.stackSize=1;
-        ItemStack oneSkeleton = getStackInSlot(2);
+        ItemStack oneSkeleton = getStackInSlot(2).copy();
         oneSkeleton.stackSize=1;
-        ItemStack oneJoints = getStackInSlot(3);
+        ItemStack oneJoints = getStackInSlot(3).copy();
         oneJoints.stackSize=1;
         robotData.setTag("RobotBrain", oneBrain.writeToNBT(new NBTTagCompound()));
         robotData.setTag("RobotSkeleton", oneSkeleton.writeToNBT(new NBTTagCompound()));

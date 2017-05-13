@@ -194,6 +194,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
         if(partInventory == null)
             return this;
         partInventory.setInventorySlotContents(2, brain);
+        initEntityAI();
         return this;
     }
 

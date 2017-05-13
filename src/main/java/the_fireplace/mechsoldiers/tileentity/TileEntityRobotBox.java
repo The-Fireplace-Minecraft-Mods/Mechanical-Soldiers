@@ -112,6 +112,7 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
         world.spawnEntity(robot);
         robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());
 
+        world.removeTileEntity(pos);
         world.destroyBlock(pos, false);
     }
 }

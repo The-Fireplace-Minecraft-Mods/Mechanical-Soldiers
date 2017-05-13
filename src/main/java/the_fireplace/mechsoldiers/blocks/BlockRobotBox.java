@@ -63,7 +63,8 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
         {
             EntityItem brain = new EntityItem(worldIn);
             ItemStack brainStack = ((TileEntityRobotBox) tileentity).getBrain();
-            brainStack.setItemDamage(Math.round(brainStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
+            if(brainStack.isItemStackDamageable())
+                brainStack.setItemDamage(Math.round(brainStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
             brain.setEntityItemStack(brainStack);
             brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
             worldIn.spawnEntity(brain);
@@ -71,7 +72,8 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 
             EntityItem joints = new EntityItem(worldIn);
             ItemStack jointStack = ((TileEntityRobotBox) tileentity).getJoints();
-            jointStack.setItemDamage(Math.round(jointStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
+            if(jointStack.isItemStackDamageable())
+                jointStack.setItemDamage(Math.round(jointStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
             joints.setEntityItemStack(jointStack);
             joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
             worldIn.spawnEntity(joints);
@@ -79,7 +81,8 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 
             EntityItem skeleton = new EntityItem(worldIn);
             ItemStack skeletonStack = ((TileEntityRobotBox) tileentity).getSkeleton();
-            skeletonStack.setItemDamage(Math.round(skeletonStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
+            if(skeletonStack.isItemStackDamageable())
+                skeletonStack.setItemDamage(Math.round(skeletonStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
             skeleton.setEntityItemStack(skeletonStack);
             skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
             worldIn.spawnEntity(skeleton);
