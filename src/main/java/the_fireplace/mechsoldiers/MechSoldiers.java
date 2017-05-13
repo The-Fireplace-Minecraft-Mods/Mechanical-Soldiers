@@ -56,8 +56,6 @@ public class MechSoldiers {
     public static final Item brain_copper_redstone = new ItemBrain("copper_redstone", 24);
     public static final Item brain_gold_redstone = new ItemBrain("gold_redstone", 64);
 
-    public static final IBrain defaultBrain = (IBrain)brain_gold_redstone;
-
     public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
     public static final Block robot_box = new BlockRobotBox("robot_box");
 
@@ -91,7 +89,7 @@ public class MechSoldiers {
         PartRegistry.registerJoints(joints_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/iron_joints.png"));
         PartRegistry.registerJoints(joints_gold, ComponentDamageGeneric.getInstance(), "gold", new ResourceLocation(MODID, "textures/entity/gold_joints.png"));
         PartRegistry.registerBrain(brain_copper_redstone, (IBrain)brain_copper_redstone, ComponentDamageGeneric.getInstance(), "copper_redstone");
-        PartRegistry.registerBrain(brain_gold_redstone, defaultBrain, ComponentDamageGeneric.getInstance(), "gold_redstone");
+        PartRegistry.registerBrain(brain_gold_redstone, (IBrain)brain_gold_redstone, ComponentDamageGeneric.getInstance(), "gold_redstone");
         PartRegistry.registerPotatoBrain(Items.POTATO, 0, ComponentDamagePotato.getInstance(), "potato");
         PartRegistry.registerPotatoBrain(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
 

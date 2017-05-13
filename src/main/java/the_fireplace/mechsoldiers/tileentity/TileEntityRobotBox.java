@@ -19,8 +19,9 @@ import java.util.UUID;
 public class TileEntityRobotBox extends TileEntity implements ITickable {
 
     private NBTTagCompound skeletonData;
-    int ticksRemaining;
-    Random rand;
+    private int maxTicks;
+    private int ticksRemaining;
+    private Random rand;
     public TileEntityRobotBox(){
         //Only for use when world is loading.
         rand = new Random();
@@ -28,7 +29,7 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 
     public TileEntityRobotBox(NBTTagCompound skeletonData, int ticksToWait){
         this.skeletonData=skeletonData;
-        ticksRemaining=ticksToWait;
+        maxTicks=ticksRemaining=ticksToWait;
         rand = new Random();
     }
 
@@ -62,6 +63,7 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 
         compound.setTag("ConstructingSkeletonData", skeletonData);
         compound.setInteger("TicksRemaining", ticksRemaining);
+        compound.setInteger("MaxTicks", maxTicks);
         return compound;
     }
 
@@ -70,6 +72,10 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
         super.readFromNBT(compound);
         skeletonData = compound.getCompoundTag("ConstructingSkeletonData");
         ticksRemaining = compound.getInteger("TicksRemaining");
+        if(compound.hasKey("MaxTicks"))
+            maxTicks = compound.getInteger("MaxTicks");
+        else
+            maxTicks = compound.getInteger("TicksRemaining");
     }
 
     @Override
@@ -81,11 +87,27 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
         }
     }
 
+    public ItemStack getBrain(){
+        return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotBrain"));
+    }
+
+    public ItemStack getSkeleton(){
+        return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotSkeleton"));
+    }
+
+    public ItemStack getJoints(){
+        return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotJoints"));
+    }
+
+    public float getCompletion(){
+        return 1.0F-(float)ticksRemaining/(float)maxTicks;
+    }
+
     private void spawnRobot(){
         EntityMechSkeleton robot = new EntityMechSkeleton(world, UUID.fromString(skeletonData.getString("OwnerUUID")))
-                .setBrain(ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotBrain")))
-                .setSkeleton(ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotSkeleton")))
-                .setJoints(ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotJoints")));
+                .setBrain(getBrain())
+                .setSkeleton(getSkeleton())
+                .setJoints(getJoints());
         robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());
         world.spawnEntity(robot);
         robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());

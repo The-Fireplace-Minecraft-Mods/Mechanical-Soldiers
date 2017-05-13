@@ -6,6 +6,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -60,7 +61,29 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 
         if (tileentity instanceof TileEntityRobotBox)
         {
-            //TODO: Drop damaged robot parts
+            EntityItem brain = new EntityItem(worldIn);
+            ItemStack brainStack = ((TileEntityRobotBox) tileentity).getBrain();
+            brainStack.setItemDamage(Math.round(brainStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
+            brain.setEntityItemStack(brainStack);
+            brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+            worldIn.spawnEntity(brain);
+            brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+
+            EntityItem joints = new EntityItem(worldIn);
+            ItemStack jointStack = ((TileEntityRobotBox) tileentity).getJoints();
+            jointStack.setItemDamage(Math.round(jointStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
+            joints.setEntityItemStack(jointStack);
+            joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+            worldIn.spawnEntity(joints);
+            joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+
+            EntityItem skeleton = new EntityItem(worldIn);
+            ItemStack skeletonStack = ((TileEntityRobotBox) tileentity).getSkeleton();
+            skeletonStack.setItemDamage(Math.round(skeletonStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
+            skeleton.setEntityItemStack(skeletonStack);
+            skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+            worldIn.spawnEntity(skeleton);
+            skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
         }
 
         super.breakBlock(worldIn, pos, state);
