@@ -42,6 +42,24 @@ public class MechSoldiers {
     public static final String MODID = "mechsoldiers";
     public static final String MODNAME = "Mechanical Soldiers";
 
+    /*TODO before initial release:
+    Add a Robot Skeleton GUI
+    Improve Gold Skeleton textures
+    Add crafting recipes for everything(Including new machines to assemble parts)
+    Un-comment the skeleton crate's zeros
+    Add brain textures
+     */
+    /*TODO anytime:
+    Make the Robot Builder consume a log for each crate
+    Add JEI integration for the machines that make parts
+    Add a tooltip to the crate saying what is in it
+    Add robots to the Overlord guide book
+    Add integration with other mods for parts made of copper, steel, bronze, etc.
+    Add integration with weed mods for 420 joints.
+    Add splash text(perhaps in Overlord's splash text addition)
+    Advancements(Once 1.12 comes along)
+     */
+
     @Mod.Instance(MODID)
     public static MechSoldiers instance;
 

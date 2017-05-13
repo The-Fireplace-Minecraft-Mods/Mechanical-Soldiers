@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.entity;
 
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -317,15 +318,23 @@ public class EntityMechSkeleton extends EntityArmyMember {
     @Override
     public float getEyeHeight()
     {
-        return 1.74F;
+        return 1.84F;
     }
 
-    /**
-     * Returns the Y Offset of this entity.
-     */
     @Override
     public double getYOffset()
     {
         return -0.35D;
+    }
+
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(48.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(1.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(999.0D);
     }
 }
