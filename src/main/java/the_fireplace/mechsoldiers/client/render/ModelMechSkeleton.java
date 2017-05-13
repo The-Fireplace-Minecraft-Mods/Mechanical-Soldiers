@@ -92,7 +92,7 @@ public class ModelMechSkeleton extends ModelBiped
      * and third as in the setRotationAngles method.
      */
     @Override
-    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float p_78086_2_, float p_78086_3_, float partialTickTime)
+    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime)
     {
         this.rightArmPose = ModelBiped.ArmPose.EMPTY;
         this.leftArmPose = ModelBiped.ArmPose.EMPTY;
@@ -110,7 +110,7 @@ public class ModelMechSkeleton extends ModelBiped
             }
         }
 
-        super.setLivingAnimations(entitylivingbaseIn, p_78086_2_, p_78086_3_, partialTickTime);
+        super.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTickTime);
     }
 
     @Override
@@ -179,5 +179,11 @@ public class ModelMechSkeleton extends ModelBiped
         modelrenderer.rotationPointX += f;
         modelrenderer.postRender(scale);
         modelrenderer.rotationPointX -= f;
+        if(isJointLayer) {
+            ModelRenderer elbow = side == EnumHandSide.RIGHT ? rightElbow : leftElbow;
+            elbow.rotationPointX += f;
+            elbow.postRender(scale);
+            elbow.rotationPointX -= f;
+        }
     }
 }
