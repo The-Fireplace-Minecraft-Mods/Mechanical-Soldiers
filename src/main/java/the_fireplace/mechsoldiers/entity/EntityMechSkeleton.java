@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import the_fireplace.mechsoldiers.items.IBrain;
+import the_fireplace.mechsoldiers.util.IBrain;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.mechsoldiers.util.EnumPartType;
 import the_fireplace.overlord.Overlord;
@@ -95,20 +95,29 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
     @Override
     public void addMovementTasks() {
-        if(getBrain() != null && getBrain().getItem() instanceof IBrain)
-            ((IBrain)getBrain().getItem()).addMovementAi(tasks, this, getMovementMode());
+        if(getBrain() != null) {
+            IBrain brain = PartRegistry.getBrain(getBrain());
+            if(brain != null)
+                brain.addMovementAi(this, getMovementMode());
+        }
     }
 
     @Override
     public void addAttackTasks() {
-        if(getBrain() != null && getBrain().getItem() instanceof IBrain)
-            ((IBrain)getBrain().getItem()).addAttackAi(tasks, this, getAttackMode());
+        if(getBrain() != null) {
+            IBrain brain = PartRegistry.getBrain(getBrain());
+            if(brain != null)
+                brain.addAttackAi(this, getAttackMode());
+        }
     }
 
     @Override
     public void addTargetTasks() {
-        if(getBrain() != null && getBrain().getItem() instanceof IBrain)
-            ((IBrain)getBrain().getItem()).addTargetAi(targetTasks, this, getAttackMode());
+        if(getBrain() != null) {
+            IBrain brain = PartRegistry.getBrain(getBrain());
+            if(brain != null)
+                brain.addTargetAi(this, getAttackMode());
+        }
     }
 
     @Override

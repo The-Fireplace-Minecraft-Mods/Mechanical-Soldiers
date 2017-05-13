@@ -8,7 +8,12 @@ import net.minecraft.util.DamageSource;
  * @author The_Fireplace
  */
 public final class ComponentDamageGeneric extends ComponentDamageBehavior {
-    public static ComponentDamageGeneric instance;
+    private static ComponentDamageGeneric instance;
+    public static ComponentDamageGeneric getInstance(){
+        if(instance == null)
+            new ComponentDamageGeneric();
+        return instance;
+    }
     public ComponentDamageGeneric(){
         instance = this;
     }

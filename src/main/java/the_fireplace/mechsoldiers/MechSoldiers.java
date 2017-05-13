@@ -30,7 +30,8 @@ import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotBox;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.mechsoldiers.util.ComponentDamageGeneric;
-import the_fireplace.mechsoldiers.util.EnumPartType;
+import the_fireplace.mechsoldiers.util.ComponentDamagePotato;
+import the_fireplace.mechsoldiers.util.IBrain;
 import the_fireplace.overlord.Overlord;
 
 /**
@@ -47,13 +48,15 @@ public class MechSoldiers {
     @SidedProxy(clientSide = "the_fireplace."+MODID+".client.ClientProxy", serverSide = "the_fireplace."+MODID+".network.CommonProxy")
     public static CommonProxy proxy;
 
-    public static final Item skeleton_iron = new ItemSkeleton("iron", 250);
-    public static final Item skeleton_gold = new ItemSkeleton("gold", 32);
-    public static final Item skeleton_wood = new ItemSkeleton("wood", 59);
-    public static final Item joints_iron = new ItemJoints("iron", 250);
-    public static final Item joints_gold = new ItemJoints("gold", 32);
-    public static final Item brain_copper_redstone = new ItemBrain("copper_redstone", 16);
+    public static final Item skeleton_iron = new ItemSkeleton("iron", 125);
+    public static final Item skeleton_gold = new ItemSkeleton("gold", 16);
+    public static final Item skeleton_wood = new ItemSkeleton("wood", 30);
+    public static final Item joints_iron = new ItemJoints("iron", 125);
+    public static final Item joints_gold = new ItemJoints("gold", 16);
+    public static final Item brain_copper_redstone = new ItemBrain("copper_redstone", 24);
     public static final Item brain_gold_redstone = new ItemBrain("gold_redstone", 64);
+
+    public static final IBrain defaultBrain = (IBrain)brain_gold_redstone;
 
     public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
     public static final Block robot_box = new BlockRobotBox("robot_box");
@@ -63,7 +66,6 @@ public class MechSoldiers {
         PacketDispatcher.registerPackets();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new MSGuiHandler());
         new PartRegistry();
-        new ComponentDamageGeneric();
         GameRegistry.register(skeleton_iron);
         GameRegistry.register(skeleton_gold);
         GameRegistry.register(skeleton_wood);
@@ -83,14 +85,15 @@ public class MechSoldiers {
         GameRegistry.registerTileEntity(TileEntityRobotConstructor.class, "robot_constructor");
         GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
 
-        PartRegistry.registerPart(skeleton_iron, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
-        PartRegistry.registerPart(skeleton_gold, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "gold", new ResourceLocation(MODID, "textures/entity/gold_skeleton.png"));
-        PartRegistry.registerPart(skeleton_wood, EnumPartType.SKELETON, ComponentDamageGeneric.instance, "wood", new ResourceLocation(MODID, "textures/entity/wood_skeleton.png"));
-        PartRegistry.registerPart(joints_iron, EnumPartType.JOINTS, ComponentDamageGeneric.instance, "iron", new ResourceLocation(MODID, "textures/entity/iron_joints.png"));
-        PartRegistry.registerPart(joints_gold, EnumPartType.JOINTS, ComponentDamageGeneric.instance, "gold", new ResourceLocation(MODID, "textures/entity/gold_joints.png"));
-        PartRegistry.registerPart(brain_copper_redstone, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "copper_redstone", null);
-        PartRegistry.registerPart(brain_gold_redstone, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "gold_redstone", null);
-        PartRegistry.registerPart(Items.POTATO, EnumPartType.BRAIN, ComponentDamageGeneric.instance, "potato", null);//TODO: Custom damage handler to cook the potato if fire damage
+        PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
+        PartRegistry.registerSkeleton(skeleton_gold, ComponentDamageGeneric.getInstance(), "gold", new ResourceLocation(MODID, "textures/entity/gold_skeleton.png"));
+        PartRegistry.registerSkeleton(skeleton_wood, ComponentDamageGeneric.getInstance(), "wood", new ResourceLocation(MODID, "textures/entity/wood_skeleton.png"));
+        PartRegistry.registerJoints(joints_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/iron_joints.png"));
+        PartRegistry.registerJoints(joints_gold, ComponentDamageGeneric.getInstance(), "gold", new ResourceLocation(MODID, "textures/entity/gold_joints.png"));
+        PartRegistry.registerBrain(brain_copper_redstone, (IBrain)brain_copper_redstone, ComponentDamageGeneric.getInstance(), "copper_redstone");
+        PartRegistry.registerBrain(brain_gold_redstone, defaultBrain, ComponentDamageGeneric.getInstance(), "gold_redstone");
+        PartRegistry.registerPotatoBrain(Items.POTATO, 0, ComponentDamagePotato.getInstance(), "potato");
+        PartRegistry.registerPotatoBrain(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
 
         int eid=-1;
         EntityRegistry.registerModEntity(/*new ResourceLocation(MODID+":mechanical_skeleton"), */EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
