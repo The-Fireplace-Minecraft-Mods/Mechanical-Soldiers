@@ -2,15 +2,19 @@ package the_fireplace.mechsoldiers.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import the_fireplace.mechsoldiers.util.IBrain;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.mechsoldiers.util.EnumPartType;
+import the_fireplace.mechsoldiers.util.IBrain;
 import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.entity.EntityArmyMember;
 import the_fireplace.overlord.network.PacketDispatcher;
@@ -336,5 +340,19 @@ public class EntityMechSkeleton extends EntityArmyMember {
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(1.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(999.0D);
+    }
+
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack)
+    {
+        if(this.getOwner() != null){
+            if(this.getOwner().equals(player)){
+                if(!player.isSneaking()) {
+                    FMLNetworkHandler.openGui(player, MechSoldiers.instance, hashCode(), world, (int) this.posX, (int) this.posY, (int) this.posZ);
+                    return true;
+                }
+            }
+        }
+        return super.processInteract(player, hand, stack);
     }
 }

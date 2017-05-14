@@ -43,7 +43,6 @@ public class MechSoldiers {
     public static final String MODNAME = "Mechanical Soldiers";
 
     /*TODO before initial release:
-    Add a Robot Skeleton GUI
     Improve Gold Skeleton textures
     Add crafting recipes for everything(Including new machines to assemble parts)
     Un-comment the skeleton crate's zeros
@@ -55,9 +54,12 @@ public class MechSoldiers {
     Add a tooltip to the crate saying what is in it
     Add robots to the Overlord guide book
     Add integration with other mods for parts made of copper, steel, bronze, etc.
-    Add integration with weed mods for 420 joints.
+    Add integration with weed mods for 420 joints. 🚬
     Add splash text(perhaps in Overlord's splash text addition)
     Advancements(Once 1.12 comes along)
+    Accept Buildcraft's chipsets as brains
+    Add a creative tab for robot parts
+    Prevent mods that show entity health from showing robot health(Waila?)
      */
 
     @Mod.Instance(MODID)
