@@ -43,7 +43,6 @@ public class MechSoldiers {
     public static final String MODNAME = "Mechanical Soldiers";
 
     /*TODO before initial release:
-    Improve Gold Skeleton textures
     Add crafting recipes for everything(Including new machines to assemble parts)
     Un-comment the skeleton crate's zeros
     Add brain textures
