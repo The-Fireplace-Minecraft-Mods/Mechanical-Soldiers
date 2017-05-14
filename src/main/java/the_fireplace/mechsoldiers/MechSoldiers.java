@@ -45,7 +45,6 @@ public class MechSoldiers {
     /*TODO before initial release:
     Add crafting recipes for everything(Including new machines to assemble parts)
     Un-comment the skeleton crate's zeros
-    Add brain textures
      */
     /*TODO anytime:
     Make the Robot Builder consume a log for each crate
@@ -56,9 +55,9 @@ public class MechSoldiers {
     Add integration with weed mods for 420 joints. 🚬
     Add splash text(perhaps in Overlord's splash text addition)
     Advancements(Once 1.12 comes along)
-    Accept Buildcraft's chipsets as brains
+    Accept Buildcraft's chipsets as brains or add them to brain recipes
     Add a creative tab for robot parts
-    Prevent mods that show entity health from showing robot health(Waila?)
+    Prevent mods that show entity health from showing robot health(Waila?) Nice. Damage Indicators.
      */
 
     @Mod.Instance(MODID)
