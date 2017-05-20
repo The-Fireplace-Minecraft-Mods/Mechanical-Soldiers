@@ -11,3 +11,5 @@ item.brain_gold_redstone.name=Gold-Redstone Brain
 
 tile.robot_box.name=Robot Crate
 tile.robot_constructor.name=Robot Builder
+tile.metal_part_constructor.name=Skeleton Mould Melter
+tile.metal_part_constructor_active.name=Skeleton Mould Melter

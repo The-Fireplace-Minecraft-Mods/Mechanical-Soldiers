@@ -82,7 +82,7 @@ public class ItemBrain extends Item implements IBrain {
                 skeleton.targetTasks.addTask(2, new EntityAIMasterHurtTarget(skeleton));
             case 1:
                 skeleton.targetTasks.addTask(1, new EntityAIMasterHurtByTarget(skeleton));
-                skeleton.targetTasks.addTask(1, new EntityAIHurtByNonAllied(skeleton, !material.equals("copper_redstone"), new Class[0]));
+                skeleton.targetTasks.addTask(1, new EntityAIHurtByNonAllied(skeleton, !material.equals("copper_redstone")));
                 skeleton.targetTasks.addTask(2, new EntityAINearestNonTeamTarget(skeleton, EntityPlayer.class, true));
                 skeleton.targetTasks.addTask(2, new EntityAINearestNonTeamTarget(skeleton, EntityArmyMember.class, true));
                 skeleton.targetTasks.addTask(3, new EntityAINearestNonTeamTarget(skeleton, IMob.class, true));

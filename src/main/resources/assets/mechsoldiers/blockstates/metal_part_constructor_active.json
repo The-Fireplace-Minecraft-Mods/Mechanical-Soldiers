@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "forge:multi-layer",
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "facing=north": { "model": "mechsoldiers:metal_part_constructor_active" },
+        "facing=south": { "model": "mechsoldiers:metal_part_constructor_active", "y": 180 },
+        "facing=west":  { "model": "mechsoldiers:metal_part_constructor_active", "y": 270 },
+        "facing=east":  { "model": "mechsoldiers:metal_part_constructor_active", "y": 90 }
+    }
+}

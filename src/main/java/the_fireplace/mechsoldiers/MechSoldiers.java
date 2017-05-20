@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import the_fireplace.mechsoldiers.blocks.BlockMetalPartConstructor;
 import the_fireplace.mechsoldiers.blocks.BlockRobotBox;
 import the_fireplace.mechsoldiers.blocks.BlockRobotConstructor;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
@@ -27,6 +28,7 @@ import the_fireplace.mechsoldiers.network.MSGuiHandler;
 import the_fireplace.mechsoldiers.network.PacketDispatcher;
 import the_fireplace.mechsoldiers.registry.MechCraftingRecipes;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
+import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotBox;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.mechsoldiers.util.ComponentDamageGeneric;
@@ -76,6 +78,8 @@ public class MechSoldiers {
 
     public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
     public static final Block robot_box = new BlockRobotBox("robot_box");
+    public static final Block metal_part_constructor = new BlockMetalPartConstructor(false, "metal_part_constructor").setCreativeTab(Overlord.tabOverlord);
+    public static final Block metal_part_constructor_active = new BlockMetalPartConstructor(true, "metal_part_constructor_active");
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
@@ -95,11 +99,13 @@ public class MechSoldiers {
         robotBoxItem.setMaxStackSize(1);
         robotBoxItem.setRegistryName(robot_box.getRegistryName());
         GameRegistry.register(robotBoxItem);
-        GameRegistry.register(robot_constructor);
-        GameRegistry.register(new ItemBlock(robot_constructor).setRegistryName(robot_constructor.getRegistryName()));
+        Overlord.instance.registerBlock(robot_constructor);
+        Overlord.instance.registerBlock(metal_part_constructor);
+        Overlord.instance.registerBlock(metal_part_constructor_active);
 
         GameRegistry.registerTileEntity(TileEntityRobotConstructor.class, "robot_constructor");
         GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
+        GameRegistry.registerTileEntity(TileEntityPartConstructor.class, "metal_part_constructor");
 
         PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
         PartRegistry.registerSkeleton(skeleton_gold, ComponentDamageGeneric.getInstance(), "gold", new ResourceLocation(MODID, "textures/entity/gold_skeleton.png"));
@@ -134,6 +140,9 @@ public class MechSoldiers {
 
         rmm(robot_constructor);
         rmm(robot_box);
+        //TODO: Possibly add custom renders here
+        rmm(metal_part_constructor);
+        rmm(metal_part_constructor_active);
     }
 
     @SideOnly(Side.CLIENT)
