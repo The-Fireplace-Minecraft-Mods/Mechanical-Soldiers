@@ -13,6 +13,8 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -51,24 +53,44 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
     private int heldWaterAmount;
     public static final int heldWaterAmountMax = 4000;
     private String furnaceCustomName;
+    public boolean isLoaded;
 
+    @Override
     public int getSizeInventory()
     {
         return this.furnaceItemStacks.length;
     }
 
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(this.pos, getBlockMetadata(), getUpdateTag());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag(){
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        readFromNBT(pkt.getNbtCompound());
+    }
+
+    @Override
     @Nullable
     public ItemStack getStackInSlot(int index)
     {
         return this.furnaceItemStacks[index];
     }
 
+    @Override
     @Nullable
     public ItemStack decrStackSize(int index, int count)
     {
         return ItemStackHelper.getAndSplit(this.furnaceItemStacks, index, count);
     }
 
+    @Override
     @Nullable
     public ItemStack removeStackFromSlot(int index)
     {
@@ -136,6 +158,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
         }
     }
 
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
@@ -196,6 +219,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
         if (!this.world.isRemote)
         {
+            if(!isLoaded)
+                isLoaded=true;
             if(this.furnaceItemStacks[4] != null && FluidUtil.getFluidHandler(furnaceItemStacks[4]) != null && this.heldWaterAmount < this.heldWaterAmountMax){
                 furnaceItemStacks[4] = FluidUtil.tryEmptyContainer(furnaceItemStacks[4], this, 1000, null, true);
             }
@@ -249,7 +274,11 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
                 flag1 = true;
                 BlockMetalPartConstructor.setState(this.isActive(), this.world, this.pos);
             }
-        }
+        }/*else{
+            if(!isLoaded){
+
+            }
+        }*/
 
         if (flag1)
         {

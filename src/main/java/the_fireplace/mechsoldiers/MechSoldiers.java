@@ -140,7 +140,6 @@ public class MechSoldiers {
 
         rmm(robot_constructor);
         rmm(robot_box);
-        //TODO: Possibly add custom renders here
         rmm(metal_part_constructor);
         rmm(metal_part_constructor_active);
     }
