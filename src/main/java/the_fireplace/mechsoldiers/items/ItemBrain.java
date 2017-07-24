@@ -6,6 +6,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
+import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.util.IBrain;
 import the_fireplace.overlord.Overlord;
@@ -24,7 +25,7 @@ public class ItemBrain extends Item implements IBrain {
         setRegistryName("brain_"+material);
         setMaxDamage(durability);
         this.material=material;
-        setCreativeTab(Overlord.tabOverlord);
+        setCreativeTab(MechSoldiers.TAB_ROBOT_PARTS);
     }
     protected int raiseArmTicks;
     protected EntityAIAttackMelee aiAttackOnCollide = null;

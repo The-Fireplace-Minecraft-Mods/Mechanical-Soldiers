@@ -1,6 +1,7 @@
 package the_fireplace.mechsoldiers.items;
 
 import net.minecraft.item.Item;
+import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.overlord.Overlord;
 
 /**
@@ -15,6 +16,6 @@ public class ItemSkeleton extends Item {
         setRegistryName("skeleton_"+material);
         setMaxDamage(durability);
         this.material=material;
-        setCreativeTab(Overlord.tabOverlord);
+        setCreativeTab(MechSoldiers.TAB_ROBOT_PARTS);
     }
 }

@@ -2,6 +2,7 @@ package the_fireplace.mechsoldiers;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -57,9 +58,8 @@ public class MechSoldiers {
     Add integration with other mods for parts made of copper, steel, bronze, etc.
     Add integration with weed mods for 420 joints. 🚬
     Add splash text(perhaps in Overlord's splash text addition)
-    Advancements(Once 1.12 comes along)
+    Advancements(1.12 only)
     Accept Buildcraft's chipsets as brains or add them to brain recipes
-    Add a creative tab for robot parts
     Prevent mods that show entity health from showing robot health(Waila?) Nice. Damage Indicators.
      */
 
@@ -68,6 +68,13 @@ public class MechSoldiers {
 
     @SidedProxy(clientSide = "the_fireplace."+MODID+".client.ClientProxy", serverSide = "the_fireplace."+MODID+".network.CommonProxy")
     public static CommonProxy proxy;
+
+    public static final CreativeTabs TAB_ROBOT_PARTS = new CreativeTabs("robot_parts") {
+	    @Override
+	    public Item getTabIconItem() {
+		    return joints_iron;
+	    }
+    };
 
     public static final Item skeleton_iron = new ItemSkeleton("iron", 125);
     public static final Item skeleton_gold = new ItemSkeleton("gold", 16);
