@@ -39,6 +39,7 @@ public class BlockMetalPartConstructor extends BlockContainer
         this.isBurning = isBurning;
         setUnlocalizedName(name);
         //setRegistryName(name);//Handled when registering
+        useNeighborBrightness=true;
     }
 
     @Nullable

@@ -47,12 +47,13 @@ public class MechSoldiers {
     /*TODO before initial release:
     Add crafting recipes for everything(Including new machines to assemble parts)
     Un-comment the skeleton crate's zeros
+    Add a tooltip to the crate saying what is in it
+    Add robots to the Overlord guide book
+    Add bucket output to Metal Part Constructor
      */
     /*TODO anytime:
     Make the Robot Builder consume a log for each crate
     Add JEI integration for the machines that make parts
-    Add a tooltip to the crate saying what is in it
-    Add robots to the Overlord guide book
     Add integration with other mods for parts made of copper, steel, bronze, etc.
     Add integration with weed mods for 420 joints. 🚬
     Add splash text(perhaps in Overlord's splash text addition)
