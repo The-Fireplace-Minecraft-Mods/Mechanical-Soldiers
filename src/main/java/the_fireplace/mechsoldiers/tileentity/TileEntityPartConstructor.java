@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -18,6 +19,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
@@ -57,7 +59,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 	private int cookTime;
 	private int totalCookTime;
 	private int heldWaterAmount;
-	public static final int heldWaterAmountMax = 4000;
+	public static final int heldWaterAmountMax = 6000;
 	private String furnaceCustomName;
 	public boolean isLoaded;
 
@@ -245,11 +247,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 				flag1 = true;
 				BlockMetalPartConstructor.setState(this.isActive(), this.world, this.pos);
 			}
-		}/*else{
-	        if(!isLoaded){
-
-            }
-        }*/
+		}
 
 		if (flag1) {
 			this.markDirty();
@@ -295,6 +293,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 				this.furnaceItemStacks[1] = null;
 			}
 			drain(MetalMeltRecipes.instance().getWaterCost(itemstack), true);
+			world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f+((float)world.rand.nextInt(4))*0.1f);
 		}
 	}
 
