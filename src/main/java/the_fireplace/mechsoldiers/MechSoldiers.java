@@ -56,7 +56,6 @@ public class MechSoldiers {
     Add robots to the Overlord guide book
     Add bucket output to Metal Part Constructor
     Add JEI integration for the machines that make parts
-    Make the Robot Builder consume a log for each crate
      */
     /*TODO anytime:
     Add integration with other mods for parts made of copper, steel, bronze, etc.

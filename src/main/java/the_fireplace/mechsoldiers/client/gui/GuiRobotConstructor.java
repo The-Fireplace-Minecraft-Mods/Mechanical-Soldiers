@@ -52,7 +52,7 @@ public class GuiRobotConstructor extends GuiContainer {
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 		this.buttonList.clear();
-		this.buttonList.add(createSkeleton = new GuiButton(0, guiLeft + 6, guiTop + 60, 60, 20, I18n.format("skeleton_maker.create")));
+		this.buttonList.add(createSkeleton = new GuiButton(0, guiLeft + xSize - 68, guiTop + 60, 60, 20, I18n.format("skeleton_maker.create")));
 		createSkeleton.enabled = false;
 		super.initGui();
 	}
@@ -94,7 +94,7 @@ public class GuiRobotConstructor extends GuiContainer {
 	}
 
 	private boolean isButtonEnabled() {
-		return te.getStackInSlot(1) != null && te.getStackInSlot(2) != null && te.getStackInSlot(3) != null && te.getStackInSlot(4) == null;
+		return te.getStackInSlot(1) != null && te.getStackInSlot(2) != null && te.getStackInSlot(3) != null && te.getStackInSlot(4) != null && te.getStackInSlot(5) == null;
 	}
 
 	private String getWarning() {

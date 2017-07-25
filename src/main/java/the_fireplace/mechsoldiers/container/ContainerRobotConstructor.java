@@ -39,7 +39,9 @@ public class ContainerRobotConstructor extends Container {
 
 		this.addSlotToContainer(new SlotJoints(entity, 3, 112, 26, true));//tile entity ID 3
 
-		this.addSlotToContainer(new SlotOutput(entity, 4, 80, 57));//tile entity ID 4
+		this.addSlotToContainer(new SlotLogs(entity, 4, 6, 57));//tile entity ID 4
+
+		this.addSlotToContainer(new SlotOutput(entity, 5, 80, 57));//tile entity ID 5
 	}
 
 	@Override
@@ -61,7 +63,7 @@ public class ContainerRobotConstructor extends Container {
 			} else if (!mergeItemStack(is, 36, 36 + te.getSizeInventory(), false)) {
 				return null;
 			}
-			if (is.stackSize == 0) {
+			if (is.stackSize <= 0) {
 				slot.putStack(null);
 			} else {
 				slot.onSlotChanged();

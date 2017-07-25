@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.tileentity;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -15,24 +16,31 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
+import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.mechsoldiers.util.EnumPartType;
 import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.items.ItemOverlordsSeal;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * @author The_Fireplace
  */
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class TileEntityRobotConstructor extends TileEntity implements ISidedInventory {
 	private ItemStack[] inventory;
 
 	public TileEntityRobotConstructor() {
-		inventory = new ItemStack[5];
+		inventory = new ItemStack[6];
 	}
 
 	public void constructRobot() {
-		if (getStackInSlot(1) == null || getStackInSlot(2) == null || getStackInSlot(3) == null || getStackInSlot(4) != null)
+		if (getStackInSlot(1) == null || getStackInSlot(2) == null || getStackInSlot(3) == null || getStackInSlot(4) == null || getStackInSlot(5) != null)
 			return;
 		ItemStack robotBox = new ItemStack(MechSoldiers.robot_box);
 		NBTTagCompound robotData = new NBTTagCompound();
@@ -53,9 +61,9 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 		robotBox.setTagCompound(robotData);
 
-		setInventorySlotContents(4, robotBox);
+		setInventorySlotContents(5, robotBox);
 
-		for (int i = 1; i < 4; i++) {
+		for (int i = 1; i < 5; i++) {
 			if (getStackInSlot(i).stackSize > 1)
 				getStackInSlot(i).stackSize--;
 			else
@@ -135,7 +143,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
+	public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
 		inventory[index] = stack;
 
 		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
@@ -164,8 +172,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		//return (index == 0 && PartRegistry.isPartOfType(stack, EnumPartType.CPU)) || (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS)) || (index == 3 && AugmentRegistry.getAugment(stack) != null) || index == 4 || index == 5;
-		return (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.CPU)) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 3 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS)) || (index == 0 && stack.getItem() instanceof ItemOverlordsSeal);
+		return (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.CPU)) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 3 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS)) || (index == 0 && stack.getItem() instanceof ItemOverlordsSeal) || (index == 4 && ArrayUtils.contains(OreDictionary.getOreIDs(stack), OreDictionary.getOreID("logWood")));
 	}
 
 	@Override
@@ -232,14 +239,14 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 			return new int[]{0, 1, 2, 3, 4, 5};
 		} else if (side == EnumFacing.DOWN) {
 			return new int[]{6};
-		}
-		return null;
+		} else
+			throw new IllegalArgumentException("Invalid EnumFacing: "+side);
 	}
 
 	@Override
 	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
 		if (stack != null) {
-			if (index >= 0 && index < 6) {
+			if (index >= 0 && index < 5) {
 				if (this.isItemValidForSlot(index, stack))
 					return true;
 			}
@@ -250,7 +257,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
 		if (stack != null)
-			if (index == 6)
+			if (index == 5)
 				return true;
 		return false;
 	}
