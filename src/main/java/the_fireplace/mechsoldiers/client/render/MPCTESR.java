@@ -9,23 +9,23 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
  * @author The_Fireplace
  */
 public class MPCTESR extends TileEntitySpecialRenderer<TileEntityPartConstructor> {
-    @Override
-    public void renderTileEntityAt (TileEntityPartConstructor te, double x, double y, double z, float partialTicks, int destroyStage) {
+	@Override
+	public void renderTileEntityAt(TileEntityPartConstructor te, double x, double y, double z, float partialTicks, int destroyStage) {
 
-        if (te != null) {
+		if (te != null) {
 
-            final IFluidTank fluid = te;
+			final IFluidTank fluid = te;
 
-            if (fluid != null && fluid.getFluid() != null && fluid.getFluidAmount() > 0) {
+			if (fluid != null && fluid.getFluid() != null && fluid.getFluidAmount() > 0) {
 
-                GlStateManager.pushMatrix();
-                GlStateManager.enableBlend();
+				GlStateManager.pushMatrix();
+				GlStateManager.enableBlend();
 
-                FluidRenderer.renderFluid(fluid.getFluid(), te.getPos(), -0.05d, 0.0d, -0.05d, 0.1d, 0.0d, 0.1d, 1.0d, (double) fluid.getFluidAmount() / (double) fluid.getCapacity() * 0.25d, 1.0d, fluid.getFluid().getFluid().getColor());
+				FluidRenderer.renderFluid(fluid.getFluid(), te.getPos(), -0.05d, 0.0d, -0.05d, 0.1d, 0.0d, 0.1d, 1.0d, (double) fluid.getFluidAmount() / (double) fluid.getCapacity() * 0.25d, 1.0d, fluid.getFluid().getFluid().getColor());
 
-                GlStateManager.disableBlend();
-                GlStateManager.popMatrix();
-            }
-        }
-    }
+				GlStateManager.disableBlend();
+				GlStateManager.popMatrix();
+			}
+		}
+	}
 }

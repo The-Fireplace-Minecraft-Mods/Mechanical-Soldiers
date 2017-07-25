@@ -31,67 +31,65 @@ import javax.annotation.Nonnull;
  */
 @MethodsReturnNonnullByDefault
 public class BlockRobotConstructor extends BlockContainer {
-    public BlockRobotConstructor(String name) {
-        super(Material.IRON);
-        setUnlocalizedName(name);
-        //setRegistryName(name);//Handled when registering
-        setCreativeTab(Overlord.tabOverlord);
-        setHarvestLevel("pickaxe", 1);
-    }
+	public BlockRobotConstructor(String name) {
+		super(Material.IRON);
+		setUnlocalizedName(name);
+		//setRegistryName(name);//Handled when registering
+		setCreativeTab(Overlord.tabOverlord);
+		setHarvestLevel("pickaxe", 1);
+	}
 
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return new AxisAlignedBB(0.04F, 0F, 0.04F, 0.96F, 0.65F, 0.96F);
-    }
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.04F, 0F, 0.04F, 0.96F, 0.65F, 0.96F);
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
+	}
 
-    @Override
-    public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
-        return new TileEntityRobotConstructor();
-    }
+	@Override
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
+		return new TileEntityRobotConstructor();
+	}
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote)
-            return true;
-        else if (!playerIn.isSneaking()) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (worldIn.isRemote)
+			return true;
+		else if (!playerIn.isSneaking()) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
 
-            if (tileentity instanceof TileEntityRobotConstructor) {
-                FMLNetworkHandler.openGui(playerIn, MechSoldiers.MODID, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            }
-            return true;
-        } else
-            return false;
-    }
+			if (tileentity instanceof TileEntityRobotConstructor) {
+				FMLNetworkHandler.openGui(playerIn, MechSoldiers.MODID, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			}
+			return true;
+		} else
+			return false;
+	}
 
-    @Override
-    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
-    {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+	@Override
+	public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (tileentity instanceof TileEntityRobotConstructor)
-        {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
-            worldIn.updateComparatorOutputLevel(pos, this);
-        }
+		if (tileentity instanceof TileEntityRobotConstructor) {
+			InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+			worldIn.updateComparatorOutputLevel(pos, this);
+		}
 
-        super.breakBlock(worldIn, pos, state);
-    }
+		super.breakBlock(worldIn, pos, state);
+	}
 }
 

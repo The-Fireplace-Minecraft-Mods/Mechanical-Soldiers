@@ -27,74 +27,70 @@ import java.util.Random;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockRobotBox extends Block implements ITileEntityProvider {
-    NBTTagCompound skellyData = null;
-    public BlockRobotBox(String name) {
-        super(Material.WOOD);
-        setUnlocalizedName(name);
-        setRegistryName(name);
-    }
+	NBTTagCompound skellyData = null;
 
-    @Override
-    public boolean isToolEffective(String type, IBlockState state)
-    {
-        return type.equals("axe");
-    }
+	public BlockRobotBox(String name) {
+		super(Material.WOOD);
+		setUnlocalizedName(name);
+		setRegistryName(name);
+	}
 
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack)
-    {
-        skellyData = stack.getTagCompound();
-        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, stack);
-    }
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return type.equals("axe");
+	}
 
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        if(skellyData == null && !worldIn.isRemote)
-            Overlord.logError("Error: Skeleton Data for a crate was null!");
-        return new TileEntityRobotBox(skellyData, worldIn.rand.nextInt(24/*000*/)+12/*000*/);//TODO: Remove noted out zeroes before release
-    }
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+		skellyData = stack.getTagCompound();
+		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, stack);
+	}
 
-    @Override
-    public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state)
-    {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		if (skellyData == null && !worldIn.isRemote)
+			Overlord.logError("Error: Skeleton Data for a crate was null!");
+		return new TileEntityRobotBox(skellyData, worldIn.rand.nextInt(24/*000*/) + 12/*000*/);//TODO: Remove noted out zeroes before release
+	}
 
-        if (tileentity instanceof TileEntityRobotBox)
-        {
-            EntityItem brain = new EntityItem(worldIn);
-            ItemStack brainStack = ((TileEntityRobotBox) tileentity).getBrain();
-            if(brainStack.isItemStackDamageable())
-                brainStack.setItemDamage(Math.round(brainStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
-            brain.setEntityItemStack(brainStack);
-            brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
-            worldIn.spawnEntity(brain);
-            brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+	@Override
+	public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
 
-            EntityItem joints = new EntityItem(worldIn);
-            ItemStack jointStack = ((TileEntityRobotBox) tileentity).getJoints();
-            if(jointStack.isItemStackDamageable())
-                jointStack.setItemDamage(Math.round(jointStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
-            joints.setEntityItemStack(jointStack);
-            joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
-            worldIn.spawnEntity(joints);
-            joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+		if (tileentity instanceof TileEntityRobotBox) {
+			EntityItem brain = new EntityItem(worldIn);
+			ItemStack brainStack = ((TileEntityRobotBox) tileentity).getBrain();
+			if (brainStack.isItemStackDamageable())
+				brainStack.setItemDamage(Math.round(brainStack.getMaxDamage() * ((TileEntityRobotBox) tileentity).getCompletion()));
+			brain.setEntityItemStack(brainStack);
+			brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+			worldIn.spawnEntity(brain);
+			brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 
-            EntityItem skeleton = new EntityItem(worldIn);
-            ItemStack skeletonStack = ((TileEntityRobotBox) tileentity).getSkeleton();
-            if(skeletonStack.isItemStackDamageable())
-                skeletonStack.setItemDamage(Math.round(skeletonStack.getMaxDamage()*((TileEntityRobotBox) tileentity).getCompletion()));
-            skeleton.setEntityItemStack(skeletonStack);
-            skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
-            worldIn.spawnEntity(skeleton);
-            skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
-        }
+			EntityItem joints = new EntityItem(worldIn);
+			ItemStack jointStack = ((TileEntityRobotBox) tileentity).getJoints();
+			if (jointStack.isItemStackDamageable())
+				jointStack.setItemDamage(Math.round(jointStack.getMaxDamage() * ((TileEntityRobotBox) tileentity).getCompletion()));
+			joints.setEntityItemStack(jointStack);
+			joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+			worldIn.spawnEntity(joints);
+			joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 
-        super.breakBlock(worldIn, pos, state);
-    }
+			EntityItem skeleton = new EntityItem(worldIn);
+			ItemStack skeletonStack = ((TileEntityRobotBox) tileentity).getSkeleton();
+			if (skeletonStack.isItemStackDamageable())
+				skeletonStack.setItemDamage(Math.round(skeletonStack.getMaxDamage() * ((TileEntityRobotBox) tileentity).getCompletion()));
+			skeleton.setEntityItemStack(skeletonStack);
+			skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+			worldIn.spawnEntity(skeleton);
+			skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+		}
 
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return null;
-    }
+		super.breakBlock(worldIn, pos, state);
+	}
+
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return null;
+	}
 }

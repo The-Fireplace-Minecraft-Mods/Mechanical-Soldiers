@@ -18,102 +18,103 @@ import java.util.UUID;
  */
 public class TileEntityRobotBox extends TileEntity implements ITickable {
 
-    private NBTTagCompound skeletonData;
-    private int maxTicks;
-    private int ticksRemaining;
-    private Random rand;
-    public TileEntityRobotBox(){
-        //Only for use when world is loading.
-        rand = new Random();
-    }
+	private NBTTagCompound skeletonData;
+	private int maxTicks;
+	private int ticksRemaining;
+	private Random rand;
 
-    public TileEntityRobotBox(NBTTagCompound skeletonData, int ticksToWait){
-        this.skeletonData=skeletonData;
-        maxTicks=ticksRemaining=ticksToWait;
-        rand = new Random();
-    }
+	public TileEntityRobotBox() {
+		//Only for use when world is loading.
+		rand = new Random();
+	}
 
-    public void setSkeletonData(NBTTagCompound nbt){
-        skeletonData = nbt;
-    }
+	public TileEntityRobotBox(NBTTagCompound skeletonData, int ticksToWait) {
+		this.skeletonData = skeletonData;
+		maxTicks = ticksRemaining = ticksToWait;
+		rand = new Random();
+	}
 
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(this.pos, getBlockMetadata(), getUpdateTag());
-    }
+	public void setSkeletonData(NBTTagCompound nbt) {
+		skeletonData = nbt;
+	}
 
-    @Override
-    public NBTTagCompound getUpdateTag(){
-        return writeToNBT(new NBTTagCompound());
-    }
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.pos, getBlockMetadata(), getUpdateTag());
+	}
 
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        readFromNBT(pkt.getNbtCompound());
-    }
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return writeToNBT(new NBTTagCompound());
+	}
 
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentTranslation("tile.robot_constructor.name");
-    }
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		readFromNBT(pkt.getNbtCompound());
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
+	@Override
+	public ITextComponent getDisplayName() {
+		return new TextComponentTranslation("tile.robot_constructor.name");
+	}
 
-        compound.setTag("ConstructingSkeletonData", skeletonData);
-        compound.setInteger("TicksRemaining", ticksRemaining);
-        compound.setInteger("MaxTicks", maxTicks);
-        return compound;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        skeletonData = compound.getCompoundTag("ConstructingSkeletonData");
-        ticksRemaining = compound.getInteger("TicksRemaining");
-        if(compound.hasKey("MaxTicks"))
-            maxTicks = compound.getInteger("MaxTicks");
-        else
-            maxTicks = compound.getInteger("TicksRemaining");
-    }
+		compound.setTag("ConstructingSkeletonData", skeletonData);
+		compound.setInteger("TicksRemaining", ticksRemaining);
+		compound.setInteger("MaxTicks", maxTicks);
+		return compound;
+	}
 
-    @Override
-    public void update() {
-        if(!world.isRemote) {
-            ticksRemaining--;
-            if (ticksRemaining <= 0)
-                spawnRobot();
-        }
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		skeletonData = compound.getCompoundTag("ConstructingSkeletonData");
+		ticksRemaining = compound.getInteger("TicksRemaining");
+		if (compound.hasKey("MaxTicks"))
+			maxTicks = compound.getInteger("MaxTicks");
+		else
+			maxTicks = compound.getInteger("TicksRemaining");
+	}
 
-    public ItemStack getBrain(){
-        return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotBrain"));
-    }
+	@Override
+	public void update() {
+		if (!world.isRemote) {
+			ticksRemaining--;
+			if (ticksRemaining <= 0)
+				spawnRobot();
+		}
+	}
 
-    public ItemStack getSkeleton(){
-        return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotSkeleton"));
-    }
+	public ItemStack getBrain() {
+		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotBrain"));
+	}
 
-    public ItemStack getJoints(){
-        return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotJoints"));
-    }
+	public ItemStack getSkeleton() {
+		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotSkeleton"));
+	}
 
-    public float getCompletion(){
-        return 1.0F-(float)ticksRemaining/(float)maxTicks;
-    }
+	public ItemStack getJoints() {
+		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotJoints"));
+	}
 
-    private void spawnRobot(){
-        EntityMechSkeleton robot = new EntityMechSkeleton(world, UUID.fromString(skeletonData.getString("OwnerUUID")))
-                .setBrain(getBrain())
-                .setSkeleton(getSkeleton())
-                .setJoints(getJoints());
-        robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());
-        world.spawnEntity(robot);
-        robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());
+	public float getCompletion() {
+		return 1.0F - (float) ticksRemaining / (float) maxTicks;
+	}
 
-        world.removeTileEntity(pos);
-        world.destroyBlock(pos, false);
-    }
+	private void spawnRobot() {
+		EntityMechSkeleton robot = new EntityMechSkeleton(world, UUID.fromString(skeletonData.getString("OwnerUUID")))
+				.setBrain(getBrain())
+				.setSkeleton(getSkeleton())
+				.setJoints(getJoints());
+		robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());
+		world.spawnEntity(robot);
+		robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());
+
+		world.removeTileEntity(pos);
+		world.destroyBlock(pos, false);
+	}
 }
 

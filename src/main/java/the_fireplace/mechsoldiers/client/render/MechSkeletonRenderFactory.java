@@ -9,9 +9,9 @@ import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
  * @author The_Fireplace
  */
 public class MechSkeletonRenderFactory implements IRenderFactory<EntityMechSkeleton> {
-    @SuppressWarnings("unchecked")
-    @Override
-    public Render createRenderFor(RenderManager manager) {
-        return new RenderMechSkeleton(manager);
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public Render createRenderFor(RenderManager manager) {
+		return new RenderMechSkeleton(manager);
+	}
 }

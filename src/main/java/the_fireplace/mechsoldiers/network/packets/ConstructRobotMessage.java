@@ -14,36 +14,36 @@ import the_fireplace.overlord.network.packets.AbstractServerMessageHandler;
  */
 public class ConstructRobotMessage implements IMessage {
 
-    public BlockPos pos;
+	public BlockPos pos;
 
-    public ConstructRobotMessage() {
-    }
+	public ConstructRobotMessage() {
+	}
 
-    public ConstructRobotMessage(BlockPos pos){
-        this.pos=pos;
-    }
+	public ConstructRobotMessage(BlockPos pos) {
+		this.pos = pos;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        pos = new BlockPos(buf.readInt(), buf.readShort(), buf.readInt());
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		pos = new BlockPos(buf.readInt(), buf.readShort(), buf.readInt());
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(pos.getX());
-        buf.writeShort(pos.getY());
-        buf.writeInt(pos.getZ());
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(pos.getX());
+		buf.writeShort(pos.getY());
+		buf.writeInt(pos.getZ());
+	}
 
-    public static class Handler extends AbstractServerMessageHandler<ConstructRobotMessage> {
-        @Override
-        public IMessage handleServerMessage(EntityPlayer player, ConstructRobotMessage message, MessageContext ctx) {
-            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-                if(player.world.getTileEntity(message.pos) instanceof TileEntityRobotConstructor){
-                    ((TileEntityRobotConstructor) player.world.getTileEntity(message.pos)).constructRobot();
-                }
-            });
-            return null;
-        }
-    }
+	public static class Handler extends AbstractServerMessageHandler<ConstructRobotMessage> {
+		@Override
+		public IMessage handleServerMessage(EntityPlayer player, ConstructRobotMessage message, MessageContext ctx) {
+			FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+				if (player.world.getTileEntity(message.pos) instanceof TileEntityRobotConstructor) {
+					((TileEntityRobotConstructor) player.world.getTileEntity(message.pos)).constructRobot();
+				}
+			});
+			return null;
+		}
+	}
 }

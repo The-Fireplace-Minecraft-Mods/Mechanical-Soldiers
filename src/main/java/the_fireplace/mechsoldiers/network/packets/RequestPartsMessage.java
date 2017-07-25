@@ -17,61 +17,61 @@ import the_fireplace.overlord.network.packets.AbstractServerMessageHandler;
  */
 public class RequestPartsMessage implements IMessage {
 
-    public int mechSkeletonId;
+	public int mechSkeletonId;
 
-    public RequestPartsMessage() {
-    }
+	public RequestPartsMessage() {
+	}
 
-    public RequestPartsMessage(EntityMechSkeleton skeleton){
-        this.mechSkeletonId = skeleton.hashCode();
-    }
+	public RequestPartsMessage(EntityMechSkeleton skeleton) {
+		this.mechSkeletonId = skeleton.hashCode();
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        mechSkeletonId = buf.readInt();
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		mechSkeletonId = buf.readInt();
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(mechSkeletonId);
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(mechSkeletonId);
+	}
 
-    public static class Handler extends AbstractServerMessageHandler<RequestPartsMessage> {
-        @Override
-        public IMessage handleServerMessage(EntityPlayer player, RequestPartsMessage message, MessageContext ctx) {
-            InventoryBasic parts = null;
-            if(player.world.getEntityByID(message.mechSkeletonId) != null){
-                if(player.world.getEntityByID(message.mechSkeletonId) instanceof EntityMechSkeleton){
-                    if(((EntityMechSkeleton) player.world.getEntityByID(message.mechSkeletonId)).partInventory != null) {
-                        parts = ((EntityMechSkeleton) player.world.getEntityByID(message.mechSkeletonId)).partInventory;
-                    }
-                }else{
-                    Overlord.logError("Entity is not a Mech Skeleton. It is "+player.world.getEntityByID(message.mechSkeletonId).toString());
-                }
-            }else{
-                Overlord.logError("Error 404: Mech Skeleton not found: "+message.mechSkeletonId);
-            }
+	public static class Handler extends AbstractServerMessageHandler<RequestPartsMessage> {
+		@Override
+		public IMessage handleServerMessage(EntityPlayer player, RequestPartsMessage message, MessageContext ctx) {
+			InventoryBasic parts = null;
+			if (player.world.getEntityByID(message.mechSkeletonId) != null) {
+				if (player.world.getEntityByID(message.mechSkeletonId) instanceof EntityMechSkeleton) {
+					if (((EntityMechSkeleton) player.world.getEntityByID(message.mechSkeletonId)).partInventory != null) {
+						parts = ((EntityMechSkeleton) player.world.getEntityByID(message.mechSkeletonId)).partInventory;
+					}
+				} else {
+					Overlord.logError("Entity is not a Mech Skeleton. It is " + player.world.getEntityByID(message.mechSkeletonId).toString());
+				}
+			} else {
+				Overlord.logError("Error 404: Mech Skeleton not found: " + message.mechSkeletonId);
+			}
 
-            if(parts == null)
-                return null;
+			if (parts == null)
+				return null;
 
-            NBTTagCompound inventory = new NBTTagCompound();
+			NBTTagCompound inventory = new NBTTagCompound();
 
-            NBTTagList mainInv = new NBTTagList();
-            for (int i = 0; i < parts.getSizeInventory(); i++) {
-                ItemStack is = parts.getStackInSlot(i);
-                if (is != null) {
-                    NBTTagCompound item = new NBTTagCompound();
+			NBTTagList mainInv = new NBTTagList();
+			for (int i = 0; i < parts.getSizeInventory(); i++) {
+				ItemStack is = parts.getStackInSlot(i);
+				if (is != null) {
+					NBTTagCompound item = new NBTTagCompound();
 
-                    item.setByte("SlotSkeletonParts", (byte) i);
-                    is.writeToNBT(item);
+					item.setByte("SlotSkeletonParts", (byte) i);
+					is.writeToNBT(item);
 
-                    mainInv.appendTag(item);
-                }
-            }
-            inventory.setTag("SkeletonParts", mainInv);
+					mainInv.appendTag(item);
+				}
+			}
+			inventory.setTag("SkeletonParts", mainInv);
 
-            return new SetPartsMessage(message.mechSkeletonId, inventory);
-        }
-    }
+			return new SetPartsMessage(message.mechSkeletonId, inventory);
+		}
+	}
 }

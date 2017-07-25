@@ -12,31 +12,30 @@ import the_fireplace.mechsoldiers.registry.PartRegistry;
  */
 @SuppressWarnings("unchecked")
 public class LayerJoints implements LayerRenderer<EntityMechSkeleton> {
-    private final RenderLivingBase<?> renderer;
-    private ModelMechSkeleton model;
+	private final RenderLivingBase<?> renderer;
+	private ModelMechSkeleton model;
 
-    public LayerJoints(RenderLivingBase<?> renderer)
-    {
-        this.renderer = renderer;
-        this.model = new ModelMechSkeleton(0.25F, true);
-    }
+	public LayerJoints(RenderLivingBase<?> renderer) {
+		this.renderer = renderer;
+		this.model = new ModelMechSkeleton(0.25F, true);
+	}
 
-    @Override
-    public void doRenderLayer(EntityMechSkeleton skeleton, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.model.setModelAttributes(this.renderer.getMainModel());
-        this.model.setLivingAnimations(skeleton, limbSwing, limbSwingAmount, partialTicks);
+	@Override
+	public void doRenderLayer(EntityMechSkeleton skeleton, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		this.model.setModelAttributes(this.renderer.getMainModel());
+		this.model.setLivingAnimations(skeleton, limbSwing, limbSwingAmount, partialTicks);
 
-        ResourceLocation texture = PartRegistry.getTexLocation(skeleton.getJoints());
-        if(texture == null)
-            return;
-        Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		ResourceLocation texture = PartRegistry.getTexLocation(skeleton.getJoints());
+		if (texture == null)
+			return;
+		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 
-        model.render(skeleton, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, scale);
-    }
+		model.render(skeleton, limbSwing, limbSwingAmount, partialTicks, netHeadYaw, headPitch, scale);
+	}
 
-    @Override
-    public boolean shouldCombineTextures() {
-        return false;
-    }
+	@Override
+	public boolean shouldCombineTextures() {
+		return false;
+	}
 }
 

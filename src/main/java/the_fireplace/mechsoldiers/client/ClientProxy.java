@@ -13,10 +13,10 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
  * @author The_Fireplace
  */
 public class ClientProxy extends CommonProxy {
-    @Override
-    public void registerClient(){
-        MechSoldiers.instance.registerItemRenders();
-        RenderingRegistry.registerEntityRenderingHandler(EntityMechSkeleton.class, new MechSkeletonRenderFactory());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPartConstructor.class, new MPCTESR());
-    }
+	@Override
+	public void registerClient() {
+		MechSoldiers.instance.registerItemRenders();
+		RenderingRegistry.registerEntityRenderingHandler(EntityMechSkeleton.class, new MechSkeletonRenderFactory());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPartConstructor.class, new MPCTESR());
+	}
 }
