@@ -292,6 +292,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			if (this.furnaceItemStacks[1].stackSize <= 0) {
 				this.furnaceItemStacks[1] = null;
 			}
+
+			drain(200, true);
 		}
 	}
 
