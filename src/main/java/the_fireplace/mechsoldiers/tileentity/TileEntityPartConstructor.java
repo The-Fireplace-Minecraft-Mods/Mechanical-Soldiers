@@ -22,6 +22,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -469,7 +470,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
-		return new IFluidTankProperties[0];//TODO: See if this needs changing
+		return new IFluidTankProperties[]{new FluidTankProperties(new FluidStack(getFluid(), getFluidAmount()), getCapacity())};
 	}
 
 	@Nullable

@@ -1,7 +1,10 @@
 package the_fireplace.mechsoldiers;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -17,11 +20,10 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import the_fireplace.mechsoldiers.blocks.BlockMetalPartConstructor;
-import the_fireplace.mechsoldiers.blocks.BlockRobotBox;
-import the_fireplace.mechsoldiers.blocks.BlockRobotConstructor;
+import the_fireplace.mechsoldiers.blocks.*;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.entity.ai.TerminatorCPU;
+import the_fireplace.mechsoldiers.items.ItemBlockMiniTank;
 import the_fireplace.mechsoldiers.items.ItemCPU;
 import the_fireplace.mechsoldiers.items.ItemJoints;
 import the_fireplace.mechsoldiers.items.ItemSkeleton;
@@ -30,6 +32,7 @@ import the_fireplace.mechsoldiers.network.MSGuiHandler;
 import the_fireplace.mechsoldiers.network.PacketDispatcher;
 import the_fireplace.mechsoldiers.registry.MechCraftingRecipes;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
+import the_fireplace.mechsoldiers.tileentity.TileEntityMiniTank;
 import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotBox;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
@@ -92,6 +95,9 @@ public class MechSoldiers {
 	public static final Block metal_part_constructor = new BlockMetalPartConstructor(false, "metal_part_constructor").setCreativeTab(Overlord.tabOverlord);
 	public static final Block metal_part_constructor_active = new BlockMetalPartConstructor(true, "metal_part_constructor_active");
 
+	public static final BlockHalfMiniTank mini_tank = new BlockHalfMiniTank();
+	public static final BlockFullMiniTank full_mini_tank = new BlockFullMiniTank();
+
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		PacketDispatcher.registerPackets();
@@ -116,9 +122,15 @@ public class MechSoldiers {
 		Overlord.instance.registerBlock(metal_part_constructor);
 		Overlord.instance.registerBlock(metal_part_constructor_active);
 
+		GameRegistry.register(mini_tank);
+		GameRegistry.register(full_mini_tank);
+		GameRegistry.register(new ItemBlockMiniTank(mini_tank, mini_tank, full_mini_tank).setRegistryName("mini_tank"));
+		GameRegistry.register(new ItemBlockMiniTank(full_mini_tank, mini_tank, full_mini_tank).setRegistryName("full_mini_tank"));
+
 		GameRegistry.registerTileEntity(TileEntityRobotConstructor.class, "robot_constructor");
 		GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
 		GameRegistry.registerTileEntity(TileEntityPartConstructor.class, "metal_part_constructor");
+		GameRegistry.registerTileEntity(TileEntityMiniTank.class, "mini_tank");
 
 		PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
 		PartRegistry.registerSkeleton(skeleton_term, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/terminator_skeleton.png"));
@@ -159,6 +171,11 @@ public class MechSoldiers {
 		rmm(robot_box);
 		rmm(metal_part_constructor);
 		rmm(metal_part_constructor_active);
+		rmm(mini_tank);
+		IStateMapper mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY).build();
+		IStateMapper full_mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY, BlockSlab.HALF).build();
+		ModelLoader.setCustomStateMapper(mini_tank, mini_tank_mapper);
+		ModelLoader.setCustomStateMapper(full_mini_tank, full_mini_tank_mapper);
 	}
 
 	@SideOnly(Side.CLIENT)

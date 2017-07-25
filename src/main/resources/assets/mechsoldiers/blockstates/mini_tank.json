@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "half=bottom": { "model": "mechsoldiers:half_slab_mini_tank" },
+    "half=top": { "model": "mechsoldiers:upper_slab_mini_tank" }
+  }
+}

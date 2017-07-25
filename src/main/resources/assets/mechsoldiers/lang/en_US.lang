@@ -15,5 +15,6 @@ tile.robot_box.name=Robot Crate
 tile.robot_constructor.name=Robot Builder
 tile.metal_part_constructor.name=Skeleton Mould Melter
 tile.metal_part_constructor_active.name=Skeleton Mould Melter
+tile.mini_tank.name=Mini Tank
 
 itemGroup.robot_parts=Robot Parts
