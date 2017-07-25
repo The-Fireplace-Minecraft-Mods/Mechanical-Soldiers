@@ -265,6 +265,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 		} else {
 			ItemStack itemstack = MetalMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks[0], this.furnaceItemStacks[1]);
 			if (itemstack == null) return false;
+			if (MetalMeltRecipes.instance().getWaterCost(itemstack) > heldWaterAmount) return false;
 			if (this.furnaceItemStacks[3] == null) return true;
 			if (!this.furnaceItemStacks[3].isItemEqual(itemstack)) return false;
 			int result = furnaceItemStacks[3].stackSize + itemstack.stackSize;
@@ -292,8 +293,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			if (this.furnaceItemStacks[1].stackSize <= 0) {
 				this.furnaceItemStacks[1] = null;
 			}
-
-			drain(200, true);
+			drain(MetalMeltRecipes.instance().getWaterCost(itemstack), true);
 		}
 	}
 

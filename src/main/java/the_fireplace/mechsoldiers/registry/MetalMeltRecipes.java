@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
+import the_fireplace.mechsoldiers.MechSoldiers;
+import the_fireplace.overlord.Overlord;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -13,39 +15,40 @@ import java.util.Map.Entry;
 
 public class MetalMeltRecipes {
 	private static final MetalMeltRecipes METAL_MELT_RECIPES = new MetalMeltRecipes();
-	private final Map<ItemStack, Object> smeltingList1 = Maps.newHashMap();
-	private final Map<ItemStack, Object> smeltingList2 = Maps.newHashMap();
+	private final Map<ItemStack, Object> smeltingListRight = Maps.newHashMap();
+	private final Map<ItemStack, Object> smeltingListLeft = Maps.newHashMap();
+	private final Map<ItemStack, Integer> waterCosts = Maps.newHashMap();
 
 	public static MetalMeltRecipes instance() {
 		return METAL_MELT_RECIPES;
 	}
 
+	public static final int WATER_COST_SKELETON = 200;
+	public static final int WATER_COST_JOINTS = 100;
+
 	private MetalMeltRecipes() {
 	}
 
-	public void addMeltingRecipe(Block output, Object input1, Object input2) {
-		this.addMeltingRecipe(Item.getItemFromBlock(output), input1, input2);
+	public void addMeltingRecipe(ItemStack output, Object leftInput, Object rightInput) {
+		addMeltingRecipe(output, leftInput, rightInput, WATER_COST_SKELETON);
 	}
 
-	public void addMeltingRecipe(Item output, Object input1, Object input2) {
-		this.addMeltingRecipe(new ItemStack(output, 1, OreDictionary.WILDCARD_VALUE), input1, input2);
-	}
-
-	public void addMeltingRecipe(ItemStack output, Object input1, Object input2) {
-		if(input1 instanceof Item)
-			input1 = new ItemStack((Item)input1);
-		if(input1 instanceof Block)
-			input1 = new ItemStack((Block) input1);
-		if(input2 instanceof Item)
-			input2 = new ItemStack((Item)input2);
-		if(input2 instanceof Block)
-			input2 = new ItemStack((Block) input2);
-		if (getMeltingResult(input1, input2) != null) {
-			FMLLog.info("Ignored melting recipe with conflicting input: " + output + " = " + input1 + " + " + input2);
+	public void addMeltingRecipe(ItemStack output, Object leftInput, Object rightInput, int waterCost) {
+		if(rightInput instanceof Item)
+			rightInput = new ItemStack((Item)rightInput);
+		if(rightInput instanceof Block)
+			rightInput = new ItemStack((Block) rightInput);
+		if(leftInput instanceof Item)
+			leftInput = new ItemStack((Item)leftInput);
+		if(leftInput instanceof Block)
+			leftInput = new ItemStack((Block) leftInput);
+		if (getMeltingResult(rightInput, leftInput) != null) {
+			FMLLog.info("Ignored melting recipe with conflicting input: " + output + " = " + rightInput + " + " + leftInput);
 			return;
 		}
-		this.smeltingList1.put(output, input1);
-		this.smeltingList2.put(output, input2);
+		this.smeltingListRight.put(output, rightInput);
+		this.smeltingListLeft.put(output, leftInput);
+		this.waterCosts.put(output, waterCost);
 	}
 
 	@Nullable
@@ -69,11 +72,11 @@ public class MetalMeltRecipes {
 		for(int i=0;i<(useCompDict1 ? OreDictionary.getOres((String)stack1).size() : 1);i++) {
 			if(useCompDict1)
 				compStack1 = OreDictionary.getOres((String)stack1).get(i);
-			for(int j=0;i<(useCompDict2 ? OreDictionary.getOres((String)stack2).size() : 1);j++) {
+			for(int j=0;j<(useCompDict2 ? OreDictionary.getOres((String)stack2).size() : 1);j++) {
 				if(useCompDict2)
 					compStack2 = OreDictionary.getOres((String)stack2).get(j);
-				for (Entry<ItemStack, Object> entry : this.smeltingList1.entrySet()) {
-					for (Entry<ItemStack, Object> entry2 : this.smeltingList2.entrySet()) {
+				for (Entry<ItemStack, Object> entry : this.smeltingListRight.entrySet()) {
+					for (Entry<ItemStack, Object> entry2 : this.smeltingListLeft.entrySet()) {
 						Object input1 = entry.getValue();
 						ItemStack inputStack1 = null;
 						boolean useDict1 = true;
@@ -115,11 +118,20 @@ public class MetalMeltRecipes {
 		return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == OreDictionary.WILDCARD_VALUE || stack2.getMetadata() == stack1.getMetadata());
 	}
 
-	public Map<ItemStack, Object> getSmeltingList1() {
-		return this.smeltingList1;
+	public Map<ItemStack, Object> getSmeltingListRight() {
+		return this.smeltingListRight;
 	}
 
-	public Map<ItemStack, Object> getSmeltingList2() {
-		return this.smeltingList2;
+	public Map<ItemStack, Object> getSmeltingListLeft() {
+		return this.smeltingListLeft;
+	}
+
+	public int getWaterCost(ItemStack output){
+		if(waterCosts.get(output) != null)
+			return waterCosts.get(output);
+		else{
+			Overlord.logError("No water drain value found for "+(output != null ? output.toString() : "null")+". Perhaps you are passing the direct result rather than the getSmeltingResult()?");
+			return WATER_COST_SKELETON;
+		}
 	}
 }
