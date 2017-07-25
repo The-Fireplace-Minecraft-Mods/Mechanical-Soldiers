@@ -4,10 +4,12 @@ entity.mechanical_skeleton.name=Mechanical Skeleton
 item.skeleton_wood.name=Wooden Skeleton
 item.skeleton_gold.name=Gold Skeleton
 item.skeleton_iron.name=Iron Skeleton
+item.skeleton_term.name=Terminator Skeleton
 item.joints_iron.name=Iron Joints
 item.joints_gold.name=Gold Joints
 item.brain_copper_redstone.name=Copper-Redstone Brain
 item.brain_gold_redstone.name=Gold-Redstone Brain
+item.brain_terminator.name=Terminator Brain
 
 tile.robot_box.name=Robot Crate
 tile.robot_constructor.name=Robot Builder

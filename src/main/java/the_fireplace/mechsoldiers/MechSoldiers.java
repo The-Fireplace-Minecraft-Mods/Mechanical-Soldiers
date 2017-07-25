@@ -51,13 +51,13 @@ public class MechSoldiers {
     Add a tooltip to the crate saying what is in it
     Add robots to the Overlord guide book
     Add bucket output to Metal Part Constructor
+    Add JEI integration for the machines that make parts
+    Make the Robot Builder consume a log for each crate
      */
     /*TODO anytime:
-    Make the Robot Builder consume a log for each crate
-    Add JEI integration for the machines that make parts
     Add integration with other mods for parts made of copper, steel, bronze, etc.
     Add integration with weed mods for 420 joints. 🚬
-    Add splash text(perhaps in Overlord's splash text addition)
+    Add splash text(1.12 only)
     Advancements(1.12 only)
     Accept Buildcraft's chipsets as brains or add them to brain recipes
     Prevent mods that show entity health from showing robot health(Waila?) Nice. Damage Indicators.
@@ -77,6 +77,7 @@ public class MechSoldiers {
     };
 
     public static final Item skeleton_iron = new ItemSkeleton("iron", 125);
+	public static final Item skeleton_term = new ItemSkeleton("term", 180);
     public static final Item skeleton_gold = new ItemSkeleton("gold", 16);
     public static final Item skeleton_wood = new ItemSkeleton("wood", 30);
     public static final Item joints_iron = new ItemJoints("iron", 125);
@@ -95,6 +96,7 @@ public class MechSoldiers {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new MSGuiHandler());
         new PartRegistry();
         GameRegistry.register(skeleton_iron);
+        GameRegistry.register(skeleton_term);
         GameRegistry.register(skeleton_gold);
         GameRegistry.register(skeleton_wood);
         GameRegistry.register(joints_iron);
@@ -115,7 +117,8 @@ public class MechSoldiers {
         GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
         GameRegistry.registerTileEntity(TileEntityPartConstructor.class, "metal_part_constructor");
 
-        PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
+	    PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
+	    PartRegistry.registerSkeleton(skeleton_term, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/terminator_skeleton.png"));
         PartRegistry.registerSkeleton(skeleton_gold, ComponentDamageGeneric.getInstance(), "gold", new ResourceLocation(MODID, "textures/entity/gold_skeleton.png"));
         PartRegistry.registerSkeleton(skeleton_wood, ComponentDamageGeneric.getInstance(), "wood", new ResourceLocation(MODID, "textures/entity/wood_skeleton.png"));
         PartRegistry.registerJoints(joints_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/iron_joints.png"));
@@ -140,6 +143,7 @@ public class MechSoldiers {
     public void registerItemRenders(){
         rmm(skeleton_gold);
         rmm(skeleton_iron);
+        rmm(skeleton_term);
         rmm(skeleton_wood);
         rmm(joints_gold);
         rmm(joints_iron);
