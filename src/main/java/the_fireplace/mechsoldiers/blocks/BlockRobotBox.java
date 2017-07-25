@@ -58,14 +58,14 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
 		if (tileentity instanceof TileEntityRobotBox) {
-			EntityItem brain = new EntityItem(worldIn);
-			ItemStack brainStack = ((TileEntityRobotBox) tileentity).getBrain();
-			if (brainStack.isItemStackDamageable())
-				brainStack.setItemDamage(Math.round(brainStack.getMaxDamage() * ((TileEntityRobotBox) tileentity).getCompletion()));
-			brain.setEntityItemStack(brainStack);
-			brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
-			worldIn.spawnEntity(brain);
-			brain.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+			EntityItem cpu = new EntityItem(worldIn);
+			ItemStack cpuStack = ((TileEntityRobotBox) tileentity).getCPU();
+			if (cpuStack.isItemStackDamageable())
+				cpuStack.setItemDamage(Math.round(cpuStack.getMaxDamage() * ((TileEntityRobotBox) tileentity).getCompletion()));
+			cpu.setEntityItemStack(cpuStack);
+			cpu.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+			worldIn.spawnEntity(cpu);
+			cpu.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 
 			EntityItem joints = new EntityItem(worldIn);
 			ItemStack jointStack = ((TileEntityRobotBox) tileentity).getJoints();

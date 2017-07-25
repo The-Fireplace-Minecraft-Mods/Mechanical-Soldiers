@@ -5,7 +5,7 @@ import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 /**
  * @author The_Fireplace
  */
-public interface IBrain {
+public interface ICPU {
 	/**
 	 * Adds the movement AI to the skeleton
 	 *

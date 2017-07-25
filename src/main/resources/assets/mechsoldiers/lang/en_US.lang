@@ -7,9 +7,9 @@ item.skeleton_iron.name=Iron Skeleton
 item.skeleton_term.name=Terminator Skeleton
 item.joints_iron.name=Iron Joints
 item.joints_gold.name=Gold Joints
-item.brain_copper_redstone.name=Copper-Redstone Brain
-item.brain_gold_redstone.name=Gold-Redstone Brain
-item.brain_terminator.name=Terminator Brain
+item.cpu_copper_redstone.name=Copper-Redstone CPU
+item.cpu_gold_redstone.name=Gold-Redstone CPU
+item.cpu_terminator.name=Terminator CPU
 
 tile.robot_box.name=Robot Crate
 tile.robot_constructor.name=Robot Builder

@@ -77,7 +77,7 @@ public class BlockMetalPartConstructor extends BlockContainer {
 		if (this.isBurning) {
 			EnumFacing enumfacing = stateIn.getValue(FACING);
 			double d0 = (double) pos.getX() + 0.5D;
-			double d1 = (double) pos.getY() + rand.nextDouble() * 6.0D / 16.0D;
+			double d1 = (double) pos.getY() + rand.nextDouble() * 6.0D / 16.0D + 0.25D;
 			double d2 = (double) pos.getZ() + 0.5D;
 			double d4 = rand.nextDouble() * 0.6D - 0.3D;
 

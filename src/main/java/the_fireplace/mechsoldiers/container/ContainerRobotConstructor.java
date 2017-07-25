@@ -33,7 +33,7 @@ public class ContainerRobotConstructor extends Container {
 
 		this.addSlotToContainer(new SlotSeal(entity, 0, 6, 6));//tile entity ID 0
 
-		this.addSlotToContainer(new SlotBrain(entity, 1, 48, 26, true));//tile entity ID 1
+		this.addSlotToContainer(new SlotCPU(entity, 1, 48, 26, true));//tile entity ID 1
 
 		this.addSlotToContainer(new SlotSkeleton(entity, 2, 80, 21, true));//tile entity ID 2
 

@@ -21,7 +21,8 @@ import the_fireplace.mechsoldiers.blocks.BlockMetalPartConstructor;
 import the_fireplace.mechsoldiers.blocks.BlockRobotBox;
 import the_fireplace.mechsoldiers.blocks.BlockRobotConstructor;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
-import the_fireplace.mechsoldiers.items.ItemBrain;
+import the_fireplace.mechsoldiers.entity.ai.TerminatorCPU;
+import the_fireplace.mechsoldiers.items.ItemCPU;
 import the_fireplace.mechsoldiers.items.ItemJoints;
 import the_fireplace.mechsoldiers.items.ItemSkeleton;
 import the_fireplace.mechsoldiers.network.CommonProxy;
@@ -34,7 +35,7 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityRobotBox;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.mechsoldiers.util.ComponentDamageGeneric;
 import the_fireplace.mechsoldiers.util.ComponentDamagePotato;
-import the_fireplace.mechsoldiers.util.IBrain;
+import the_fireplace.mechsoldiers.util.ICPU;
 import the_fireplace.overlord.Overlord;
 
 /**
@@ -59,7 +60,7 @@ public class MechSoldiers {
     Add integration with weed mods for 420 joints. 🚬
     Add splash text(1.12 only)
     Advancements(1.12 only)
-    Accept Buildcraft's chipsets as brains or add them to brain recipes
+    Accept Buildcraft's chipsets as cpus or add them to cpu recipes
     Prevent mods that show entity health from showing robot health(Waila?) Nice. Damage Indicators.
      */
 
@@ -82,8 +83,9 @@ public class MechSoldiers {
 	public static final Item skeleton_wood = new ItemSkeleton("wood", 30);
 	public static final Item joints_iron = new ItemJoints("iron", 125);
 	public static final Item joints_gold = new ItemJoints("gold", 16);
-	public static final Item brain_copper_redstone = new ItemBrain("copper_redstone", 24);
-	public static final Item brain_gold_redstone = new ItemBrain("gold_redstone", 64);
+	public static final Item cpu_copper_redstone = new ItemCPU("copper_redstone", 24);
+	public static final Item cpu_gold_redstone = new ItemCPU("gold_redstone", 64);
+	public static final Item cpu_terminator = new ItemCPU("terminator", 32);
 
 	public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
 	public static final Block robot_box = new BlockRobotBox("robot_box");
@@ -101,8 +103,9 @@ public class MechSoldiers {
 		GameRegistry.register(skeleton_wood);
 		GameRegistry.register(joints_iron);
 		GameRegistry.register(joints_gold);
-		GameRegistry.register(brain_copper_redstone);
-		GameRegistry.register(brain_gold_redstone);
+		GameRegistry.register(cpu_copper_redstone);
+		GameRegistry.register(cpu_gold_redstone);
+		GameRegistry.register(cpu_terminator);
 
 		GameRegistry.register(robot_box);
 		ItemBlock robotBoxItem = new ItemBlock(robot_box);
@@ -118,15 +121,16 @@ public class MechSoldiers {
 		GameRegistry.registerTileEntity(TileEntityPartConstructor.class, "metal_part_constructor");
 
 		PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
-		PartRegistry.registerSkeleton(skeleton_term, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/terminator_skeleton.png"));
+		PartRegistry.registerSkeleton(skeleton_term, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/terminator_skeleton.png"));
 		PartRegistry.registerSkeleton(skeleton_gold, ComponentDamageGeneric.getInstance(), "gold", new ResourceLocation(MODID, "textures/entity/gold_skeleton.png"));
 		PartRegistry.registerSkeleton(skeleton_wood, ComponentDamageGeneric.getInstance(), "wood", new ResourceLocation(MODID, "textures/entity/wood_skeleton.png"));
 		PartRegistry.registerJoints(joints_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/iron_joints.png"));
 		PartRegistry.registerJoints(joints_gold, ComponentDamageGeneric.getInstance(), "gold", new ResourceLocation(MODID, "textures/entity/gold_joints.png"));
-		PartRegistry.registerBrain(brain_copper_redstone, (IBrain) brain_copper_redstone, ComponentDamageGeneric.getInstance(), "copper_redstone");
-		PartRegistry.registerBrain(brain_gold_redstone, (IBrain) brain_gold_redstone, ComponentDamageGeneric.getInstance(), "gold_redstone");
-		PartRegistry.registerPotatoBrain(Items.POTATO, 0, ComponentDamagePotato.getInstance(), "potato");
-		PartRegistry.registerPotatoBrain(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
+		PartRegistry.registerCPU(cpu_copper_redstone, (ICPU) cpu_copper_redstone, ComponentDamageGeneric.getInstance(), "copper_redstone");
+		PartRegistry.registerCPU(cpu_gold_redstone, (ICPU) cpu_gold_redstone, ComponentDamageGeneric.getInstance(), "gold_redstone");
+		PartRegistry.registerCPU(cpu_terminator, new TerminatorCPU(), ComponentDamageGeneric.getInstance(), "iron");
+		PartRegistry.registerPotatoCPU(Items.POTATO, 0, ComponentDamagePotato.getInstance(), "potato");
+		PartRegistry.registerPotatoCPU(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
 
 		int eid = -1;
 		EntityRegistry.registerModEntity(/*new ResourceLocation(MODID+":mechanical_skeleton"), */EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
@@ -147,8 +151,9 @@ public class MechSoldiers {
 		rmm(skeleton_wood);
 		rmm(joints_gold);
 		rmm(joints_iron);
-		rmm(brain_copper_redstone);
-		rmm(brain_gold_redstone);
+		rmm(cpu_copper_redstone);
+		rmm(cpu_gold_redstone);
+		rmm(cpu_terminator);
 
 		rmm(robot_constructor);
 		rmm(robot_box);

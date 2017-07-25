@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import the_fireplace.mechsoldiers.util.ComponentDamageBehavior;
 import the_fireplace.mechsoldiers.util.EnumPartType;
-import the_fireplace.mechsoldiers.util.IBrain;
+import the_fireplace.mechsoldiers.util.ICPU;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -25,7 +25,7 @@ public final class PartRegistry {
 	private HashMap<ItemStack, ComponentDamageBehavior> partBehaviors = Maps.newHashMap();
 	private HashMap<ItemStack, String> partMaterials = Maps.newHashMap();
 	private HashMap<ItemStack, ResourceLocation> partTextures = Maps.newHashMap();
-	private HashMap<ItemStack, IBrain> itemAIHandlers = Maps.newHashMap();
+	private HashMap<ItemStack, ICPU> itemAIHandlers = Maps.newHashMap();
 
 	public PartRegistry() {
 		if (instance == null)
@@ -65,24 +65,24 @@ public final class PartRegistry {
 	}
 
 	/**
-	 * Register an item as a Mechanical Skeleton Brain
+	 * Register an item as a Mechanical Skeleton CPU
 	 *
 	 * @param item
 	 * 		The item to be registered
 	 * @param logicHandler
-	 * 		The logic handler to be used with the brain. If you don't want one, use registerPotatoBrain()
+	 * 		The logic handler to be used with the CPU. If you don't want one, use registerPotatoCPU()
 	 * @param behavior
 	 * 		The behavior instance defining how the item takes damage
 	 * @param material
 	 * 		The material the item is made of. Used in determining how much damage an item takes.
 	 */
-	public static void registerBrain(Item item, IBrain logicHandler, ComponentDamageBehavior behavior, String material) {
-		registerPart(item, OreDictionary.WILDCARD_VALUE, EnumPartType.BRAIN, behavior, material, null);
+	public static void registerCPU(Item item, ICPU logicHandler, ComponentDamageBehavior behavior, String material) {
+		registerPart(item, OreDictionary.WILDCARD_VALUE, EnumPartType.CPU, behavior, material, null);
 		instance.itemAIHandlers.put(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE), logicHandler);
 	}
 
 	/**
-	 * Register an item as a brain without AI.
+	 * Register an item as a CPU without AI.
 	 *
 	 * @param item
 	 * 		The item to be registered
@@ -93,8 +93,8 @@ public final class PartRegistry {
 	 * @param material
 	 * 		The material the item is made of. Used in determining how much damage an item takes.
 	 */
-	public static void registerPotatoBrain(Item item, int meta, ComponentDamageBehavior behavior, String material) {
-		registerPart(item, meta, EnumPartType.BRAIN, behavior, material, null);
+	public static void registerPotatoCPU(Item item, int meta, ComponentDamageBehavior behavior, String material) {
+		registerPart(item, meta, EnumPartType.CPU, behavior, material, null);
 	}
 
 	private static void registerPart(Item item, int meta, EnumPartType type, ComponentDamageBehavior behavior, String material, @Nullable ResourceLocation texture) {
@@ -146,7 +146,7 @@ public final class PartRegistry {
 	}
 
 	@Nullable
-	public static IBrain getBrain(ItemStack part) {
+	public static ICPU getCPU(ItemStack part) {
 		if (!isPart(part))
 			return null;
 		for (ItemStack stack : instance.itemAIHandlers.keySet())

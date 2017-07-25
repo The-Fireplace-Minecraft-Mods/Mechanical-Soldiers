@@ -56,7 +56,7 @@ public class ContainerRobot extends Container {
 
 		this.addSlotToContainer(new SlotSkeleton(entityParts, 0, 63, 8, false));//Entity Inventory 0
 		this.addSlotToContainer(new SlotJoints(entityParts, 1, 63 + 18, 8, false));//Entity Inventory 1
-		this.addSlotToContainer(new SlotBrain(entityParts, 2, 63 + 18 + 18, 8, false));//Entity Inventory 2
+		this.addSlotToContainer(new SlotCPU(entityParts, 2, 63 + 18 + 18, 8, false));//Entity Inventory 2
 	}
 
 	@Override

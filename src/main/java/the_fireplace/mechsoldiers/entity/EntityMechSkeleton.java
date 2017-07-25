@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.mechsoldiers.util.EnumPartType;
-import the_fireplace.mechsoldiers.util.IBrain;
+import the_fireplace.mechsoldiers.util.ICPU;
 import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.entity.EntityArmyMember;
 import the_fireplace.overlord.network.PacketDispatcher;
@@ -41,7 +41,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 	/*
 	0: Skeleton
 	1: Joints
-	2: Brain
+	2: CPU
 	 */
 	public final InventoryBasic partInventory;
 
@@ -91,7 +91,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 		this.partInventory = new InventoryBasic("Parts", false, 3) {
 			@Override
 			public boolean isItemValidForSlot(int index, ItemStack stack) {
-				return (index == 0 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.BRAIN)));
+				return (index == 0 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.CPU)));
 			}
 		};
 	}
@@ -100,28 +100,28 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
 	@Override
 	public void addMovementTasks() {
-		if (getBrain() != null) {
-			IBrain brain = PartRegistry.getBrain(getBrain());
-			if (brain != null)
-				brain.addMovementAi(this, getMovementMode());
+		if (getCPU() != null) {
+			ICPU cpu = PartRegistry.getCPU(getCPU());
+			if (cpu != null)
+				cpu.addMovementAi(this, getMovementMode());
 		}
 	}
 
 	@Override
 	public void addAttackTasks() {
-		if (getBrain() != null) {
-			IBrain brain = PartRegistry.getBrain(getBrain());
-			if (brain != null)
-				brain.addAttackAi(this, getAttackMode());
+		if (getCPU() != null) {
+			ICPU cpu = PartRegistry.getCPU(getCPU());
+			if (cpu != null)
+				cpu.addAttackAi(this, getAttackMode());
 		}
 	}
 
 	@Override
 	public void addTargetTasks() {
-		if (getBrain() != null) {
-			IBrain brain = PartRegistry.getBrain(getBrain());
-			if (brain != null)
-				brain.addTargetAi(this, getAttackMode());
+		if (getCPU() != null) {
+			ICPU cpu = PartRegistry.getCPU(getCPU());
+			if (cpu != null)
+				cpu.addTargetAi(this, getAttackMode());
 		}
 	}
 
@@ -136,7 +136,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 	@Override
 	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
 		if (ticksExisted <= 3)
-			initEntityAI();//Refreshes the AI after the brain has loaded
+			initEntityAI();//Refreshes the AI after the CPU has loaded
 		if (!this.isEntityInvulnerable(damageSrc)) {
 			if (damageSrc != DamageSource.outOfWorld)
 				actualDamageSource = damageSrc;
@@ -161,41 +161,41 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
 	protected void damageComponents(DamageSource damageSrc, float damageAmount) {
 		if (damageSrc == DamageSource.anvil) {
-			setBrain(PartRegistry.damagePart(getBrain(), damageSrc, damageAmount, this));
+			setCPU(PartRegistry.damagePart(getCPU(), damageSrc, damageAmount, this));
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 4, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount / 4, this));
 		} else if (damageSrc == DamageSource.dragonBreath) {
-			setBrain(PartRegistry.damagePart(getBrain(), damageSrc, damageAmount / 4, this));
+			setCPU(PartRegistry.damagePart(getCPU(), damageSrc, damageAmount / 4, this));
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 3, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount / 3, this));
 		} else if (damageSrc == DamageSource.fall) {
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 5, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount, this));
 		} else if (damageSrc == DamageSource.lightningBolt) {
-			setBrain(PartRegistry.damagePart(getBrain(), damageSrc, damageAmount, this));
+			setCPU(PartRegistry.damagePart(getCPU(), damageSrc, damageAmount, this));
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 2, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount / 2, this));
 		} else if (damageSrc.isFireDamage() || damageSrc.isExplosion()) {
-			setBrain(PartRegistry.damagePart(getBrain(), damageSrc, damageAmount / 3, this));
+			setCPU(PartRegistry.damagePart(getCPU(), damageSrc, damageAmount / 3, this));
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 3, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount / 3, this));
 		} else {
-			setBrain(PartRegistry.damagePart(getBrain(), damageSrc, damageAmount / 12, this));
+			setCPU(PartRegistry.damagePart(getCPU(), damageSrc, damageAmount / 12, this));
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, 3 * damageAmount / 4, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, 3 * damageAmount / 7, this));
 		}
 	}
 
-	public ItemStack getBrain() {
+	public ItemStack getCPU() {
 		if (partInventory == null)
 			return null;
 		return partInventory.getStackInSlot(2);
 	}
 
-	public EntityMechSkeleton setBrain(ItemStack brain) {
+	public EntityMechSkeleton setCPU(ItemStack cpu) {
 		if (partInventory == null)
 			return this;
-		partInventory.setInventorySlotContents(2, brain);
+		partInventory.setInventorySlotContents(2, cpu);
 		initEntityAI();
 		return this;
 	}

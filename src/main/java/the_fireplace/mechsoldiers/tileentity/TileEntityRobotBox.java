@@ -88,8 +88,8 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 		}
 	}
 
-	public ItemStack getBrain() {
-		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotBrain"));
+	public ItemStack getCPU() {
+		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotCPU"));
 	}
 
 	public ItemStack getSkeleton() {
@@ -106,7 +106,7 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 
 	private void spawnRobot() {
 		EntityMechSkeleton robot = new EntityMechSkeleton(world, UUID.fromString(skeletonData.getString("OwnerUUID")))
-				.setBrain(getBrain())
+				.setCPU(getCPU())
 				.setSkeleton(getSkeleton())
 				.setJoints(getJoints());
 		robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());

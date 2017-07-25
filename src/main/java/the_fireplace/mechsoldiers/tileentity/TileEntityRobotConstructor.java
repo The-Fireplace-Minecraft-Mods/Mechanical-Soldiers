@@ -41,13 +41,13 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 		} else {
 			robotData.setString("OwnerUUID", "0b1ec5ad-cb2a-43b7-995d-889320eb2e5b");
 		}
-		ItemStack oneBrain = getStackInSlot(1).copy();
-		oneBrain.stackSize = 1;
+		ItemStack oneCPU = getStackInSlot(1).copy();
+		oneCPU.stackSize = 1;
 		ItemStack oneSkeleton = getStackInSlot(2).copy();
 		oneSkeleton.stackSize = 1;
 		ItemStack oneJoints = getStackInSlot(3).copy();
 		oneJoints.stackSize = 1;
-		robotData.setTag("RobotBrain", oneBrain.writeToNBT(new NBTTagCompound()));
+		robotData.setTag("RobotCPU", oneCPU.writeToNBT(new NBTTagCompound()));
 		robotData.setTag("RobotSkeleton", oneSkeleton.writeToNBT(new NBTTagCompound()));
 		robotData.setTag("RobotJoints", oneJoints.writeToNBT(new NBTTagCompound()));
 
@@ -164,8 +164,8 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		//return (index == 0 && PartRegistry.isPartOfType(stack, EnumPartType.BRAIN)) || (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS)) || (index == 3 && AugmentRegistry.getAugment(stack) != null) || index == 4 || index == 5;
-		return (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.BRAIN)) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 3 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS)) || (index == 0 && stack.getItem() instanceof ItemOverlordsSeal);
+		//return (index == 0 && PartRegistry.isPartOfType(stack, EnumPartType.CPU)) || (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS)) || (index == 3 && AugmentRegistry.getAugment(stack) != null) || index == 4 || index == 5;
+		return (index == 1 && PartRegistry.isPartOfType(stack, EnumPartType.CPU)) || (index == 2 && PartRegistry.isPartOfType(stack, EnumPartType.SKELETON)) || (index == 3 && PartRegistry.isPartOfType(stack, EnumPartType.JOINTS)) || (index == 0 && stack.getItem() instanceof ItemOverlordsSeal);
 	}
 
 	@Override

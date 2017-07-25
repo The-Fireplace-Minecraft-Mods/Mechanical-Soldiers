@@ -6,5 +6,5 @@ package the_fireplace.mechsoldiers.util;
 public enum EnumPartType {
 	SKELETON,
 	JOINTS,
-	BRAIN
+	CPU
 }
