@@ -207,7 +207,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			if (!isLoaded)
 				isLoaded = true;
 			if (this.furnaceItemStacks[4] != null && FluidUtil.getFluidHandler(furnaceItemStacks[4]) != null && this.heldWaterAmount < heldWaterAmountMax) {
-				furnaceItemStacks[4] = FluidUtil.tryEmptyContainer(furnaceItemStacks[4], this, 1000, null, true);
+				  FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks[4], this, this.handlerBottom, 1000, null);
 			}
 			if (this.isActive() || this.furnaceItemStacks[2] != null && this.furnaceItemStacks[0] != null && this.furnaceItemStacks[1] != null) {
 				if (!this.isActive() && this.canSmelt()) {

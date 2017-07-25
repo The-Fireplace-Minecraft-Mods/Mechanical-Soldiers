@@ -54,7 +54,6 @@ public class MechSoldiers {
     Un-comment the skeleton crate's zeros
     Add a tooltip to the crate saying what is in it
     Add robots to the Overlord guide book
-    Add bucket output to Metal Part Constructor
     Add JEI integration for the machines that make parts
      */
     /*TODO anytime:
@@ -62,7 +61,7 @@ public class MechSoldiers {
     Add integration with weed mods for 420 joints. 🚬
     Add splash text(1.12 only)
     Advancements(1.12 only)
-    Accept Buildcraft's chipsets as cpus or add them to cpu recipes
+    Add Buildcraft's chipsets to cpu recipes(1.11.2+)
     Prevent mods that show entity health from showing robot health(Waila?) Nice. Damage Indicators.
      */
 
