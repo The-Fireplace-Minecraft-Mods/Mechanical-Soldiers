@@ -38,13 +38,16 @@ minecraft {
     runDir = "run"
     replace '${version}', project.version
     mappings = "stable_29"
-    useDepAts = true
+	
+	clientRunArgs += "-uuid=0b1ec5ad-cb2a-43b7-995d-889320eb2e5b -username=The_Fireplace"
 }
 
 dependencies {
-	deobfCompile group: "mezz.jei", name: "jei_1.10.2", version: "3.13.6.389"
+	deobfCompile group: "mezz.jei", name: "jei_1.10.2", version: "3.14.7.420"
 	deobfCompile "info.amerifrance.guideapi:Guide-API:1.10.2-2.0.3-46"
 	deobfCompile "the_fireplace.overlord:Overlord-1.10.2:2.3.7"
+	
+	provided "lib:appliedenergistics2-rv4-stable-1-api"
 }
 
 repositories{
@@ -57,6 +60,9 @@ repositories{
     maven { //Overlord
 		url "http://maven.brainstonemod.com/"
 	}
+	flatDir {
+        dirs "lib"
+    }
 }
 
 processResources

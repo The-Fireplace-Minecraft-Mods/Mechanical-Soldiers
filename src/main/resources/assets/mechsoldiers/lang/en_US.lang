@@ -20,6 +20,8 @@ tile.mini_tank.name=Mini Tank
 tile.cpu_melter.name=CPU Mould Melter
 
 itemGroup.robot_parts=Robot Parts
+jei.metal_melt=Skeleton Mould Melting
+jei.cpu_melt=CPU Mould Melting
 
 tooltip.owner=Owner:
 tooltip.robot_cpu=CPU:

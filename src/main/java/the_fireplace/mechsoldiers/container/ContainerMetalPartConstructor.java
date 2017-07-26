@@ -24,8 +24,8 @@ public class ContainerMetalPartConstructor extends Container {
 
 	public ContainerMetalPartConstructor(InventoryPlayer playerInventory, IInventory furnaceInventory) {
 		this.tileConstructor = furnaceInventory;
-		this.addSlotToContainer(new Slot(furnaceInventory, 0, 56, 17));
-		this.addSlotToContainer(new Slot(furnaceInventory, 1, 34, 17));
+		this.addSlotToContainer(new Slot(furnaceInventory, 0, 66, 17));
+		this.addSlotToContainer(new Slot(furnaceInventory, 1, 44, 17));
 		this.addSlotToContainer(new SlotMPConstructorFuel(furnaceInventory, 2, 56, 53));
 		this.addSlotToContainer(new SlotOutput(furnaceInventory, 3, 116, 35));
 		this.addSlotToContainer(new Slot(furnaceInventory, 4, 7, 7));
