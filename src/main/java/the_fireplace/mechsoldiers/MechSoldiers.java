@@ -48,7 +48,6 @@ public class MechSoldiers {
 	public static final String MODNAME = "Mechanical Soldiers";
 
     /*TODO before initial release:
-    Add AE2 integration
     Add items to Loot Tables
      */
     /*TODO anytime:
@@ -57,6 +56,7 @@ public class MechSoldiers {
     Add splash text(1.12 only)
     Advancements(1.12 only)
     Add Buildcraft's chipsets to cpu recipes(1.11.2+)
+    Add Applied Llamagistics support(1.11.2+)
     Prevent mods that show entity health from showing robot health(Waila?) Nice. Damage Indicators.
     Add more CPUs
      */

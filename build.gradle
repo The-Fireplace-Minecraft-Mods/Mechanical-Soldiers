@@ -115,7 +115,7 @@ curseforge {
   project {
     id = '000000'
     changelog = file('changelog.txt')
-    releaseType = 'beta'
+    releaseType = 'release'
     addGameVersion '1.10.2'
     addGameVersion '1.10'
 	addGameVersion 'Java 8'
@@ -123,6 +123,7 @@ curseforge {
         displayName = jar.archiveName.replace(".jar", "")
         relations{
 			requiredLibrary 'overlord'
+			optionalLibrary 'applied-energistics-2'
 		}
     }
     addArtifact(sourceJar) {
