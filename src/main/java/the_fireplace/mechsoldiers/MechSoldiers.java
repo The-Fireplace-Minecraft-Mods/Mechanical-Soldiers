@@ -50,14 +50,16 @@ public class MechSoldiers {
     /*TODO before initial release:
     Add JEI integration for the machines that make parts
     Add AE2 integration
+    Add items to Loot Tables
      */
     /*TODO anytime:
-    Add integration with other mods for parts made of copper, steel, bronze, etc.
+    Add integration with other mods for more parts made of copper, steel, bronze, etc.
     Add integration with weed mods for 420 joints. 🚬
     Add splash text(1.12 only)
     Advancements(1.12 only)
     Add Buildcraft's chipsets to cpu recipes(1.11.2+)
     Prevent mods that show entity health from showing robot health(Waila?) Nice. Damage Indicators.
+    Add more CPUs
      */
 
 	@Mod.Instance(MODID)

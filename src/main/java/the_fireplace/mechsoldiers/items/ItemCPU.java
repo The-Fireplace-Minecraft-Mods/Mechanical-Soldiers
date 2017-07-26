@@ -35,7 +35,7 @@ public class ItemCPU extends Item implements ICPU {
 	@Override
 	public void addAttackAi(EntityMechSkeleton skeleton, byte mode) {
 		if (aiAttackOnCollide == null) {
-			aiAttackOnCollide = new EntityAIAttackMelee(skeleton, 1.2D, false) {
+			aiAttackOnCollide = new EntityAIAttackMelee(skeleton, 0.75D, false) {
 				@Override
 				public void resetTask() {
 					super.resetTask();
@@ -94,7 +94,7 @@ public class ItemCPU extends Item implements ICPU {
 					skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityCreeper.class, 10.0F, 1.2D, 1.6D));
 				}
 				skeleton.tasks.addTask(4, new EntityAIOpenDoor(skeleton, material.contains("redstone")));
-				skeleton.tasks.addTask(6, new EntityAIFollowMaster(skeleton, 1.0D, 10.0F, 2.0F));
+				skeleton.tasks.addTask(6, new EntityAIFollowMaster(skeleton, 0.75D, 8.0F, 3.0F));
 			case 0:
 				skeleton.setHomePosAndDistance(new BlockPos(skeleton.posX, skeleton.posY, skeleton.posZ), -1);
 				break;
@@ -102,10 +102,10 @@ public class ItemCPU extends Item implements ICPU {
 			default:
 				skeleton.setHomePosAndDistance(new BlockPos(skeleton.posX, skeleton.posY, skeleton.posZ), 20);
 				if (skeleton.shouldMobAttack(new EntityCreeper(skeleton.world))) {
-					skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityCreeper.class, 10.0F, 1.2D, 1.6D));
+					skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityCreeper.class, 8.0F, 0.8D, 1.2D));
 				}
 				skeleton.tasks.addTask(4, new EntityAIOpenDoor(skeleton, material.contains("redstone")));
-				skeleton.tasks.addTask(7, new EntityAIWanderBase(skeleton, 1.0D));
+				skeleton.tasks.addTask(7, new EntityAIWanderBase(skeleton, 0.5D));
 		}
 	}
 }
