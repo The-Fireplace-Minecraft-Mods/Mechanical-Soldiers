@@ -75,12 +75,12 @@ public class MechSoldiers {
 		}
 	};
 
-	public static final Item skeleton_iron = new ItemSkeleton("iron", 125);
-	public static final Item skeleton_term = new ItemSkeleton("term", 180);
-	public static final Item skeleton_gold = new ItemSkeleton("gold", 16);
-	public static final Item skeleton_wood = new ItemSkeleton("wood", 30);
-	public static final Item joints_iron = new ItemJoints("iron", 125);
-	public static final Item joints_gold = new ItemJoints("gold", 16);
+	public static final Item skeleton_iron = new ItemSkeleton("iron", 55);
+	public static final Item skeleton_term = new ItemSkeleton("term", 70);
+	public static final Item skeleton_gold = new ItemSkeleton("gold", 13);
+	public static final Item skeleton_wood = new ItemSkeleton("wood", 20);
+	public static final Item joints_iron = new ItemJoints("iron", 116);
+	public static final Item joints_gold = new ItemJoints("gold", 18);
 	public static final Item cpu_copper_redstone = new ItemCPU("copper_redstone", 24);
 	public static final Item cpu_gold_redstone = new ItemCPU("gold_redstone", 64);
 	public static final Item cpu_terminator = new ItemCPU("terminator", 32);
