@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -35,6 +36,7 @@ import the_fireplace.mechsoldiers.tileentity.*;
 import the_fireplace.mechsoldiers.util.ComponentDamageGeneric;
 import the_fireplace.mechsoldiers.util.ComponentDamagePotato;
 import the_fireplace.mechsoldiers.util.ICPU;
+import the_fireplace.mechsoldiers.util.LootHandler;
 import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.compat.guide.IGuideCompat;
 import the_fireplace.overlord.compat.guide.OverlordGuide;
@@ -47,10 +49,7 @@ public class MechSoldiers {
 	public static final String MODID = "mechsoldiers";
 	public static final String MODNAME = "Mechanical Soldiers";
 
-    /*TODO before initial release:
-    Add items to Loot Tables
-     */
-    /*TODO anytime:
+    /*TODO:
     Add integration with other mods for more parts made of copper, steel, bronze, etc.
     Add integration with weed mods for 420 joints. 🚬
     Add splash text(1.12 only)
@@ -157,6 +156,7 @@ public class MechSoldiers {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		MechCraftingRecipes.register();
+		new LootHandler();
 	}
 
 	@SideOnly(Side.CLIENT)
