@@ -62,6 +62,17 @@ public class MechSoldiersGuideCompat implements IGuideCompat {
 		List<CategoryAbstract> categories = OverlordGuide.myGuide.getCategoryList();
 		categories.add(new CategoryItemStack(entries, proxy.translateToLocal("mechsoldiers.guide.1"), new ItemStack(MechSoldiers.robot_constructor)));
 
+		for(CategoryAbstract cat:categories){
+			if(cat.unlocCategoryName.equals(proxy.translateToLocal("overlord.guide.2"))){
+				pages = Lists.newArrayList();
+				pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.2.1.1")));
+				pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.2.1.2")));
+				pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.2.1.3")));
+				cat.entries.put(new ResourceLocation(MechSoldiers.MODID, "2.1"), new EntryItemStack(pages, proxy.translateToLocal("mechsoldiers.guide.2.1"), new ItemStack(MechSoldiers.skeleton_term)));
+				break;
+			}
+		}
+
 		OverlordGuide.myGuide.setCategoryList(categories);
 	}
 }

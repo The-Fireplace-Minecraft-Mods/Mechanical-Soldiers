@@ -45,3 +45,7 @@ mechsoldiers.guide.1.3.2=Inside this machine, you will need to put Lava, and two
 mechsoldiers.guide.1.4=Crafting Components
 mechsoldiers.guide.1.4.1=There are several extra items/blocks added by Mechanical Soldiers that you will need to craft machines. First of these is the Mini Tank:
 mechsoldiers.guide.1.4.2=The other crafting component you will need is the Blueprint. These can be found in chests throughout the world. Once you obtain one, you can clone it with the following recipe:
+mechsoldiers.guide.2.1=Robots
+mechsoldiers.guide.2.1.1=Robots are highly configurable units. Their damage is determined not by a set amount of health, but by what they are made of. If any one of three essential components breaks, the robot falls apart.
+mechsoldiers.guide.2.1.2=The components robots are made of are: Skeleton, Joints, and CPU. The Skeleton is the most durable part, and takes the most damage. The Joints are weaker, and take less damage than the Skeleton.
+mechsoldiers.guide.2.1.3=The CPU determines your robot's intelligence level and behavior. Ones that you craft in the CPU Mould Melter will be reliable, and act much like normal Skeleton Warriors. Use others at your own risk.
