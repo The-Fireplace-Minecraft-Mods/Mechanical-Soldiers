@@ -34,32 +34,22 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import the_fireplace.mechsoldiers.blocks.BlockMetalPartConstructor;
+import the_fireplace.mechsoldiers.container.ContainerCPUMelter;
 import the_fireplace.mechsoldiers.container.ContainerMetalPartConstructor;
 import the_fireplace.mechsoldiers.container.SlotMPConstructorFuel;
+import the_fireplace.mechsoldiers.registry.CPUMeltRecipes;
 import the_fireplace.mechsoldiers.registry.MetalMeltRecipes;
 
 import javax.annotation.Nullable;
 
-public class TileEntityPartConstructor extends TileEntityLockable implements ITickable, ISidedInventory, IFluidHandler, IFluidTank {
-	private static final int[] SLOTS_TOP = new int[]{0, 1};
-	private static final int[] SLOTS_BOTTOM = new int[]{3, 2};
-	private static final int[] SLOTS_SIDES = new int[]{2, 4};
-	/**
-	 * The ItemStacks that hold the items currently being used in the part constructor
-	 */
-	private ItemStack[] furnaceItemStacks = new ItemStack[5];
-	/**
-	 * The number of ticks that the furnace will keep burning
-	 */
+public class TileEntityCPUMelter extends TileEntityLockable implements ITickable, ISidedInventory, IFluidHandler, IFluidTank {
+	private static final int[] SLOTS_TOP = new int[]{1, 2};
+	private static final int[] SLOTS_BOTTOM = new int[]{3};
+	private static final int[] SLOTS_SIDES = new int[]{0};
+	private ItemStack[] furnaceItemStacks = new ItemStack[4];
 	private int furnaceBurnTime;
-	/**
-	 * The number of ticks that a fresh copy of the currently-burning item would keep the furnace burning for
-	 */
-	private int currentItemBurnTime;
-	private int cookTime;
-	private int totalCookTime;
-	private int heldWaterAmount;
-	public static final int heldWaterAmountMax = 6000;
+	private int heldLavaAmount;
+	public static final int heldLavaAmountMax = 10000;
 	private String furnaceCustomName;
 	public boolean isLoaded;
 
@@ -103,23 +93,16 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-		boolean flag = stack != null && stack.isItemEqual(this.furnaceItemStacks[index]) && ItemStack.areItemStackTagsEqual(stack, this.furnaceItemStacks[index]);
 		this.furnaceItemStacks[index] = stack;
 
 		if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
 			stack.stackSize = this.getInventoryStackLimit();
 		}
-
-		if (index == 0 && !flag) {
-			this.totalCookTime = this.getCookTime(stack);
-			this.cookTime = 0;
-			this.markDirty();
-		}
 	}
 
 	@Override
 	public String getName() {
-		return "container.metal_part_maker";
+		return "container.cpu_melter";
 	}
 
 	@Override
@@ -143,10 +126,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 		}
 
 		this.furnaceBurnTime = compound.getInteger("BurnTime");
-		this.cookTime = compound.getInteger("CookTime");
-		this.totalCookTime = compound.getInteger("CookTimeTotal");
-		this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[2]);
-		this.heldWaterAmount = compound.getInteger("HeldWater");
+		this.heldLavaAmount = compound.getInteger("HeldLava");
 
 		if (compound.hasKey("CustomName", 8)) {
 			this.furnaceCustomName = compound.getString("CustomName");
@@ -157,9 +137,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setInteger("BurnTime", this.furnaceBurnTime);
-		compound.setInteger("CookTime", this.cookTime);
-		compound.setInteger("CookTimeTotal", this.totalCookTime);
-		compound.setInteger("HeldWater", this.heldWaterAmount);
+		compound.setInteger("HeldLava", this.heldLavaAmount);
 		NBTTagList nbttaglist = new NBTTagList();
 
 		for (int i = 0; i < this.furnaceItemStacks.length; ++i) {
@@ -196,75 +174,56 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public void update() {
-		boolean flag = this.isActive();
-		boolean flag1 = false;
-
-		if (this.isActive()) {
-			--this.furnaceBurnTime;
-		}
+		boolean isInitiallyActive = this.isActive();
+		boolean tileChanged = false;
 
 		if (!this.world.isRemote) {
 			if (!isLoaded)
 				isLoaded = true;
-			if (this.furnaceItemStacks[4] != null && FluidUtil.getFluidHandler(furnaceItemStacks[4]) != null && this.heldWaterAmount < heldWaterAmountMax) {
-				  FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks[4], this, this.handlerBottom, 1000, null);
+			if (this.furnaceItemStacks[0] != null && FluidUtil.getFluidHandler(furnaceItemStacks[0]) != null && this.heldLavaAmount < heldLavaAmountMax) {
+				  FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks[0], this, this.handlerBottom, 1000, null);
 			}
-			if (this.isActive() || this.furnaceItemStacks[2] != null && this.furnaceItemStacks[0] != null && this.furnaceItemStacks[1] != null) {
+			if (this.isActive() || this.furnaceItemStacks[1] != null && this.furnaceItemStacks[2] != null) {
 				if (!this.isActive() && this.canSmelt()) {
-					this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[2]);
-					this.currentItemBurnTime = this.furnaceBurnTime;
+					this.furnaceBurnTime = 5000;
 
 					if (this.isActive()) {
-						flag1 = true;
-
-						if (this.furnaceItemStacks[2] != null) {
-							--this.furnaceItemStacks[2].stackSize;
-
-							if (this.furnaceItemStacks[2].stackSize == 0) {
-								this.furnaceItemStacks[2] = furnaceItemStacks[2].getItem().getContainerItem(furnaceItemStacks[2]);
-							}
-						}
+						tileChanged = true;
 					}
 				}
 
 				if (this.isActive() && this.canSmelt()) {
-					++this.cookTime;
+					if(furnaceBurnTime % 5 == 0)
+						--this.heldLavaAmount;
+					--this.furnaceBurnTime;
 
-					if (this.cookTime == this.totalCookTime) {
-						this.cookTime = 0;
-						this.totalCookTime = this.getCookTime(this.furnaceItemStacks[0]);
+					if (this.furnaceBurnTime == 0) {
 						this.smeltItem();
-						flag1 = true;
+						tileChanged = true;
 					}
 				} else {
-					this.cookTime = 0;
+					this.furnaceBurnTime = 0;
 				}
-			} else if (!this.isActive() && this.cookTime > 0) {
-				this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
+			} else if (!this.isActive() && this.furnaceBurnTime > 0) {
+				this.furnaceBurnTime = 0;
 			}
 
-			if (flag != this.isActive()) {
-				flag1 = true;
-				BlockMetalPartConstructor.setState(this.isActive(), this.world, this.pos);
+			if (isInitiallyActive != this.isActive()) {
+				tileChanged = true;
 			}
 		}
 
-		if (flag1) {
+		if (tileChanged) {
 			this.markDirty();
 		}
 	}
 
-	public int getCookTime(@Nullable ItemStack stack) {
-		return 200;
-	}
-
 	private boolean canSmelt() {
-		if (this.furnaceItemStacks[0] == null || this.furnaceItemStacks[1] == null || heldWaterAmount <= 0) {
+		if (this.furnaceItemStacks[1] == null || this.furnaceItemStacks[2] == null || heldLavaAmount <= 0) {
 			return false;
 		} else {
-			ItemStack itemstack = MetalMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks[0], this.furnaceItemStacks[1]);
+			ItemStack itemstack = CPUMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks[1], this.furnaceItemStacks[2]);
 			if (itemstack == null) return false;
-			if (MetalMeltRecipes.instance().getWaterCost(itemstack) > heldWaterAmount) return false;
 			if (this.furnaceItemStacks[3] == null) return true;
 			if (!this.furnaceItemStacks[3].isItemEqual(itemstack)) return false;
 			int result = furnaceItemStacks[3].stackSize + itemstack.stackSize;
@@ -274,7 +233,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	public void smeltItem() {
 		if (this.canSmelt()) {
-			ItemStack itemstack = MetalMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks[0], this.furnaceItemStacks[1]);
+			ItemStack itemstack = CPUMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks[1], this.furnaceItemStacks[2]);
 
 			if (this.furnaceItemStacks[3] == null) {
 				this.furnaceItemStacks[3] = itemstack.copy();
@@ -282,57 +241,19 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 				this.furnaceItemStacks[3].stackSize += itemstack.stackSize;
 			}
 
-			--this.furnaceItemStacks[0].stackSize;
 			--this.furnaceItemStacks[1].stackSize;
-
-			if (this.furnaceItemStacks[0].stackSize <= 0) {
-				this.furnaceItemStacks[0] = null;
-			}
+			--this.furnaceItemStacks[2].stackSize;
 
 			if (this.furnaceItemStacks[1].stackSize <= 0) {
 				this.furnaceItemStacks[1] = null;
 			}
+
+			if (this.furnaceItemStacks[2].stackSize <= 0) {
+				this.furnaceItemStacks[2] = null;
+			}
 			drain(MetalMeltRecipes.instance().getWaterCost(itemstack), true);
 			world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f+((float)world.rand.nextInt(4))*0.1f);
 		}
-	}
-
-	public static int getItemBurnTime(ItemStack stack) {
-		if (stack == null) {
-			return 0;
-		} else {
-			Item item = stack.getItem();
-
-			if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR) {
-				Block block = Block.getBlockFromItem(item);
-
-				if (block == Blocks.WOODEN_SLAB) {
-					return 150;
-				}
-
-				if (block.getDefaultState().getMaterial() == Material.WOOD) {
-					return 300;
-				}
-
-				if (block == Blocks.COAL_BLOCK) {
-					return 16000;
-				}
-			}
-
-			if (item instanceof ItemTool && "WOOD".equals(((ItemTool) item).getToolMaterialName())) return 200;
-			if (item instanceof ItemSword && "WOOD".equals(((ItemSword) item).getToolMaterialName())) return 200;
-			if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe) item).getMaterialName())) return 200;
-			if (item == Items.STICK) return 100;
-			if (item == Items.COAL) return 1600;
-			if (item == Items.LAVA_BUCKET) return 20000;
-			if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
-			if (item == Items.BLAZE_ROD) return 2400;
-			return GameRegistry.getFuelValue(stack);
-		}
-	}
-
-	public static boolean isItemFuel(ItemStack stack) {
-		return getItemBurnTime(stack) > 0;
 	}
 
 	@Override
@@ -350,13 +271,13 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		if (index == 3 || index == 5) {
+		if (index == 3) {
 			return false;
-		} else if (index != 2) {
+		} else if (index != 0) {
 			return true;
 		} else {
-			ItemStack itemstack = this.furnaceItemStacks[2];
-			return isItemFuel(stack) || SlotMPConstructorFuel.isBucket(stack) && (itemstack == null || itemstack.getItem() != Items.BUCKET);
+			ItemStack itemstack = this.furnaceItemStacks[0];
+			return FluidUtil.getFluidContained(itemstack) != null && FluidUtil.getFluidContained(itemstack).getFluid() == FluidRegistry.LAVA;
 		}
 	}
 
@@ -372,10 +293,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		if (direction == EnumFacing.DOWN && index == 1) {
-			Item item = stack.getItem();
-
-			if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
+		if (direction == EnumFacing.DOWN && index == 0) {
+			if (FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == FluidRegistry.LAVA) {
 				return false;
 			}
 		}
@@ -385,12 +304,12 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public String getGuiID() {
-		return "mechsoldiers:part_constructor";
+		return "mechsoldiers:cpu_melter";
 	}
 
 	@Override
 	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-		return new ContainerMetalPartConstructor(playerInventory, this);
+		return new ContainerCPUMelter(playerInventory, this);
 	}
 
 	@Override
@@ -399,15 +318,9 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			case 0:
 				return this.furnaceBurnTime;
 			case 1:
-				return this.currentItemBurnTime;
+				return this.heldLavaAmount;
 			case 2:
-				return this.cookTime;
-			case 3:
-				return this.totalCookTime;
-			case 4:
-				return this.heldWaterAmount;
-			case 5:
-				return heldWaterAmountMax;
+				return heldLavaAmountMax;
 			default:
 				return 0;
 		}
@@ -420,16 +333,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 				this.furnaceBurnTime = value;
 				break;
 			case 1:
-				this.currentItemBurnTime = value;
-				break;
-			case 2:
-				this.cookTime = value;
-				break;
-			case 3:
-				this.totalCookTime = value;
-				break;
-			case 4:
-				this.heldWaterAmount = value;
+				this.heldLavaAmount = value;
 				break;
 			default:
 
@@ -438,7 +342,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public int getFieldCount() {
-		return 6;
+		return 3;
 	}
 
 	@Override
@@ -476,18 +380,18 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 	@Override
 	public FluidStack getFluid() {
 		if (getFluidAmount() > 0)
-			return new FluidStack(FluidRegistry.WATER, getFluidAmount());
+			return new FluidStack(FluidRegistry.LAVA, getFluidAmount());
 		return null;
 	}
 
 	@Override
 	public int getFluidAmount() {
-		return heldWaterAmount;
+		return heldLavaAmount;
 	}
 
 	@Override
 	public int getCapacity() {
-		return heldWaterAmountMax;
+		return heldLavaAmountMax;
 	}
 
 	@Override
@@ -498,14 +402,14 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
 		int maxFillAmount = getCapacity() - getFluidAmount();
-		if (resource.getFluid().equals(FluidRegistry.WATER) && maxFillAmount > 0) {
+		if (resource.getFluid().equals(FluidRegistry.LAVA) && maxFillAmount > 0) {
 			if (maxFillAmount < resource.amount) {
 				if (doFill)
-					heldWaterAmount += maxFillAmount;
+					heldLavaAmount += maxFillAmount;
 				return maxFillAmount;
 			} else {
 				if (doFill)
-					heldWaterAmount += resource.amount;
+					heldLavaAmount += resource.amount;
 				return resource.amount;
 			}
 		}
@@ -515,16 +419,16 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 	@Nullable
 	@Override
 	public FluidStack drain(FluidStack resource, boolean doDrain) {
-		if (resource.amount > 0 && resource.getFluid().equals(FluidRegistry.WATER)) {
+		if (resource.amount > 0 && resource.getFluid().equals(FluidRegistry.LAVA)) {
 			if (resource.amount < getFluidAmount()) {
 				if (doDrain)
-					heldWaterAmount -= resource.amount;
-				return new FluidStack(FluidRegistry.WATER, resource.amount);
+					heldLavaAmount -= resource.amount;
+				return new FluidStack(FluidRegistry.LAVA, resource.amount);
 			} else {
-				int prevHeldWater = getFluidAmount();
+				int prevHeldLava = getFluidAmount();
 				if (doDrain)
-					heldWaterAmount = 0;
-				return new FluidStack(FluidRegistry.WATER, prevHeldWater);
+					heldLavaAmount = 0;
+				return new FluidStack(FluidRegistry.LAVA, prevHeldLava);
 			}
 		}
 		return null;
@@ -536,13 +440,13 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 		if (maxDrain > 0) {
 			if (maxDrain < getFluidAmount()) {
 				if (doDrain)
-					heldWaterAmount -= maxDrain;
-				return new FluidStack(FluidRegistry.WATER, maxDrain);
+					heldLavaAmount -= maxDrain;
+				return new FluidStack(FluidRegistry.LAVA, maxDrain);
 			} else {
-				int prevHeldWater = getFluidAmount();
+				int prevHeldLava = getFluidAmount();
 				if (doDrain)
-					heldWaterAmount = 0;
-				return new FluidStack(FluidRegistry.WATER, prevHeldWater);
+					heldLavaAmount = 0;
+				return new FluidStack(FluidRegistry.LAVA, prevHeldLava);
 			}
 		}
 		return null;

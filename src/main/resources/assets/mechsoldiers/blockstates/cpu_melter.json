@@ -1,0 +1,10 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "forge:multi-layer",
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": { "model": "mechsoldiers:cpu_melter" }
+    }
+}

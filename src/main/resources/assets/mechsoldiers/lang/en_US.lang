@@ -10,11 +10,13 @@ item.joints_gold.name=Gold Joints
 item.cpu_copper_redstone.name=Copper-Redstone CPU
 item.cpu_gold_redstone.name=Gold-Redstone CPU
 item.cpu_terminator.name=Terminator CPU
+item.blueprint.name=Skeletal Component Blueprint
 
 tile.robot_box.name=Robot Crate
 tile.robot_constructor.name=Robot Builder
 tile.metal_part_constructor.name=Skeleton Mould Melter
 tile.metal_part_constructor_active.name=Skeleton Mould Melter
 tile.mini_tank.name=Mini Tank
+tile.cpu_melter.name=CPU Mould Melter
 
 itemGroup.robot_parts=Robot Parts

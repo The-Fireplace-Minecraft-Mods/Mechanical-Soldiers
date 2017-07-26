@@ -32,10 +32,7 @@ import the_fireplace.mechsoldiers.network.MSGuiHandler;
 import the_fireplace.mechsoldiers.network.PacketDispatcher;
 import the_fireplace.mechsoldiers.registry.MechCraftingRecipes;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
-import the_fireplace.mechsoldiers.tileentity.TileEntityMiniTank;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
-import the_fireplace.mechsoldiers.tileentity.TileEntityRobotBox;
-import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
+import the_fireplace.mechsoldiers.tileentity.*;
 import the_fireplace.mechsoldiers.util.ComponentDamageGeneric;
 import the_fireplace.mechsoldiers.util.ComponentDamagePotato;
 import the_fireplace.mechsoldiers.util.ICPU;
@@ -88,11 +85,13 @@ public class MechSoldiers {
 	public static final Item cpu_copper_redstone = new ItemCPU("copper_redstone", 24);
 	public static final Item cpu_gold_redstone = new ItemCPU("gold_redstone", 64);
 	public static final Item cpu_terminator = new ItemCPU("terminator", 32);
+	public static final Item blueprint = new Item().setUnlocalizedName("blueprint").setRegistryName("blueprint").setCreativeTab(CreativeTabs.MISC);
 
 	public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
 	public static final Block robot_box = new BlockRobotBox("robot_box");
 	public static final Block metal_part_constructor = new BlockMetalPartConstructor(false, "metal_part_constructor").setCreativeTab(Overlord.tabOverlord);
 	public static final Block metal_part_constructor_active = new BlockMetalPartConstructor(true, "metal_part_constructor_active").setRegistryName("metal_part_constructor_active");
+	public static final Block cpu_melter = new BlockCPUMelter("cpu_melter").setCreativeTab(Overlord.tabOverlord);
 
 	public static final BlockHalfMiniTank mini_tank = new BlockHalfMiniTank();
 	public static final BlockFullMiniTank full_mini_tank = new BlockFullMiniTank();
@@ -111,6 +110,7 @@ public class MechSoldiers {
 		GameRegistry.register(cpu_copper_redstone);
 		GameRegistry.register(cpu_gold_redstone);
 		GameRegistry.register(cpu_terminator);
+		GameRegistry.register(blueprint);
 
 		GameRegistry.register(robot_box);
 		ItemBlock robotBoxItem = new ItemBlock(robot_box);
@@ -119,6 +119,7 @@ public class MechSoldiers {
 		GameRegistry.register(robotBoxItem);
 		Overlord.instance.registerBlock(robot_constructor);
 		Overlord.instance.registerBlock(metal_part_constructor);
+		Overlord.instance.registerBlock(cpu_melter);
 		GameRegistry.register(metal_part_constructor_active);
 
 		GameRegistry.register(mini_tank);
@@ -129,6 +130,7 @@ public class MechSoldiers {
 		GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
 		GameRegistry.registerTileEntity(TileEntityPartConstructor.class, "metal_part_constructor");
 		GameRegistry.registerTileEntity(TileEntityMiniTank.class, "mini_tank");
+		GameRegistry.registerTileEntity(TileEntityCPUMelter.class, "cpu_melter");
 
 		PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
 		PartRegistry.registerSkeleton(skeleton_term, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/terminator_skeleton.png"));
@@ -164,11 +166,13 @@ public class MechSoldiers {
 		rmm(cpu_copper_redstone);
 		rmm(cpu_gold_redstone);
 		rmm(cpu_terminator);
+		rmm(blueprint);
 
 		rmm(robot_constructor);
 		rmm(robot_box);
 		rmm(metal_part_constructor);
 		rmm(mini_tank);
+		rmm(cpu_melter);
 		IStateMapper mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY).build();
 		IStateMapper full_mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY, BlockSlab.HALF).build();
 		ModelLoader.setCustomStateMapper(mini_tank, mini_tank_mapper);
