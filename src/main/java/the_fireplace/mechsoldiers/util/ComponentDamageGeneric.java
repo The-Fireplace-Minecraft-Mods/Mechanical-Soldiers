@@ -25,24 +25,28 @@ public final class ComponentDamageGeneric extends ComponentDamageBehavior {
 		switch (material.toLowerCase()) {
 			case "wood":
 				if (source.isFireDamage())
-					amount *= 2;
-				itemToDamage.damageItem(Math.round(amount), entity);
+					amount *= 2.0;
+				itemToDamage.damageItem((int)Math.ceil(amount), entity);
 				return itemToDamage;
 			case "iron":
 				if (source == DamageSource.drown)
-					amount *= 1.5;
-				itemToDamage.damageItem(Math.round(amount), entity);
+					amount *= 2.5;
+				itemToDamage.damageItem((int)Math.ceil(amount), entity);
 				return itemToDamage;
 			case "copper_redstone":
+				if (source == DamageSource.drown)
+					amount *= 1.25;
 			case "gold_redstone":
 				if (source == DamageSource.lightningBolt)
-					amount *= 3;
+					amount *= 3.0;
+				if (source == DamageSource.drown)
+					amount *= 1.5;
 			case "gold":
 			case "copper":
 				if (source.isFireDamage())
-					amount *= 1.1F;
+					amount *= 1.1;
 			default:
-				itemToDamage.damageItem(Math.round(amount), entity);
+				itemToDamage.damageItem((int)Math.ceil(amount), entity);
 				return itemToDamage;
 		}
 	}
