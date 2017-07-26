@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.blocks.*;
+import the_fireplace.mechsoldiers.compat.guide.MechSoldiersGuideCompat;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.entity.ai.TerminatorCPU;
 import the_fireplace.mechsoldiers.items.*;
@@ -34,6 +36,8 @@ import the_fireplace.mechsoldiers.util.ComponentDamageGeneric;
 import the_fireplace.mechsoldiers.util.ComponentDamagePotato;
 import the_fireplace.mechsoldiers.util.ICPU;
 import the_fireplace.overlord.Overlord;
+import the_fireplace.overlord.compat.guide.IGuideCompat;
+import the_fireplace.overlord.compat.guide.OverlordGuide;
 
 /**
  * @author The_Fireplace
@@ -44,7 +48,6 @@ public class MechSoldiers {
 	public static final String MODNAME = "Mechanical Soldiers";
 
     /*TODO before initial release:
-    Add robots to the Overlord guide book
     Add JEI integration for the machines that make parts
     Add AE2 integration
      */
@@ -142,6 +145,12 @@ public class MechSoldiers {
 		EntityRegistry.registerModEntity(/*new ResourceLocation(MODID+":mechanical_skeleton"), */EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
 
 		proxy.registerClient();
+
+		IGuideCompat guideCompat;
+		if(Loader.isModLoaded("guideapi")){
+			guideCompat = new MechSoldiersGuideCompat();
+			guideCompat.buildBook();
+		}
 	}
 
 	@Mod.EventHandler
