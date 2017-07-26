@@ -26,6 +26,10 @@ import java.util.UUID;
 public class GuiRobotConstructor extends GuiContainer {
 	public static final ResourceLocation texture = new ResourceLocation(MechSoldiers.MODID, "textures/gui/robot_constructor.png");
 	public static final ResourceLocation overlords_seal_texture = new ResourceLocation(Overlord.MODID, "textures/items/overlords_seal.png");
+	public static final ResourceLocation joints_texture = new ResourceLocation(MechSoldiers.MODID, "textures/items/iron_joints.png");
+	public static final ResourceLocation skeleton_texture = new ResourceLocation(MechSoldiers.MODID, "textures/items/terminator_skeleton.png");
+	public static final ResourceLocation cpu_texture = new ResourceLocation(MechSoldiers.MODID, "textures/items/cpu_gold_redstone.png");
+	public static final ResourceLocation wood_texture = new ResourceLocation(MechSoldiers.MODID, "textures/icons/wood.png");
 	private TileEntityRobotConstructor te;
 	private EntityPlayer playerUsing;
 
@@ -74,6 +78,38 @@ public class GuiRobotConstructor extends GuiContainer {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(overlords_seal_texture);
 			drawModalRectWithCustomSizedTexture(6, 6, 0, 0, 16, 16, 16, 16);
+			GlStateManager.resetColor();
+			GlStateManager.disableBlend();
+		}
+		if (te.getStackInSlot(1) == null) {
+			GlStateManager.enableBlend();
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(cpu_texture);
+			drawModalRectWithCustomSizedTexture(48, 26, 0, 0, 16, 16, 16, 16);
+			GlStateManager.resetColor();
+			GlStateManager.disableBlend();
+		}
+		if (te.getStackInSlot(2) == null) {
+			GlStateManager.enableBlend();
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(skeleton_texture);
+			drawModalRectWithCustomSizedTexture(80, 21, 0, 0, 16, 16, 16, 16);
+			GlStateManager.resetColor();
+			GlStateManager.disableBlend();
+		}
+		if (te.getStackInSlot(3) == null) {
+			GlStateManager.enableBlend();
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(joints_texture);
+			drawModalRectWithCustomSizedTexture(112, 26, 0, 0, 16, 16, 16, 16);
+			GlStateManager.resetColor();
+			GlStateManager.disableBlend();
+		}
+		if (te.getStackInSlot(4) == null) {
+			GlStateManager.enableBlend();
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(wood_texture);
+			drawModalRectWithCustomSizedTexture(6, 57, 0, 0, 16, 16, 16, 16);
 			GlStateManager.resetColor();
 			GlStateManager.disableBlend();
 		}

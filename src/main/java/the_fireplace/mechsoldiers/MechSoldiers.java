@@ -48,7 +48,6 @@ public class MechSoldiers {
 	public static final String MODNAME = "Mechanical Soldiers";
 
     /*TODO before initial release:
-    Add JEI integration for the machines that make parts
     Add AE2 integration
     Add items to Loot Tables
      */
