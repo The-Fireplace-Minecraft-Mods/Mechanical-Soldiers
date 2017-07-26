@@ -23,10 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.blocks.*;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.entity.ai.TerminatorCPU;
-import the_fireplace.mechsoldiers.items.ItemBlockMiniTank;
-import the_fireplace.mechsoldiers.items.ItemCPU;
-import the_fireplace.mechsoldiers.items.ItemJoints;
-import the_fireplace.mechsoldiers.items.ItemSkeleton;
+import the_fireplace.mechsoldiers.items.*;
 import the_fireplace.mechsoldiers.network.CommonProxy;
 import the_fireplace.mechsoldiers.network.MSGuiHandler;
 import the_fireplace.mechsoldiers.network.PacketDispatcher;
@@ -47,7 +44,6 @@ public class MechSoldiers {
 	public static final String MODNAME = "Mechanical Soldiers";
 
     /*TODO before initial release:
-    Add a tooltip to the crate saying what is in it
     Add robots to the Overlord guide book
     Add JEI integration for the machines that make parts
     Add AE2 integration
@@ -111,7 +107,7 @@ public class MechSoldiers {
 		GameRegistry.register(blueprint);
 
 		GameRegistry.register(robot_box);
-		ItemBlock robotBoxItem = new ItemBlock(robot_box);
+		ItemBlock robotBoxItem = new ItemBlockSkeletonCrate(robot_box);
 		robotBoxItem.setMaxStackSize(1);
 		robotBoxItem.setRegistryName(robot_box.getRegistryName());
 		GameRegistry.register(robotBoxItem);
