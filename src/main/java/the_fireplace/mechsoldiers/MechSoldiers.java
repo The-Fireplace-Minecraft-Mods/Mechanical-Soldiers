@@ -55,6 +55,7 @@ public class MechSoldiers {
     Add a tooltip to the crate saying what is in it
     Add robots to the Overlord guide book
     Add JEI integration for the machines that make parts
+    Add AE2 integration
      */
     /*TODO anytime:
     Add integration with other mods for parts made of copper, steel, bronze, etc.
@@ -91,7 +92,7 @@ public class MechSoldiers {
 	public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
 	public static final Block robot_box = new BlockRobotBox("robot_box");
 	public static final Block metal_part_constructor = new BlockMetalPartConstructor(false, "metal_part_constructor").setCreativeTab(Overlord.tabOverlord);
-	public static final Block metal_part_constructor_active = new BlockMetalPartConstructor(true, "metal_part_constructor_active");
+	public static final Block metal_part_constructor_active = new BlockMetalPartConstructor(true, "metal_part_constructor_active").setRegistryName("metal_part_constructor_active");
 
 	public static final BlockHalfMiniTank mini_tank = new BlockHalfMiniTank();
 	public static final BlockFullMiniTank full_mini_tank = new BlockFullMiniTank();
@@ -118,12 +119,11 @@ public class MechSoldiers {
 		GameRegistry.register(robotBoxItem);
 		Overlord.instance.registerBlock(robot_constructor);
 		Overlord.instance.registerBlock(metal_part_constructor);
-		Overlord.instance.registerBlock(metal_part_constructor_active);
+		GameRegistry.register(metal_part_constructor_active);
 
 		GameRegistry.register(mini_tank);
 		GameRegistry.register(full_mini_tank);
 		GameRegistry.register(new ItemBlockMiniTank(mini_tank, mini_tank, full_mini_tank).setRegistryName("mini_tank"));
-		GameRegistry.register(new ItemBlockMiniTank(full_mini_tank, mini_tank, full_mini_tank).setRegistryName("full_mini_tank"));
 
 		GameRegistry.registerTileEntity(TileEntityRobotConstructor.class, "robot_constructor");
 		GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
@@ -168,7 +168,6 @@ public class MechSoldiers {
 		rmm(robot_constructor);
 		rmm(robot_box);
 		rmm(metal_part_constructor);
-		rmm(metal_part_constructor_active);
 		rmm(mini_tank);
 		IStateMapper mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY).build();
 		IStateMapper full_mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY, BlockSlab.HALF).build();
