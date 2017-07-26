@@ -42,12 +42,12 @@ import javax.annotation.Nullable;
 
 public class TileEntityPartConstructor extends TileEntityLockable implements ITickable, ISidedInventory, IFluidHandler, IFluidTank {
 	private static final int[] SLOTS_TOP = new int[]{0, 1};
-	private static final int[] SLOTS_BOTTOM = new int[]{3, 2, 5};
+	private static final int[] SLOTS_BOTTOM = new int[]{3, 2};
 	private static final int[] SLOTS_SIDES = new int[]{2, 4};
 	/**
 	 * The ItemStacks that hold the items currently being used in the part constructor
 	 */
-	private ItemStack[] furnaceItemStacks = new ItemStack[6];
+	private ItemStack[] furnaceItemStacks = new ItemStack[5];
 	/**
 	 * The number of ticks that the furnace will keep burning
 	 */

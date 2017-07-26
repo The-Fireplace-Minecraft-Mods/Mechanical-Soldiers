@@ -29,7 +29,6 @@ public class ContainerMetalPartConstructor extends Container {
 		this.addSlotToContainer(new SlotMPConstructorFuel(furnaceInventory, 2, 56, 53));
 		this.addSlotToContainer(new SlotOutput(furnaceInventory, 3, 116, 35));
 		this.addSlotToContainer(new Slot(furnaceInventory, 4, 7, 7));
-		this.addSlotToContainer(new SlotOutput(furnaceInventory, 5, 116, 60));
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
