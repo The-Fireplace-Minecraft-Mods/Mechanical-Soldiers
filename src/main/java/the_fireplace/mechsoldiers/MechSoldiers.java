@@ -47,8 +47,6 @@ public class MechSoldiers {
 	public static final String MODNAME = "Mechanical Soldiers";
 
     /*TODO before initial release:
-    Add crafting recipes for everything(Including new machines to assemble parts)
-    Un-comment the skeleton crate's zeros
     Add a tooltip to the crate saying what is in it
     Add robots to the Overlord guide book
     Add JEI integration for the machines that make parts

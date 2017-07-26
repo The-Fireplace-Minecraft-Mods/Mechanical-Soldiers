@@ -50,7 +50,7 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		if (skellyData == null && !worldIn.isRemote)
 			Overlord.logError("Error: Skeleton Data for a crate was null!");
-		return new TileEntityRobotBox(skellyData, worldIn.rand.nextInt(24/*000*/) + 12/*000*/);//TODO: Remove noted out zeroes before release
+		return new TileEntityRobotBox(skellyData, worldIn.rand.nextInt(24000) + 12000);
 	}
 
 	@Override
