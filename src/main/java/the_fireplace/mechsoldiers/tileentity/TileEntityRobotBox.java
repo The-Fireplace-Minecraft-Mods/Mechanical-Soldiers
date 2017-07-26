@@ -100,12 +100,16 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotJoints"));
 	}
 
+	public String getOwnerId() {
+		return skeletonData.getString("OwnerUUID");
+	}
+
 	public float getCompletion() {
 		return 1.0F - (float) ticksRemaining / (float) maxTicks;
 	}
 
 	private void spawnRobot() {
-		EntityMechSkeleton robot = new EntityMechSkeleton(world, UUID.fromString(skeletonData.getString("OwnerUUID")))
+		EntityMechSkeleton robot = new EntityMechSkeleton(world, UUID.fromString(getOwnerId()))
 				.setCPU(getCPU())
 				.setSkeleton(getSkeleton())
 				.setJoints(getJoints());
