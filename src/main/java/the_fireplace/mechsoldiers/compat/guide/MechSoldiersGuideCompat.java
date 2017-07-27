@@ -69,7 +69,7 @@ public class MechSoldiersGuideCompat implements IGuideBook {
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.4.1")));
 		pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.mini_tank, "ggg", "g g", "ggg", 'g', MechCraftingRecipes.glass_pane)));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.4.2")));
-		pages.add(new PageIRecipe(new ShapelessOreRecipe(MechCraftingRecipes.blueprint2, MechCraftingRecipes.blueprint, "paper", "dyeBlue", "dyeWhite")));//TODO: Add an Iron Nugget in 1.11.2
+		pages.add(new PageIRecipe(new ShapelessOreRecipe(MechCraftingRecipes.blueprint2, MechCraftingRecipes.blueprint, "paper", "dyeBlue", "dyeWhite", "nuggetIron")));
 		entries.put(new ResourceLocation(MechSoldiers.MODID, "1.4"), new EntryItemStack(pages, proxy.translateToLocal("mechsoldiers.guide.1.4"), new ItemStack(MechSoldiers.blueprint)));
 
 		List<CategoryAbstract> categories = OverlordGuide.myGuide.getCategoryList();

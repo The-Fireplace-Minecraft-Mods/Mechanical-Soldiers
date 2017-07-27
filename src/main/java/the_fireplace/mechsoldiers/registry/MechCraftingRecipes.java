@@ -40,7 +40,6 @@ public class MechCraftingRecipes {
 		CraftingRecipes.addRecipe(mpc, "ifi", "iti", 'i', "ingotIron", 'f', furnace, 't', mini_tank);
 		CraftingRecipes.addRecipe(cpum, "ift", "ibi", "tfi", 'i', "ingotIron", 'f', furnace, 't', mini_tank, 'b', blueprint);
 		CraftingRecipes.addShapelessRecipe(blueprint2, blueprint, "paper", "dyeBlue", "dyeWhite", "nuggetIron");
-		CraftingRecipes.addShapelessRecipe(blueprint2, blueprint, "paper", "dyeBlue", "dyeWhite");//TODO: Remove this line in 1.11.2
 
 		MetalMeltRecipes.instance().addMeltingRecipe(iron_skeleton, "ingotIron", "blockIron");
 		MetalMeltRecipes.instance().addMeltingRecipe(steel_skeleton, "ingotSteel", "blockSteel");
@@ -48,7 +47,6 @@ public class MechCraftingRecipes {
 		MetalMeltRecipes.instance().addMeltingRecipe(bronze_skeleton, "ingotBronze", "blockBronze");
 		MetalMeltRecipes.instance().addMeltingRecipe(gold_skeleton, "ingotGold", "blockGold");
 		MetalMeltRecipes.instance().addMeltingRecipe(iron_joints, "nuggetIron", "ingotIron", MetalMeltRecipes.WATER_COST_JOINTS);
-		MetalMeltRecipes.instance().addMeltingRecipe(iron_joints, "ingotIron", "ingotIron", MetalMeltRecipes.WATER_COST_JOINTS);//TODO: Remove this line in 1.11.2
 		MetalMeltRecipes.instance().addMeltingRecipe(gold_joints, "nuggetGold", "ingotGold", MetalMeltRecipes.WATER_COST_JOINTS);
 		MetalMeltRecipes.instance().addMeltingRecipe(steel_joints, "nuggetSteel", "ingotSteel", MetalMeltRecipes.WATER_COST_JOINTS);
 		MetalMeltRecipes.instance().addMeltingRecipe(invar_joints, "nuggetInvar", "ingotInvar", MetalMeltRecipes.WATER_COST_JOINTS);
