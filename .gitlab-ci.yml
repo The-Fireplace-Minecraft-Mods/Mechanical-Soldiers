@@ -4,8 +4,8 @@ variables:
   CACHE_DIR: "$CI_PROJECT_DIR/build"
   CACHE_DIR2: "$CI_PROJECT_DIR/.gradle"
   
-  ORIG_ARTIFACTS: "$CI_PROJECT_DIR/build/libs/MechSoldiers-1.10.2-*.jar"
-  ARTIFACTS: "$CI_PROJECT_DIR/MechSoldiers-1.10.2-*.jar"
+  ORIG_ARTIFACTS: "$CI_PROJECT_DIR/build/libs/MechSoldiers-*-*.jar"
+  ARTIFACTS: "$CI_PROJECT_DIR/MechSoldiers-*-*.jar"
 
 cache:
  paths:
