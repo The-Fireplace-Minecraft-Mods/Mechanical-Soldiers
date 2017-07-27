@@ -1,6 +1,7 @@
 package the_fireplace.mechsoldiers.registry;
 
 import com.google.common.collect.Maps;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@MethodsReturnNonnullByDefault
 public class CPUMeltRecipes {
 	private static final CPUMeltRecipes CPU_MELT_RECIPES = new CPUMeltRecipes();
 	private final Map<ItemStack, Object> smeltingListRight = Maps.newHashMap();
@@ -33,7 +35,7 @@ public class CPUMeltRecipes {
 			leftInput = new ItemStack((Item)leftInput);
 		if(leftInput instanceof Block)
 			leftInput = new ItemStack((Block) leftInput);
-		if (getMeltingResult(rightInput, leftInput) != null) {
+		if (!getMeltingResult(rightInput, leftInput).isEmpty()) {
 			FMLLog.info("Ignored melting recipe with conflicting input: " + output + " = " + rightInput + " + " + leftInput);
 			return;
 		}
@@ -41,11 +43,10 @@ public class CPUMeltRecipes {
 		this.smeltingListLeft.put(output, leftInput);
 	}
 
-	@Nullable
 	public ItemStack getMeltingResult(Object stack1, Object stack2) {
-		ItemStack compStack1 = null;
+		ItemStack compStack1 = ItemStack.EMPTY;
 		boolean useCompDict1 = true;
-		ItemStack compStack2 = null;
+		ItemStack compStack2 = ItemStack.EMPTY;
 		boolean useCompDict2 = true;
 		if(stack1 instanceof ItemStack) {
 			compStack1 = (ItemStack) stack1;
@@ -68,10 +69,10 @@ public class CPUMeltRecipes {
 				for (Entry<ItemStack, Object> entry : this.smeltingListRight.entrySet()) {
 					for (Entry<ItemStack, Object> entry2 : this.smeltingListLeft.entrySet()) {
 						Object input1 = entry.getValue();
-						ItemStack inputStack1 = null;
+						ItemStack inputStack1 = ItemStack.EMPTY;
 						boolean useDict1 = true;
 						Object input2 = entry2.getValue();
-						ItemStack inputStack2 = null;
+						ItemStack inputStack2 = ItemStack.EMPTY;
 						boolean useDict2 = true;
 						if(input1 instanceof ItemStack) {
 							inputStack1 = (ItemStack) input1;
@@ -101,7 +102,7 @@ public class CPUMeltRecipes {
 			}
 		}
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {

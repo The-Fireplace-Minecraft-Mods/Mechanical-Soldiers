@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.blocks;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -24,8 +25,11 @@ import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlockMetalPartConstructor extends BlockContainer {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	private final boolean isBurning;
@@ -40,11 +44,12 @@ public class BlockMetalPartConstructor extends BlockContainer {
 		useNeighborBrightness = true;
 	}
 
-	@Nullable
+	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(MechSoldiers.metal_part_constructor);
 	}
 
+	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		this.setDefaultFacing(worldIn, pos, state);
 	}
@@ -73,6 +78,7 @@ public class BlockMetalPartConstructor extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	@SuppressWarnings("incomplete-switch")
+	@Override
 	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		if (this.isBurning) {
 			EnumFacing enumfacing = stateIn.getValue(FACING);
@@ -105,7 +111,8 @@ public class BlockMetalPartConstructor extends BlockContainer {
 		}
 	}
 
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (worldIn.isRemote) {
 			return true;
 		} else {
@@ -140,31 +147,22 @@ public class BlockMetalPartConstructor extends BlockContainer {
 		}
 	}
 
-	/**
-	 * Returns a new instance of a block's tile entity class. Called on placing the block.
-	 */
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityPartConstructor();
 	}
 
-	/**
-	 * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
-	 * IBlockstate
-	 */
+	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
-	/**
-	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
-	 */
+	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 	}
 
-	/**
-	 * Called serverside after this block is replaced with another in Chunk, but before the Tile Entity is updated
-	 */
+	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		if (!keepInventory) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
@@ -178,33 +176,32 @@ public class BlockMetalPartConstructor extends BlockContainer {
 		super.breakBlock(worldIn, pos, state);
 	}
 
+	@Override
 	public boolean hasComparatorInputOverride(IBlockState state) {
 		return true;
 	}
 
+	@Override
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
 		return Container.calcRedstone(worldIn.getTileEntity(pos));
 	}
 
+	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		return new ItemStack(MechSoldiers.metal_part_constructor);
 	}
 
+	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
-	/**
-	 * The type of render function called. MODEL for mixed tesr and static model, MODELBLOCK_ANIMATED for TESR-only,
-	 * LIQUID for vanilla liquids, INVISIBLE to skip all rendering
-	 */
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
+	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing enumfacing = EnumFacing.getFront(meta);
 
@@ -215,29 +212,22 @@ public class BlockMetalPartConstructor extends BlockContainer {
 		return this.getDefaultState().withProperty(FACING, enumfacing);
 	}
 
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
+	@Override
 	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).getIndex();
 	}
 
-	/**
-	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
-	 * blockstate.
-	 */
+	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
-	/**
-	 * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
-	 * blockstate.
-	 */
+	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
 		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
+	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}

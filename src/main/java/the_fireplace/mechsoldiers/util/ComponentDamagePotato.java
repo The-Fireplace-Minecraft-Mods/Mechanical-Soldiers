@@ -26,7 +26,7 @@ public final class ComponentDamagePotato extends ComponentDamageBehavior {
 		switch (material.toLowerCase()) {
 			case "potato":
 				if (source.isFireDamage())
-					itemToDamage = new ItemStack(Items.BAKED_POTATO, itemToDamage.stackSize, itemToDamage.getMetadata());
+					itemToDamage = new ItemStack(Items.BAKED_POTATO, itemToDamage.getCount(), itemToDamage.getMetadata());
 				return itemToDamage;
 			default:
 				return itemToDamage;

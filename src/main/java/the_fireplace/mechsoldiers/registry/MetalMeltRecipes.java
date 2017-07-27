@@ -1,6 +1,7 @@
 package the_fireplace.mechsoldiers.registry;
 
 import com.google.common.collect.Maps;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,9 +11,12 @@ import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.overlord.Overlord;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class MetalMeltRecipes {
 	private static final MetalMeltRecipes METAL_MELT_RECIPES = new MetalMeltRecipes();
 	private final Map<ItemStack, Object> smeltingListRight = Maps.newHashMap();
@@ -42,7 +46,7 @@ public class MetalMeltRecipes {
 			leftInput = new ItemStack((Item)leftInput);
 		if(leftInput instanceof Block)
 			leftInput = new ItemStack((Block) leftInput);
-		if (getMeltingResult(rightInput, leftInput) != null) {
+		if (!getMeltingResult(rightInput, leftInput).isEmpty()) {
 			FMLLog.info("Ignored melting recipe with conflicting input: " + output + " = " + rightInput + " + " + leftInput);
 			return;
 		}
@@ -51,11 +55,10 @@ public class MetalMeltRecipes {
 		this.waterCosts.put(output, waterCost);
 	}
 
-	@Nullable
 	public ItemStack getMeltingResult(Object stack1, Object stack2) {
-		ItemStack compStack1 = null;
+		ItemStack compStack1 = ItemStack.EMPTY;
 		boolean useCompDict1 = true;
-		ItemStack compStack2 = null;
+		ItemStack compStack2 = ItemStack.EMPTY;
 		boolean useCompDict2 = true;
 		if(stack1 instanceof ItemStack) {
 			compStack1 = (ItemStack) stack1;
@@ -78,10 +81,10 @@ public class MetalMeltRecipes {
 				for (Entry<ItemStack, Object> entry : this.smeltingListRight.entrySet()) {
 					for (Entry<ItemStack, Object> entry2 : this.smeltingListLeft.entrySet()) {
 						Object input1 = entry.getValue();
-						ItemStack inputStack1 = null;
+						ItemStack inputStack1 = ItemStack.EMPTY;
 						boolean useDict1 = true;
 						Object input2 = entry2.getValue();
-						ItemStack inputStack2 = null;
+						ItemStack inputStack2 = ItemStack.EMPTY;
 						boolean useDict2 = true;
 						if(input1 instanceof ItemStack) {
 							inputStack1 = (ItemStack) input1;
@@ -111,7 +114,7 @@ public class MetalMeltRecipes {
 			}
 		}
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
@@ -130,7 +133,7 @@ public class MetalMeltRecipes {
 		if(waterCosts.get(output) != null)
 			return waterCosts.get(output);
 		else{
-			Overlord.logError("No water drain value found for "+(output != null ? output.toString() : "null")+". Perhaps you are passing the direct result rather than the getSmeltingResult()?");
+			Overlord.logError("No water drain value found for "+output.toString()+". Perhaps you are passing the direct result rather than the getSmeltingResult()?");
 			return WATER_COST_SKELETON;
 		}
 	}

@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.blocks;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -25,8 +26,11 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityCPUMelter;
 import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BlockCPUMelter extends BlockContainer {
 
 	public BlockCPUMelter(String name) {
@@ -37,7 +41,7 @@ public class BlockCPUMelter extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (worldIn.isRemote) {
 			return true;
 		} else {

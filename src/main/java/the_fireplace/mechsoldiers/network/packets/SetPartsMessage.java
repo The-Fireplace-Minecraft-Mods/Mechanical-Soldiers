@@ -52,7 +52,7 @@ public class SetPartsMessage implements IMessage {
 							NBTTagCompound item = (NBTTagCompound) mainInv.get(i);
 							int slot = item.getByte("SlotSkeletonParts");
 							if (slot >= 0 && slot < ((EntityMechSkeleton) player.world.getEntityByID(message.skeleton)).partInventory.getSizeInventory()) {
-								((EntityMechSkeleton) player.world.getEntityByID(message.skeleton)).partInventory.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+								((EntityMechSkeleton) player.world.getEntityByID(message.skeleton)).partInventory.setInventorySlotContents(slot, new ItemStack(item));
 							}
 						}
 						((EntityMechSkeleton) player.world.getEntityByID(message.skeleton)).cachedClientParts = true;

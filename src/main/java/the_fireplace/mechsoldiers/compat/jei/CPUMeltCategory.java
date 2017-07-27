@@ -59,13 +59,8 @@ public class CPUMeltCategory implements IRecipeCategory {
 	}
 
 	@Override
-	public void drawAnimations(Minecraft minecraft) {
-
-	}
-
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
-
+	public String getModName() {
+		return MechSoldiers.MODNAME;
 	}
 
 	@Override

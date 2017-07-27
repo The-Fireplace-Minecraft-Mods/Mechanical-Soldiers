@@ -1,6 +1,7 @@
 package the_fireplace.mechsoldiers.entity;
 
 import com.google.common.collect.Lists;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +32,7 @@ import java.util.UUID;
 /**
  * @author The_Fireplace
  */
+@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class EntityMechSkeleton extends EntityArmyMember {
 	public boolean cachedClientParts = false;
@@ -60,14 +62,13 @@ public class EntityMechSkeleton extends EntityArmyMember {
 			}
 
 			@Override
-			public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
+			public void setInventorySlotContents(int index, ItemStack stack) {
 				super.setInventorySlotContents(index, stack);
 				if (EntityMechSkeleton.this.world.isRemote && index == 2) {
 					PacketDispatcher.sendToServer(new RequestAugmentMessage(EntityMechSkeleton.this));
 				}
 			}
 
-			@Nullable
 			@Override
 			public ItemStack removeStackFromSlot(int index) {
 				ItemStack stack = super.removeStackFromSlot(index);
@@ -78,7 +79,6 @@ public class EntityMechSkeleton extends EntityArmyMember {
 				return stack;
 			}
 
-			@Nullable
 			@Override
 			public ItemStack decrStackSize(int index, int count) {
 				ItemStack stack = super.decrStackSize(index, count);
@@ -98,11 +98,11 @@ public class EntityMechSkeleton extends EntityArmyMember {
 		};
 	}
 
-	private DamageSource actualDamageSource = DamageSource.generic;
+	private DamageSource actualDamageSource = DamageSource.GENERIC;
 
 	@Override
 	public void addMovementTasks() {
-		if (getCPU() != null) {
+		if (!getCPU().isEmpty()) {
 			ICPU cpu = PartRegistry.getCPU(getCPU());
 			if (cpu != null)
 				cpu.addMovementAi(this, getMovementMode());
@@ -111,7 +111,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
 	@Override
 	public void addAttackTasks() {
-		if (getCPU() != null) {
+		if (!getCPU().isEmpty()) {
 			ICPU cpu = PartRegistry.getCPU(getCPU());
 			if (cpu != null)
 				cpu.addAttackAi(this, getAttackMode());
@@ -120,7 +120,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
 	@Override
 	public void addTargetTasks() {
-		if (getCPU() != null) {
+		if (!getCPU().isEmpty()) {
 			ICPU cpu = PartRegistry.getCPU(getCPU());
 			if (cpu != null)
 				cpu.addTargetAi(this, getAttackMode());
@@ -129,8 +129,8 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
 	@Override
 	public void onLivingUpdate() {
-		if (getJoints() == null || getSkeleton() == null || getJoints().stackSize <= 0 || getSkeleton().stackSize <= 0)
-			kill();
+		if (getJoints().isEmpty() || getSkeleton().isEmpty())
+			onKillCommand();
 
 		super.onLivingUpdate();
 	}
@@ -140,7 +140,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 		if (ticksExisted <= 3)
 			initEntityAI();//Refreshes the AI after the CPU has loaded
 		if (!this.isEntityInvulnerable(damageSrc)) {
-			if (damageSrc != DamageSource.outOfWorld)
+			if (damageSrc != DamageSource.OUT_OF_WORLD)
 				actualDamageSource = damageSrc;
 			else
 				setHealth(0);
@@ -162,18 +162,18 @@ public class EntityMechSkeleton extends EntityArmyMember {
 	}
 
 	protected void damageComponents(DamageSource damageSrc, float damageAmount) {
-		if (damageSrc == DamageSource.anvil) {
+		if (damageSrc == DamageSource.ANVIL) {
 			setCPU(PartRegistry.damagePart(getCPU(), damageSrc, damageAmount, this));
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 4, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount / 4, this));
-		} else if (damageSrc == DamageSource.dragonBreath) {
+		} else if (damageSrc == DamageSource.DRAGON_BREATH) {
 			setCPU(PartRegistry.damagePart(getCPU(), damageSrc, damageAmount / 4, this));
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 3, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount / 3, this));
-		} else if (damageSrc == DamageSource.fall) {
+		} else if (damageSrc == DamageSource.FALL) {
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 5, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount, this));
-		} else if (damageSrc == DamageSource.lightningBolt) {
+		} else if (damageSrc == DamageSource.LIGHTNING_BOLT) {
 			setCPU(PartRegistry.damagePart(getCPU(), damageSrc, damageAmount, this));
 			setSkeleton(PartRegistry.damagePart(getSkeleton(), damageSrc, damageAmount / 2, this));
 			setJoints(PartRegistry.damagePart(getJoints(), damageSrc, damageAmount / 2, this));
@@ -190,7 +190,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
 	public ItemStack getCPU() {
 		if (partInventory == null)
-			return null;
+			return ItemStack.EMPTY;
 		return partInventory.getStackInSlot(2);
 	}
 
@@ -204,7 +204,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
 	public ItemStack getJoints() {
 		if (partInventory == null)
-			return null;
+			return ItemStack.EMPTY;
 		return partInventory.getStackInSlot(1);
 	}
 
@@ -217,7 +217,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 
 	public ItemStack getSkeleton() {
 		if (partInventory == null)
-			return null;
+			return ItemStack.EMPTY;
 		return partInventory.getStackInSlot(0);
 	}
 
@@ -229,14 +229,14 @@ public class EntityMechSkeleton extends EntityArmyMember {
 	}
 
 	@Override
-	public void onDeath(@Nonnull DamageSource cause) {
+	public void onDeath(DamageSource cause) {
 		super.onDeath(actualDamageSource);
 
 		if (!this.world.isRemote) {
 			int i;
 			EntityItem entityitem;
 			for (i = 0; i < this.partInventory.getSizeInventory(); ++i) {
-				if (this.partInventory.getStackInSlot(i) != null) {
+				if (!this.partInventory.getStackInSlot(i).isEmpty()) {
 					entityitem = new EntityItem(this.world, this.posX, this.posY, this.posZ, this.partInventory.getStackInSlot(i));
 					entityitem.setDefaultPickupDelay();
 					this.world.spawnEntity(entityitem);
@@ -244,7 +244,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 			}
 
 			for (i = 0; i < this.equipInventory.getSizeInventory(); ++i) {
-				if (this.equipInventory.getStackInSlot(i) != null) {
+				if (!this.equipInventory.getStackInSlot(i).isEmpty()) {
 					entityitem = new EntityItem(this.world, this.posX, this.posY, this.posZ, this.equipInventory.getStackInSlot(i));
 					entityitem.setDefaultPickupDelay();
 					this.world.spawnEntity(entityitem);
@@ -263,7 +263,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 				NBTTagCompound item = (NBTTagCompound) mainInv.get(i);
 				int slot = item.getByte("SlotSkeletonParts");
 				if (slot >= 0 && slot < partInventory.getSizeInventory()) {
-					partInventory.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+					partInventory.setInventorySlotContents(slot, new ItemStack(item));
 				}
 			}
 		} else {
@@ -275,7 +275,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 				NBTTagCompound item = (NBTTagCompound) armorInv.get(i);
 				int slot = item.getByte("SlotSkeletonEquipment");
 				if (slot >= 0 && slot < equipInventory.getSizeInventory()) {
-					equipInventory.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+					equipInventory.setInventorySlotContents(slot, new ItemStack(item));
 				}
 			}
 		} else {
@@ -290,7 +290,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 		NBTTagList mainInv = new NBTTagList();
 		for (int i = 0; i < partInventory.getSizeInventory(); i++) {
 			ItemStack is = partInventory.getStackInSlot(i);
-			if (is != null) {
+			if (!is.isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
 
 				item.setByte("SlotSkeletonParts", (byte) i);
@@ -304,7 +304,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 		NBTTagList armorInv = new NBTTagList();
 		for (int i = 0; i < equipInventory.getSizeInventory(); i++) {
 			ItemStack is = equipInventory.getStackInSlot(i);
-			if (is != null) {
+			if (!is.isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
 
 				item.setByte("SlotSkeletonEquipment", (byte) i);
@@ -337,7 +337,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 	}
 
 	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+	public boolean processInteract(EntityPlayer player, EnumHand hand) {
 		if (this.getOwner() != null) {
 			if (this.getOwner().equals(player)) {
 				if (!player.isSneaking()) {
@@ -346,18 +346,17 @@ public class EntityMechSkeleton extends EntityArmyMember {
 				}
 			}
 		}
-		return super.processInteract(player, hand, stack);
+		return super.processInteract(player, hand);
 	}
 
 	@Override
-	@Nullable
 	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn)
 	{
-		return slotIn == EntityEquipmentSlot.MAINHAND ? equipInventory.getStackInSlot(0) : (slotIn == EntityEquipmentSlot.OFFHAND ? equipInventory.getStackInSlot(1) : null);
+		return slotIn == EntityEquipmentSlot.MAINHAND ? equipInventory.getStackInSlot(0) : (slotIn == EntityEquipmentSlot.OFFHAND ? equipInventory.getStackInSlot(1) : ItemStack.EMPTY);
 	}
 
 	@Override
-	public void setItemStackToSlot(EntityEquipmentSlot slotIn, @Nullable ItemStack stack)
+	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack)
 	{
 		if (slotIn == EntityEquipmentSlot.MAINHAND)
 		{
@@ -373,32 +372,28 @@ public class EntityMechSkeleton extends EntityArmyMember {
 	}
 
 	@Override
-	@Nonnull
 	public Iterable<ItemStack> getHeldEquipment()
 	{
 		return Lists.newArrayList(this.getHeldItemMainhand(), this.getHeldItemOffhand());
 	}
 
 	@Override
-	@Nullable
 	public ItemStack getHeldItemMainhand()
 	{
 		if(equipInventory == null)
-			return null;
+			return ItemStack.EMPTY;
 		return equipInventory.getStackInSlot(0);
 	}
 
 	@Override
-	@Nullable
 	public ItemStack getHeldItemOffhand()
 	{
 		if(equipInventory == null)
-			return null;
+			return ItemStack.EMPTY;
 		return equipInventory.getStackInSlot(1);
 	}
 
 	@Override
-	@Nullable
 	public ItemStack getHeldItem(EnumHand hand)
 	{
 		if (hand == EnumHand.MAIN_HAND)
@@ -416,7 +411,7 @@ public class EntityMechSkeleton extends EntityArmyMember {
 	}
 
 	@Override
-	public void setHeldItem(EnumHand hand, @Nullable ItemStack stack)
+	public void setHeldItem(EnumHand hand, ItemStack stack)
 	{
 		if (hand == EnumHand.MAIN_HAND)
 		{

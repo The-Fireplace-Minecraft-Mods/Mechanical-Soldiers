@@ -107,7 +107,7 @@ public class GuiRobot extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		drawRect(26, 49, 73, 69, new Color(0, 0, 0, 100).getRGB());
-		this.drawCenteredString(fontRendererObj, squadIndex != -1 ? squads.get(squadIndex) : I18n.format("overlord.no_squad"), 50, 55, -1);
+		this.drawCenteredString(fontRenderer, squadIndex != -1 ? squads.get(squadIndex) : I18n.format("overlord.no_squad"), 50, 55, -1);
 	}
 
 	@Override

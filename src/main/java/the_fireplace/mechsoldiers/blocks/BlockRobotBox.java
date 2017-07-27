@@ -44,9 +44,9 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
-		skellyData = stack.getTagCompound();
-		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, stack);
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		skellyData = placer.getHeldItem(placer.getActiveHand()).getTagCompound();
+		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 			ItemStack cpuStack = ((TileEntityRobotBox) tileentity).getCPU();
 			if (cpuStack.isItemStackDamageable())
 				cpuStack.setItemDamage(Math.round(cpuStack.getMaxDamage() * ((TileEntityRobotBox) tileentity).getCompletion()));
-			cpu.setEntityItemStack(cpuStack);
+			cpu.setItem(cpuStack);
 			cpu.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 			worldIn.spawnEntity(cpu);
 			cpu.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
@@ -74,7 +74,7 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 			ItemStack jointStack = ((TileEntityRobotBox) tileentity).getJoints();
 			if (jointStack.isItemStackDamageable())
 				jointStack.setItemDamage(Math.round(jointStack.getMaxDamage() * ((TileEntityRobotBox) tileentity).getCompletion()));
-			joints.setEntityItemStack(jointStack);
+			joints.setItem(jointStack);
 			joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 			worldIn.spawnEntity(joints);
 			joints.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
@@ -83,7 +83,7 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 			ItemStack skeletonStack = ((TileEntityRobotBox) tileentity).getSkeleton();
 			if (skeletonStack.isItemStackDamageable())
 				skeletonStack.setItemDamage(Math.round(skeletonStack.getMaxDamage() * ((TileEntityRobotBox) tileentity).getCompletion()));
-			skeleton.setEntityItemStack(skeletonStack);
+			skeleton.setItem(skeletonStack);
 			skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
 			worldIn.spawnEntity(skeleton);
 			skeleton.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);

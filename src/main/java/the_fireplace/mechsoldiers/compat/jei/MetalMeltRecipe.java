@@ -1,5 +1,7 @@
 package the_fireplace.mechsoldiers.compat.jei;
 
+import com.google.common.collect.Lists;
+import mcp.MethodsReturnNonnullByDefault;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -12,15 +14,16 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
 
+@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class MetalMeltRecipe implements IRecipeWrapper {
 	@Nonnull
-	private final List<List<ItemStack>> input;
+	final List<List<ItemStack>> input;
 
 	@Nonnull
-	private final List<ItemStack> outputs;
+	final List<ItemStack> outputs;
 
-	public MetalMeltRecipe(@Nonnull List<Object> input, @Nonnull ItemStack output) {
+	public MetalMeltRecipe(List<Object> input, ItemStack output) {
 		this.input = RecipeMaker.stackHelper.expandRecipeItemStackInputs(input);
 		this.outputs = Collections.singletonList(output);
 	}
@@ -28,28 +31,7 @@ public class MetalMeltRecipe implements IRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 		ingredients.setInputLists(ItemStack.class, input);
-		//ingredients.setOutputLists(ItemStack.class, Collections.singletonList(outputs));
-		ingredients.setOutputs(ItemStack.class, outputs);
-	}
-
-	@Override
-	public List getInputs() {
-		return input;
-	}
-
-	@Override
-	public List getOutputs() {
-		return outputs;
-	}
-
-	@Override
-	public List<FluidStack> getFluidInputs() {
-		return null;
-	}
-
-	@Override
-	public List<FluidStack> getFluidOutputs() {
-		return null;
+		ingredients.setOutputLists(ItemStack.class, Collections.singletonList(outputs));
 	}
 
 	@Override
@@ -58,14 +40,8 @@ public class MetalMeltRecipe implements IRecipeWrapper {
 	}
 
 	@Override
-	public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
-
-	}
-
-	@Nullable
-	@Override
 	public List<String> getTooltipStrings(int mouseX, int mouseY) {
-		return null;
+		return Lists.newArrayList();
 	}
 
 	@Override

@@ -9,10 +9,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -23,7 +22,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.blocks.*;
-import the_fireplace.mechsoldiers.compat.guide.MechSoldiersGuideCompat;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.entity.ai.GreenCPU;
 import the_fireplace.mechsoldiers.entity.ai.TerminatorCPU;
@@ -39,8 +37,6 @@ import the_fireplace.mechsoldiers.util.ComponentDamagePotato;
 import the_fireplace.mechsoldiers.util.ICPU;
 import the_fireplace.mechsoldiers.util.LootHandler;
 import the_fireplace.overlord.Overlord;
-import the_fireplace.overlord.compat.guide.IGuideCompat;
-import the_fireplace.overlord.compat.guide.OverlordGuide;
 
 /**
  * @author The_Fireplace
@@ -53,8 +49,6 @@ public class MechSoldiers {
     /*TODO:
     Add splash text(1.12 only)
     Advancements(1.12 only)
-    Add Buildcraft's chipsets to cpu recipes(1.11.2+)
-    Add Applied Llamagistics support(1.11.2+)
      */
 
 	@Mod.Instance(MODID)
@@ -65,8 +59,8 @@ public class MechSoldiers {
 
 	public static final CreativeTabs TAB_ROBOT_PARTS = new CreativeTabs("robot_parts") {
 		@Override
-		public Item getTabIconItem() {
-			return joints_iron;
+		public ItemStack getTabIconItem() {
+			return new ItemStack(joints_steel);
 		}
 	};
 
@@ -163,15 +157,9 @@ public class MechSoldiers {
 		PartRegistry.registerPotatoCPU(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
 
 		int eid = -1;
-		EntityRegistry.registerModEntity(/*new ResourceLocation(MODID+":mechanical_skeleton"), */EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(MODID+":mechanical_skeleton"), EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
 
 		proxy.registerClient();
-
-		IGuideCompat guideCompat;
-		if(Loader.isModLoaded("guideapi")){
-			guideCompat = new MechSoldiersGuideCompat();
-			guideCompat.buildBook();
-		}
 	}
 
 	@Mod.EventHandler

@@ -72,8 +72,8 @@ public class GuiRobotConstructor extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		this.drawCenteredString(fontRendererObj, getWarning(), xSize / 2, -10, Color.PINK.getRGB());
-		if (te.getStackInSlot(0) == null) {
+		this.drawCenteredString(fontRenderer, getWarning(), xSize / 2, -10, Color.PINK.getRGB());
+		if (te.getStackInSlot(0).isEmpty()) {
 			GlStateManager.enableBlend();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(overlords_seal_texture);
@@ -81,7 +81,7 @@ public class GuiRobotConstructor extends GuiContainer {
 			GlStateManager.resetColor();
 			GlStateManager.disableBlend();
 		}
-		if (te.getStackInSlot(1) == null) {
+		if (te.getStackInSlot(1).isEmpty()) {
 			GlStateManager.enableBlend();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(cpu_texture);
@@ -89,7 +89,7 @@ public class GuiRobotConstructor extends GuiContainer {
 			GlStateManager.resetColor();
 			GlStateManager.disableBlend();
 		}
-		if (te.getStackInSlot(2) == null) {
+		if (te.getStackInSlot(2).isEmpty()) {
 			GlStateManager.enableBlend();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(skeleton_texture);
@@ -97,7 +97,7 @@ public class GuiRobotConstructor extends GuiContainer {
 			GlStateManager.resetColor();
 			GlStateManager.disableBlend();
 		}
-		if (te.getStackInSlot(3) == null) {
+		if (te.getStackInSlot(3).isEmpty()) {
 			GlStateManager.enableBlend();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(joints_texture);
@@ -105,7 +105,7 @@ public class GuiRobotConstructor extends GuiContainer {
 			GlStateManager.resetColor();
 			GlStateManager.disableBlend();
 		}
-		if (te.getStackInSlot(4) == null) {
+		if (te.getStackInSlot(4).isEmpty()) {
 			GlStateManager.enableBlend();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(wood_texture);
@@ -130,11 +130,11 @@ public class GuiRobotConstructor extends GuiContainer {
 	}
 
 	private boolean isButtonEnabled() {
-		return te.getStackInSlot(1) != null && te.getStackInSlot(2) != null && te.getStackInSlot(3) != null && te.getStackInSlot(4) != null && te.getStackInSlot(5) == null;
+		return !te.getStackInSlot(1).isEmpty() && !te.getStackInSlot(2).isEmpty() && !te.getStackInSlot(3).isEmpty() && !te.getStackInSlot(4).isEmpty() && te.getStackInSlot(5).isEmpty();
 	}
 
 	private String getWarning() {
-		if (te.getStackInSlot(0) == null) {
+		if (te.getStackInSlot(0).isEmpty()) {
 			return I18n.format("skeleton_maker.warning.unclaimed");
 		} else {
 			if (te.getStackInSlot(0).getTagCompound() == null) {

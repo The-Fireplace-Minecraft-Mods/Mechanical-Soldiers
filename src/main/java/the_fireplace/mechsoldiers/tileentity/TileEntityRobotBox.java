@@ -89,15 +89,15 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 	}
 
 	public ItemStack getCPU() {
-		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotCPU"));
+		return new ItemStack(skeletonData.getCompoundTag("RobotCPU"));
 	}
 
 	public ItemStack getSkeleton() {
-		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotSkeleton"));
+		return new ItemStack(skeletonData.getCompoundTag("RobotSkeleton"));
 	}
 
 	public ItemStack getJoints() {
-		return ItemStack.loadItemStackFromNBT(skeletonData.getCompoundTag("RobotJoints"));
+		return new ItemStack(skeletonData.getCompoundTag("RobotJoints"));
 	}
 
 	public String getOwnerId() {

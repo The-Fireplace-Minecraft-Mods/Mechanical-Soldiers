@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.container;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,7 +13,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.overlord.container.SlotOutput;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ContainerCPUMelter extends Container {
 	private final IInventory tileConstructor;
 	private int furnaceBurnTime;
@@ -50,11 +54,11 @@ public class ContainerCPUMelter extends Container {
 			IContainerListener icontainerlistener = this.listeners.get(i);
 
 			if (this.furnaceBurnTime != this.tileConstructor.getField(0)) {
-				icontainerlistener.sendProgressBarUpdate(this, 0, this.tileConstructor.getField(0));
+				icontainerlistener.sendWindowProperty(this, 0, this.tileConstructor.getField(0));
 			}
 
 			if (this.heldLavaAmount != this.tileConstructor.getField(1)) {
-				icontainerlistener.sendProgressBarUpdate(this, 1, this.tileConstructor.getField(1));
+				icontainerlistener.sendWindowProperty(this, 1, this.tileConstructor.getField(1));
 			}
 		}
 
@@ -74,7 +78,6 @@ public class ContainerCPUMelter extends Container {
 	}
 
 	@Override
-	@Nullable
 	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
 		Slot slot = getSlot(i);
 		if (slot != null && slot.getHasStack()) {
@@ -83,19 +86,19 @@ public class ContainerCPUMelter extends Container {
 
 			if (i >= 36) {
 				if (!mergeItemStack(is, 0, 36, false)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (!mergeItemStack(is, 36, 36 + tileConstructor.getSizeInventory(), false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
-			if (is.stackSize <= 0) {
-				slot.putStack(null);
+			if (is.isEmpty()) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
-			slot.onPickupFromSlot(player, is);
+			slot.onTake(player, is);
 			return result;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 }

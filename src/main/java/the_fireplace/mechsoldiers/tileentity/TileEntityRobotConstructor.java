@@ -10,6 +10,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -33,28 +34,28 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class TileEntityRobotConstructor extends TileEntity implements ISidedInventory {
-	private ItemStack[] inventory;
+	private NonNullList<ItemStack> inventory;
 
 	public TileEntityRobotConstructor() {
-		inventory = new ItemStack[6];
+		inventory = NonNullList.withSize(6, ItemStack.EMPTY);
 	}
 
 	public void constructRobot() {
-		if (getStackInSlot(1) == null || getStackInSlot(2) == null || getStackInSlot(3) == null || getStackInSlot(4) == null || getStackInSlot(5) != null)
+		if (getStackInSlot(1).isEmpty() || getStackInSlot(2).isEmpty() || getStackInSlot(3).isEmpty() || getStackInSlot(4).isEmpty() || !getStackInSlot(5).isEmpty())
 			return;
 		ItemStack robotBox = new ItemStack(MechSoldiers.robot_box);
 		NBTTagCompound robotData = new NBTTagCompound();
-		if (getStackInSlot(0) != null && getStackInSlot(0).getTagCompound() != null && getStackInSlot(0).getTagCompound().getString("Owner") != null) {
+		if (!getStackInSlot(0).isEmpty() && getStackInSlot(0).getTagCompound() != null && getStackInSlot(0).getTagCompound().getString("Owner") != null) {
 			robotData.setString("OwnerUUID", getStackInSlot(0).getTagCompound().getString("Owner"));
 		} else {
 			robotData.setString("OwnerUUID", "0b1ec5ad-cb2a-43b7-995d-889320eb2e5b");
 		}
 		ItemStack oneCPU = getStackInSlot(1).copy();
-		oneCPU.stackSize = 1;
+		oneCPU.setCount(1);
 		ItemStack oneSkeleton = getStackInSlot(2).copy();
-		oneSkeleton.stackSize = 1;
+		oneSkeleton.setCount(1);
 		ItemStack oneJoints = getStackInSlot(3).copy();
-		oneJoints.stackSize = 1;
+		oneJoints.setCount(1);
 		robotData.setTag("RobotCPU", oneCPU.writeToNBT(new NBTTagCompound()));
 		robotData.setTag("RobotSkeleton", oneSkeleton.writeToNBT(new NBTTagCompound()));
 		robotData.setTag("RobotJoints", oneJoints.writeToNBT(new NBTTagCompound()));
@@ -64,19 +65,19 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 		setInventorySlotContents(5, robotBox);
 
 		for (int i = 1; i < 5; i++) {
-			if (getStackInSlot(i).stackSize > 1)
-				getStackInSlot(i).stackSize--;
+			if (getStackInSlot(i).getCount() > 1)
+				getStackInSlot(i).shrink(1);
 			else
-				setInventorySlotContents(i, null);
+				setInventorySlotContents(i, ItemStack.EMPTY);
 		}
 
-		if (getStackInSlot(0) != null) {
+		if (!getStackInSlot(0).isEmpty()) {
 			if (getStackInSlot(0).getItem() instanceof ItemOverlordsSeal) {
 				if (((ItemOverlordsSeal) getStackInSlot(0).getItem()).isConsumable())
-					if (getStackInSlot(0).stackSize > 1)
-						getStackInSlot(0).stackSize--;
+					if (getStackInSlot(0).getCount() > 1)
+						getStackInSlot(0).shrink(1);
 					else
-						setInventorySlotContents(0, null);
+						setInventorySlotContents(0, ItemStack.EMPTY);
 			}
 		}
 	}
@@ -113,20 +114,33 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public int getSizeInventory() {
-		return inventory.length;
+		return inventory.size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		for (ItemStack itemstack : this.inventory)
+		{
+			if (!itemstack.isEmpty())
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		return inventory[index];
+		return inventory.get(index);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack is = getStackInSlot(index);
-		if (is != null) {
-			if (is.stackSize <= count) {
-				setInventorySlotContents(index, null);
+		if (!is.isEmpty()) {
+			if (is.getCount() <= count) {
+				setInventorySlotContents(index, ItemStack.EMPTY);
 			} else {
 				is = is.splitStack(count);
 				markDirty();
@@ -138,16 +152,16 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack is = getStackInSlot(index);
-		setInventorySlotContents(index, null);
+		setInventorySlotContents(index, ItemStack.EMPTY);
 		return is;
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-		inventory[index] = stack;
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		inventory.set(index, stack);
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-			stack.stackSize = getInventoryStackLimit();
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+			stack.setCount(getInventoryStackLimit());
 		}
 		markDirty();
 	}
@@ -191,8 +205,8 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public void clear() {
-		for (int i = 0; i < inventory.length; ++i) {
-			inventory[i] = null;
+		for (int i = 0; i < inventory.size(); ++i) {
+			inventory.set(i, ItemStack.EMPTY);
 		}
 	}
 
@@ -203,7 +217,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 		NBTTagList list = new NBTTagList();
 		for (int i = 0; i < getSizeInventory(); i++) {
 			ItemStack is = getStackInSlot(i);
-			if (is != null) {
+			if (!is.isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
 
 				item.setByte("SlotRobotConstructor", (byte) i);
@@ -225,7 +239,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 				NBTTagCompound item = (NBTTagCompound) list.get(i);
 				int slot = item.getByte("SlotRobotConstructor");
 				if (slot >= 0 && slot < getSizeInventory()) {
-					setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+					setInventorySlotContents(slot, new ItemStack(item));
 				}
 			}
 		} else {
@@ -245,7 +259,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
-		if (stack != null) {
+		if (!stack.isEmpty()) {
 			if (index >= 0 && index < 5) {
 				if (this.isItemValidForSlot(index, stack))
 					return true;
@@ -256,7 +270,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		if (stack != null)
+		if (!stack.isEmpty())
 			if (index == 5)
 				return true;
 		return false;

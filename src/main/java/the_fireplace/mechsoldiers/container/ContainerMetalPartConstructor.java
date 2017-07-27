@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.container;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,7 +14,10 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 import the_fireplace.overlord.container.SlotOutput;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ContainerMetalPartConstructor extends Container {
 	private final IInventory tileConstructor;
 	private int cookTime;
@@ -55,23 +59,23 @@ public class ContainerMetalPartConstructor extends Container {
 			IContainerListener icontainerlistener = this.listeners.get(i);
 
 			if (this.cookTime != this.tileConstructor.getField(2)) {
-				icontainerlistener.sendProgressBarUpdate(this, 2, this.tileConstructor.getField(2));
+				icontainerlistener.sendWindowProperty(this, 2, this.tileConstructor.getField(2));
 			}
 
 			if (this.furnaceBurnTime != this.tileConstructor.getField(0)) {
-				icontainerlistener.sendProgressBarUpdate(this, 0, this.tileConstructor.getField(0));
+				icontainerlistener.sendWindowProperty(this, 0, this.tileConstructor.getField(0));
 			}
 
 			if (this.currentItemBurnTime != this.tileConstructor.getField(1)) {
-				icontainerlistener.sendProgressBarUpdate(this, 1, this.tileConstructor.getField(1));
+				icontainerlistener.sendWindowProperty(this, 1, this.tileConstructor.getField(1));
 			}
 
 			if (this.totalCookTime != this.tileConstructor.getField(3)) {
-				icontainerlistener.sendProgressBarUpdate(this, 3, this.tileConstructor.getField(3));
+				icontainerlistener.sendWindowProperty(this, 3, this.tileConstructor.getField(3));
 			}
 
 			if (this.heldWaterAmount != this.tileConstructor.getField(4)) {
-				icontainerlistener.sendProgressBarUpdate(this, 4, this.tileConstructor.getField(4));
+				icontainerlistener.sendWindowProperty(this, 4, this.tileConstructor.getField(4));
 			}
 		}
 
@@ -94,7 +98,6 @@ public class ContainerMetalPartConstructor extends Container {
 	}
 
 	@Override
-	@Nullable
 	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
 		Slot slot = getSlot(i);
 		if (slot != null && slot.getHasStack()) {
@@ -103,19 +106,19 @@ public class ContainerMetalPartConstructor extends Container {
 
 			if (i >= 36) {
 				if (!mergeItemStack(is, 0, 36, false)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (!mergeItemStack(is, 36, 36 + tileConstructor.getSizeInventory(), false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
-			if (is.stackSize <= 0) {
-				slot.putStack(null);
+			if (is.isEmpty()) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
-			slot.onPickupFromSlot(player, is);
+			slot.onTake(player, is);
 			return result;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 }

@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.container;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -19,6 +20,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 /**
  * @author The_Fireplace
  */
+
+@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ContainerRobot extends Container {
 	private EntityMechSkeleton entity;
@@ -73,27 +76,24 @@ public class ContainerRobot extends Container {
 
 			if (i >= 36) {
 				if (!mergeItemStack(is, 0, 36, false)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (AugmentRegistry.getAugment(is) != null && !mergeItemStack(is, 36 + 6, 36 + entity.partInventory.getSizeInventory() + entity.equipInventory.getSizeInventory(), false)) {
-				return null;
+				return ItemStack.EMPTY;
 			} else if (!mergeItemStack(is, 36, 36 + entity.partInventory.getSizeInventory() + entity.equipInventory.getSizeInventory(), false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
-			if (is.stackSize == 0) {
-				slot.putStack(null);
+			if (is.isEmpty()) {
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
-			slot.onPickupFromSlot(player, is);
+			slot.onTake(player, is);
 			return result;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
-	/**
-	 * Called when the container is closed.
-	 */
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);

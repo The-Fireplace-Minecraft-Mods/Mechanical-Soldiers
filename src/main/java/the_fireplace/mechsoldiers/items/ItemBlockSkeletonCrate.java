@@ -27,11 +27,11 @@ public class ItemBlockSkeletonCrate extends ItemBlock {
 			if(nbt.hasKey("OwnerUUID") && playerIn.world.getPlayerEntityByUUID(UUID.fromString(nbt.getString("OwnerUUID"))) != null)
 				tooltip.add(proxy.translateToLocal("tooltip.owner")+' '+playerIn.world.getPlayerEntityByUUID(UUID.fromString(nbt.getString("OwnerUUID"))).getDisplayNameString());
 			if(nbt.hasKey("RobotCPU"))
-				tooltip.add(proxy.translateToLocal("color.turq")+proxy.translateToLocal("tooltip.robot_cpu") + ' ' + ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("RobotCPU")).getDisplayName());
+				tooltip.add(proxy.translateToLocal("color.turq")+proxy.translateToLocal("tooltip.robot_cpu") + ' ' + new ItemStack(nbt.getCompoundTag("RobotCPU")).getDisplayName());
 			if(nbt.hasKey("RobotSkeleton"))
-				tooltip.add(proxy.translateToLocal("color.turq")+proxy.translateToLocal("tooltip.robot_skeleton")+' '+ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("RobotSkeleton")).getDisplayName());
+				tooltip.add(proxy.translateToLocal("color.turq")+proxy.translateToLocal("tooltip.robot_skeleton")+' '+new ItemStack(nbt.getCompoundTag("RobotSkeleton")).getDisplayName());
 			if(nbt.hasKey("RobotJoints"))
-				tooltip.add(proxy.translateToLocal("color.turq")+proxy.translateToLocal("tooltip.robot_joints")+' '+ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("RobotJoints")).getDisplayName());
+				tooltip.add(proxy.translateToLocal("color.turq")+proxy.translateToLocal("tooltip.robot_joints")+' '+new ItemStack(nbt.getCompoundTag("RobotJoints")).getDisplayName());
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.blocks;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
@@ -28,8 +29,11 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityMiniTank;
 import the_fireplace.overlord.Overlord;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class BlockMiniTank extends BlockSlab implements ITileEntityProvider {
 
 	public static final PropertyBool VARIANT_PROPERTY = PropertyBool.create("variant");
@@ -140,10 +144,10 @@ public abstract class BlockMiniTank extends BlockSlab implements ITileEntityProv
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileEntityMiniTank && !player.isSneaking()) {
-			boolean interact = FluidUtil.interactWithFluidHandler(heldItem, (IFluidHandler)tile, player);
+			boolean interact = FluidUtil.interactWithFluidHandler(player, hand, world, pos, side);
 			if(interact)
 				tile.markDirty();
 			return interact;

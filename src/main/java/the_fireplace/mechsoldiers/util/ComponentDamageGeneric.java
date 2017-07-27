@@ -22,25 +22,27 @@ public class ComponentDamageGeneric extends ComponentDamageBehavior {
 			case "wood":
 				if (source.isFireDamage())
 					amount *= 2.0;
+				if (source == DamageSource.field_191552_t)//FIREWORKS
+					amount *= 1.5;
 				itemToDamage.damageItem((int)Math.ceil(amount), entity);
 				return itemToDamage;
 			case "iron":
-				if (source == DamageSource.drown)
+				if (source == DamageSource.DROWN)
 					amount *= 2.5;
 				itemToDamage.damageItem((int)Math.ceil(amount), entity);
 				return itemToDamage;
 			case "bronze":
-				if (source == DamageSource.lava)
+				if (source == DamageSource.LAVA)
 					amount *= 1.2;
 				itemToDamage.damageItem((int)Math.ceil(amount), entity);
 				return itemToDamage;
 			case "copper_redstone":
-				if (source == DamageSource.drown)
+				if (source == DamageSource.DROWN)
 					amount *= 1.25;
 			case "gold_redstone":
-				if (source == DamageSource.lightningBolt)
+				if (source == DamageSource.LIGHTNING_BOLT)
 					amount *= 3.0;
-				if (source == DamageSource.drown)
+				if (source == DamageSource.DROWN)
 					amount *= 1.5;
 			case "gold":
 			case "copper":

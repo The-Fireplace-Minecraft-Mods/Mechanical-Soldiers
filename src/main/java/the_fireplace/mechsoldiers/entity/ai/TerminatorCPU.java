@@ -36,7 +36,7 @@ public class TerminatorCPU implements ICPU {
 
 				@Override
 				public void updateTask() {
-					if (continueExecuting()) {
+					if (shouldContinueExecuting()) {
 						++raiseArmTicks;
 
 						if (raiseArmTicks >= 5 && this.attackTick < 10) {

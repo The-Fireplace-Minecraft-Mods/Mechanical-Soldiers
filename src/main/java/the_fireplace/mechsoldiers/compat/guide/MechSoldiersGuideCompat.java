@@ -1,6 +1,9 @@
 package the_fireplace.mechsoldiers.compat.guide;
 
+import amerifrance.guideapi.api.GuideBook;
+import amerifrance.guideapi.api.IGuideBook;
 import amerifrance.guideapi.api.IPage;
+import amerifrance.guideapi.api.impl.Book;
 import amerifrance.guideapi.api.impl.abstraction.CategoryAbstract;
 import amerifrance.guideapi.api.impl.abstraction.EntryAbstract;
 import amerifrance.guideapi.category.CategoryItemStack;
@@ -15,7 +18,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.registry.MechCraftingRecipes;
-import the_fireplace.overlord.compat.guide.IGuideCompat;
 import the_fireplace.overlord.compat.guide.OverlordGuide;
 import the_fireplace.overlord.registry.CraftingRecipes;
 
@@ -24,9 +26,20 @@ import java.util.Map;
 
 import static the_fireplace.overlord.Overlord.proxy;
 
-public class MechSoldiersGuideCompat implements IGuideCompat {
+@GuideBook
+public class MechSoldiersGuideCompat implements IGuideBook {
 	@Override
-	public void buildBook() {
+	public Book buildBook() {
+		return null;
+	}
+
+	@Override
+	public void handleModel(ItemStack bookStack) {
+
+	}
+
+	@Override
+	public void handlePost(ItemStack bookStack) {
 		Map<ResourceLocation, EntryAbstract> entries = Maps.newLinkedHashMap();
 
 		List<IPage> pages = Lists.newArrayList();
@@ -63,7 +76,7 @@ public class MechSoldiersGuideCompat implements IGuideCompat {
 		categories.add(new CategoryItemStack(entries, proxy.translateToLocal("mechsoldiers.guide.1"), new ItemStack(MechSoldiers.robot_constructor)));
 
 		for(CategoryAbstract cat:categories){
-			if(cat.unlocCategoryName.equals(proxy.translateToLocal("overlord.guide.2"))){
+			if(cat.name.equals(proxy.translateToLocal("overlord.guide.2"))){
 				pages = Lists.newArrayList();
 				pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.2.1.1")));
 				pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.2.1.2")));
