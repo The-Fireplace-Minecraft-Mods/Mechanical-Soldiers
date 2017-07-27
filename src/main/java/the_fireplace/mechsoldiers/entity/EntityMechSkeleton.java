@@ -1,8 +1,10 @@
 package the_fireplace.mechsoldiers.entity;
 
+import com.google.common.collect.Lists;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -345,5 +347,89 @@ public class EntityMechSkeleton extends EntityArmyMember {
 			}
 		}
 		return super.processInteract(player, hand, stack);
+	}
+
+	@Override
+	@Nullable
+	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn)
+	{
+		return slotIn == EntityEquipmentSlot.MAINHAND ? equipInventory.getStackInSlot(0) : (slotIn == EntityEquipmentSlot.OFFHAND ? equipInventory.getStackInSlot(1) : null);
+	}
+
+	@Override
+	public void setItemStackToSlot(EntityEquipmentSlot slotIn, @Nullable ItemStack stack)
+	{
+		if (slotIn == EntityEquipmentSlot.MAINHAND)
+		{
+			this.playEquipSound(stack);
+			this.equipInventory.setInventorySlotContents(0, stack);
+			initEntityAI();
+		}
+		else if (slotIn == EntityEquipmentSlot.OFFHAND)
+		{
+			this.playEquipSound(stack);
+			this.equipInventory.setInventorySlotContents(1, stack);
+		}
+	}
+
+	@Override
+	@Nonnull
+	public Iterable<ItemStack> getHeldEquipment()
+	{
+		return Lists.newArrayList(this.getHeldItemMainhand(), this.getHeldItemOffhand());
+	}
+
+	@Override
+	@Nullable
+	public ItemStack getHeldItemMainhand()
+	{
+		if(equipInventory == null)
+			return null;
+		return equipInventory.getStackInSlot(0);
+	}
+
+	@Override
+	@Nullable
+	public ItemStack getHeldItemOffhand()
+	{
+		if(equipInventory == null)
+			return null;
+		return equipInventory.getStackInSlot(1);
+	}
+
+	@Override
+	@Nullable
+	public ItemStack getHeldItem(EnumHand hand)
+	{
+		if (hand == EnumHand.MAIN_HAND)
+		{
+			return getHeldItemMainhand();
+		}
+		else if (hand == EnumHand.OFF_HAND)
+		{
+			return getHeldItemOffhand();
+		}
+		else
+		{
+			throw new IllegalArgumentException("Invalid hand " + hand);
+		}
+	}
+
+	@Override
+	public void setHeldItem(EnumHand hand, @Nullable ItemStack stack)
+	{
+		if (hand == EnumHand.MAIN_HAND)
+		{
+			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
+		}
+		else
+		{
+			if (hand != EnumHand.OFF_HAND)
+			{
+				throw new IllegalArgumentException("Invalid hand " + hand);
+			}
+
+			this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, stack);
+		}
 	}
 }

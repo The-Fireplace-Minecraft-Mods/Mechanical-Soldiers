@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,6 +27,7 @@ public class RenderMechSkeleton extends RenderBiped<EntityMechSkeleton> {
 	public RenderMechSkeleton(RenderManager renderManagerIn) {
 		super(renderManagerIn, new ModelMechSkeleton(), 0.5F);
 		this.addLayer(new LayerJoints(this));
+		this.addLayer(new LayerHeldItem(this));
 	}
 
 	@Override
