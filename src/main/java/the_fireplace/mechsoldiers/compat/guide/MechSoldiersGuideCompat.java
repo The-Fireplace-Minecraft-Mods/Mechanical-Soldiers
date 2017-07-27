@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.registry.MechCraftingRecipes;
+import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.compat.guide.OverlordGuide;
 import the_fireplace.overlord.registry.CraftingRecipes;
 
@@ -30,16 +31,10 @@ import static the_fireplace.overlord.Overlord.proxy;
 public class MechSoldiersGuideCompat implements IGuideBook {
 	@Override
 	public Book buildBook() {
-		return null;
-	}
-
-	@Override
-	public void handleModel(ItemStack bookStack) {
-
-	}
-
-	@Override
-	public void handlePost(ItemStack bookStack) {
+		if(OverlordGuide.myGuide == null){
+			Overlord.logError("Mechanical Soldiers guide book modifier loaded before the Overlord guide book.");
+			return null;
+		}
 		Map<ResourceLocation, EntryAbstract> entries = Maps.newLinkedHashMap();
 
 		List<IPage> pages = Lists.newArrayList();
@@ -87,5 +82,16 @@ public class MechSoldiersGuideCompat implements IGuideBook {
 		}
 
 		OverlordGuide.myGuide.setCategoryList(categories);
+		return null;
+	}
+
+	@Override
+	public void handleModel(ItemStack bookStack) {
+
+	}
+
+	@Override
+	public void handlePost(ItemStack bookStack) {
+
 	}
 }
