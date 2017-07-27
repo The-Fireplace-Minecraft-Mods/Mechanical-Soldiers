@@ -7,17 +7,13 @@ import net.minecraft.util.DamageSource;
 /**
  * @author The_Fireplace
  */
-public final class ComponentDamageGeneric extends ComponentDamageBehavior {
+public class ComponentDamageGeneric extends ComponentDamageBehavior {
 	private static ComponentDamageGeneric instance;
 
 	public static ComponentDamageGeneric getInstance() {
 		if (instance == null)
-			new ComponentDamageGeneric();
+			instance = new ComponentDamageGeneric();
 		return instance;
-	}
-
-	public ComponentDamageGeneric() {
-		instance = this;
 	}
 
 	@Override
@@ -31,6 +27,11 @@ public final class ComponentDamageGeneric extends ComponentDamageBehavior {
 			case "iron":
 				if (source == DamageSource.drown)
 					amount *= 2.5;
+				itemToDamage.damageItem((int)Math.ceil(amount), entity);
+				return itemToDamage;
+			case "bronze":
+				if (source == DamageSource.lava)
+					amount *= 1.2;
 				itemToDamage.damageItem((int)Math.ceil(amount), entity);
 				return itemToDamage;
 			case "copper_redstone":
