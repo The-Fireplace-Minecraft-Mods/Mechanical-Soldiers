@@ -7,6 +7,15 @@
         {
           "type": "item",
           "name": "mechsoldiers:skeleton_term",
+          "functions": [
+            {
+              "function": "set_damage",
+              "damage": {
+                "min": 0.01,
+                "max": 0.99
+              }
+            }
+          ],
           "weight": 1
         },
         {
