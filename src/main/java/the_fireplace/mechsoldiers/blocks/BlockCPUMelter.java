@@ -34,6 +34,9 @@ public class BlockCPUMelter extends BlockContainer {
 		setUnlocalizedName(name);
 		//setRegistryName(name);//Handled when registering
 		useNeighborBrightness = true;
+		setHardness(1.5F);
+		setResistance(1.0F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
@@ -86,5 +89,10 @@ public class BlockCPUMelter extends BlockContainer {
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
 	}
 }

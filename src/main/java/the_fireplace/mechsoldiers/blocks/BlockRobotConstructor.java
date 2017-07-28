@@ -36,7 +36,9 @@ public class BlockRobotConstructor extends BlockContainer {
 		setUnlocalizedName(name);
 		//setRegistryName(name);//Handled when registering
 		setCreativeTab(Overlord.tabOverlord);
-		setHarvestLevel("pickaxe", 1);
+		setHarvestLevel("pickaxe", 2);
+		setHardness(5.0F);
+		setResistance(10.0F);
 	}
 
 	@Override

@@ -50,13 +50,6 @@ public class MechSoldiers {
 	public static final String MODID = "mechsoldiers";
 	public static final String MODNAME = "Mechanical Soldiers";
 
-    /*TODO:
-    Add splash text(1.12 only)
-    Advancements(1.12 only)
-    Add Buildcraft's chipsets to cpu recipes(1.11.2+)
-    Add Applied Llamagistics support(1.11.2+)
-     */
-
 	@Mod.Instance(MODID)
 	public static MechSoldiers instance;
 
