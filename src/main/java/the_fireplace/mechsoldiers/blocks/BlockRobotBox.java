@@ -37,6 +37,8 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 		super(Material.WOOD);
 		setUnlocalizedName(name);
 		setRegistryName(name);
+		setHardness(3.0F);
+		setResistance(5.0F);
 	}
 
 	@Override

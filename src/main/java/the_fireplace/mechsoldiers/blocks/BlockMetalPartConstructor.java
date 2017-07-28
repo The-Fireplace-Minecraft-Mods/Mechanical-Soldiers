@@ -42,6 +42,9 @@ public class BlockMetalPartConstructor extends BlockContainer {
 		setUnlocalizedName(name);
 		//setRegistryName(name);//Handled when registering
 		useNeighborBrightness = true;
+		setHardness(1.5F);
+		setResistance(5.0F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
