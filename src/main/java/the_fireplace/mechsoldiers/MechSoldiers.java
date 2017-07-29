@@ -88,7 +88,7 @@ public class MechSoldiers {
 	public static final Block metal_part_constructor = new BlockMetalPartConstructor(false, "metal_part_constructor").setCreativeTab(Overlord.tabOverlord);
 	public static final Block metal_part_constructor_active = new BlockMetalPartConstructor(true, "metal_part_constructor_active").setRegistryName("metal_part_constructor_active");
 	public static final Block cpu_melter = new BlockCPUMelter("cpu_melter").setCreativeTab(Overlord.tabOverlord);
-	public static final Block part_painter = new BlockPartPainter("part_painter");
+	public static final Block part_stainer = new BlockPartStainer("part_stainer");
 
 	public static final BlockHalfMiniTank mini_tank = new BlockHalfMiniTank();
 	public static final BlockFullMiniTank full_mini_tank = new BlockFullMiniTank();
@@ -126,7 +126,7 @@ public class MechSoldiers {
 		Overlord.instance.registerBlock(metal_part_constructor);
 		Overlord.instance.registerBlock(cpu_melter);
 		GameRegistry.register(metal_part_constructor_active);
-		Overlord.instance.registerBlock(part_painter);
+		Overlord.instance.registerBlock(part_stainer);
 
 		GameRegistry.register(mini_tank);
 		GameRegistry.register(full_mini_tank);
@@ -137,7 +137,7 @@ public class MechSoldiers {
 		GameRegistry.registerTileEntity(TileEntityPartConstructor.class, "metal_part_constructor");
 		GameRegistry.registerTileEntity(TileEntityMiniTank.class, "mini_tank");
 		GameRegistry.registerTileEntity(TileEntityCPUMelter.class, "cpu_melter");
-		GameRegistry.registerTileEntity(TileEntityPartPainter.class, "part_painter");
+		GameRegistry.registerTileEntity(TileEntityPartStainer.class, "part_stainer");
 
 		PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
 		PartRegistry.registerSkeleton(skeleton_term, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/terminator_skeleton.png"));
@@ -197,7 +197,7 @@ public class MechSoldiers {
 		rmm(metal_part_constructor);
 		rmm(mini_tank);
 		rmm(cpu_melter);
-		rmm(part_painter);
+		rmm(part_stainer);
 		IStateMapper mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY).build();
 		IStateMapper full_mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY, BlockSlab.HALF).build();
 		ModelLoader.setCustomStateMapper(mini_tank, mini_tank_mapper);

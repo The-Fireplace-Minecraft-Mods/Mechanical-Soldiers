@@ -29,11 +29,11 @@ import java.awt.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TileEntityPartPainter extends TileEntityLockable implements ISidedInventory, ISkeletonMaker {//Implements ISkeletonMaker so I don't have to make more packets
+public class TileEntityPartStainer extends TileEntityLockable implements ISidedInventory, ISkeletonMaker {//Implements ISkeletonMaker so I don't have to make more packets
 	private static final int[] SLOTS_TOP = new int[]{0};
 	private static final int[] SLOTS_BOTTOM = new int[]{4};
-	private static final int[] SLOTS_SIDES = new int[]{1, 2, 3};
-	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
+	private static final int[] SLOTS_SIDES = new int[]{1, 2, 3, 5};
+	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(6, ItemStack.EMPTY);
 	private short redValue=255;
 	private short greenValue=255;
 	private short blueValue=255;
@@ -42,25 +42,87 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 		return redValue;
 	}
 
-	public boolean hasEnoughRed(){
-		return getStackInSlot(1).getCount()>=3-redValue/85 && !(redValue < 255 && getStackInSlot(1).isEmpty());
-	}
-
 	public int getGreen(){
 		return greenValue;
-	}
-
-	public boolean hasEnoughGreen(){
-		return getStackInSlot(2).getCount()>=3-greenValue/85 && !(greenValue < 255 && getStackInSlot(2).isEmpty());
 	}
 
 	public int getBlue(){
 		return blueValue;
 	}
 
-	public boolean hasEnoughBlue(){
-		return getStackInSlot(3).getCount()>=3-blueValue/85 && !(blueValue < 255 && getStackInSlot(3).isEmpty());
+	public boolean hasEnoughRed(){
+		return getStackInSlot(1).getCount()>= getFinalRedCost() && !(redValue < 255 && getStackInSlot(1).isEmpty());
 	}
+
+	public boolean hasEnoughGreen(){
+		return getStackInSlot(2).getCount()>= getFinalGreenCost() && !(greenValue < 255 && getStackInSlot(2).isEmpty());
+	}
+
+	public boolean hasEnoughBlue(){
+		return getStackInSlot(3).getCount()>= getFinalBlueCost() && !(blueValue < 255 && getStackInSlot(3).isEmpty());
+	}
+
+	public int getFinalRedCost(){
+		return getRedCost()+ getDarknessCompensationCost();
+	}
+
+	public int getFinalGreenCost(){
+		return getGreenCost()+ getDarknessCompensationCost();
+	}
+
+	public int getFinalBlueCost(){
+		return getBlueCost()+ getDarknessCompensationCost();
+	}
+
+	public int getRedCost(){
+		int initCost = (greenValue/85)*(blueValue/85)/-3+(redValue/85);
+		if(initCost <= 0)
+			return 0;
+		else
+			return initCost;
+	}
+
+	public int getGreenCost(){
+		int initCost = (redValue/85)*(blueValue/85)/-3+(greenValue/85);
+		if(initCost <= 0)
+			return 0;
+		else
+			return initCost;
+	}
+
+	public int getBlueCost(){
+		int initCost = (redValue/85)*(greenValue/85)/-3+(blueValue/85);
+		if(initCost <= 0)
+			return 0;
+		else
+			return initCost;
+	}
+
+	public int getDarknessCost(){
+		int cost = 0;
+		if(redValue<85)
+			cost += 1;
+		if(greenValue<85)
+			cost += 1;
+		if(blueValue<85)
+			cost += 1;
+		return cost;
+	}
+
+	public int getDarknessCompensationCost(){
+		return getDarknessCost()-getBlackDyeCost();
+	}
+
+	public int getBlackDyeCost(){
+		if(!getStackInSlot(5).isEmpty()){
+			if(getStackInSlot(5).getCount() >= getDarknessCost())
+				return getDarknessCost();
+			else
+				return getStackInSlot(5).getCount();
+		}else
+			return 0;
+	}
+
 
 	@Override
 	public void spawnSkeleton() {//I am using this method so I can piggyback off the Overlord packets as much as possible.
@@ -68,7 +130,7 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 			return;
 		ItemStack output = getStackInSlot(0).copy();
 		NBTTagCompound outData = new NBTTagCompound();
-		outData.setInteger("PaintColor", new Color(redValue, greenValue, blueValue).getRGB());
+		outData.setInteger("StainColor", new Color(redValue, greenValue, blueValue).getRGB());
 
 		output.setTagCompound(outData);
 		output.setCount(1);
@@ -81,17 +143,21 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 			setInventorySlotContents(0, ItemStack.EMPTY);
 
 		if (getStackInSlot(1).getCount() > 1)
-			getStackInSlot(1).shrink(3-redValue/85);
+			getStackInSlot(1).shrink(getFinalRedCost());
 		if(getStackInSlot(1).isEmpty())
 			setInventorySlotContents(1, ItemStack.EMPTY);
 		if (getStackInSlot(2).getCount() > 1)
-			getStackInSlot(2).shrink(3-greenValue/85);
+			getStackInSlot(2).shrink(getFinalGreenCost());
 		if(getStackInSlot(2).isEmpty())
 			setInventorySlotContents(2, ItemStack.EMPTY);
 		if (getStackInSlot(3).getCount() > 1)
-			getStackInSlot(3).shrink(3-blueValue/85);
+			getStackInSlot(3).shrink(getFinalBlueCost());
 		if(getStackInSlot(3).isEmpty())
 			setInventorySlotContents(3, ItemStack.EMPTY);
+		if (getStackInSlot(5).getCount() > 1)
+			getStackInSlot(5).shrink(getBlackDyeCost());
+		if(getStackInSlot(5).isEmpty())
+			setInventorySlotContents(5, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -153,7 +219,7 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 
 	@Override
 	public String getName() {
-		return "container.part_painter";
+		return "container.part_stainer";
 	}
 
 	@Override
@@ -232,6 +298,8 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 				return isDyeColor(stack, "Green");
 			case 3:
 				return isDyeColor(stack, "Blue");
+			case 5:
+				return isDyeColor(stack, "Black");
 			case 4:
 			default:
 				return false;
@@ -243,10 +311,9 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 	}
 
 	public static boolean isDyeColor(ItemStack stack, String color){
-		for(int id : OreDictionary.getOreIDs(stack)){
+		for(int id : OreDictionary.getOreIDs(stack))
 			if(OreDictionary.getOreName(id).equals("dye"+color))
 				return true;
-		}
 		return false;
 	}
 

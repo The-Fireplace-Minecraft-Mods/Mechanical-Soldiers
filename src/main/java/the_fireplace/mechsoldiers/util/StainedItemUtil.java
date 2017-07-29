@@ -5,9 +5,9 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nullable;
 import java.awt.*;
 
-public class PaintedItemUtil {
+public class StainedItemUtil {
 	@Nullable
 	public static Color getColor(ItemStack stack){
-		return stack.hasTagCompound() ? new Color(stack.getTagCompound().getInteger("PaintColor")) : null;
+		return stack.hasTagCompound() && stack.getTagCompound().hasKey("StainColor") ? new Color(stack.getTagCompound().getInteger("StainColor")) : null;
 	}
 }

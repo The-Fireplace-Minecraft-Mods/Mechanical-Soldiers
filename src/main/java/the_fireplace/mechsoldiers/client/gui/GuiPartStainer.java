@@ -7,39 +7,37 @@ import net.minecraft.client.gui.GuiSlider;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 import the_fireplace.mechsoldiers.MechSoldiers;
-import the_fireplace.mechsoldiers.container.ContainerPartPainter;
-import the_fireplace.mechsoldiers.container.ContainerRobotConstructor;
+import the_fireplace.mechsoldiers.container.ContainerPartStainer;
 import the_fireplace.mechsoldiers.network.packets.TeSetField;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartPainter;
+import the_fireplace.mechsoldiers.tileentity.TileEntityPartStainer;
+import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.network.PacketDispatcher;
 import the_fireplace.overlord.network.packets.CreateSkeletonMessage;
 
 import java.awt.*;
-import java.util.UUID;
 
 /**
  * @author The_Fireplace
  */
-public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.GuiResponder, GuiSlider.FormatHelper {
-	public static final ResourceLocation texture = new ResourceLocation(MechSoldiers.MODID, "textures/gui/part_painter.png");
-	private TileEntityPartPainter te;
+public class GuiPartStainer extends GuiContainer implements GuiPageButtonList.GuiResponder, GuiSlider.FormatHelper {
+	public static final ResourceLocation texture = new ResourceLocation(MechSoldiers.MODID, "textures/gui/part_stainer.png");
+	public static final ResourceLocation ink_texture = new ResourceLocation("textures/items/dye_powder_black.png");
+	private TileEntityPartStainer te;
 	private EntityPlayer playerUsing;
 
-	private GuiButton paintPart;
+	private GuiButton stainPart;
 	private GuiSlider redSlider;
 	private GuiSlider greenSlider;
 	private GuiSlider blueSlider;
 
-	public GuiPartPainter(InventoryPlayer invPlayer, TileEntityPartPainter entity) {
-		super(new ContainerPartPainter(invPlayer, entity));
+	public GuiPartStainer(InventoryPlayer invPlayer, TileEntityPartStainer entity) {
+		super(new ContainerPartStainer(invPlayer, entity));
 		xSize = 175;
-		ySize = 165;
+		ySize = 177;
 		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
 		width = res.getScaledWidth();
 		height = res.getScaledHeight();
@@ -57,14 +55,14 @@ public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.Gu
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 		this.buttonList.clear();
-		this.buttonList.add(paintPart = new GuiButton(0, guiLeft + 6, guiTop + 27, 20, 20, ""));
-		this.buttonList.add(redSlider = new GuiSlider(this, 1, guiLeft+27, guiTop+16, "Red", -255, 0, -te.getRed(), this));
+		this.buttonList.add(stainPart = new GuiButton(0, guiLeft + 6, guiTop + 33, 20, 20, ""));
+		this.buttonList.add(redSlider = new GuiSlider(this, 1, guiLeft+27, guiTop+28, "Red", 0, 255, te.getRed(), this));
 		redSlider.width=114;
-		this.buttonList.add(greenSlider = new GuiSlider(this, 2, guiLeft+27, guiTop+38, "Green", -255, 0, -te.getGreen(), this));
+		this.buttonList.add(greenSlider = new GuiSlider(this, 2, guiLeft+27, guiTop+50, "Green", 0, 255, te.getGreen(), this));
 		greenSlider.width=114;
-		this.buttonList.add(blueSlider = new GuiSlider(this, 3, guiLeft+27, guiTop+60, "Blue", -255, 0, -te.getBlue(), this));
+		this.buttonList.add(blueSlider = new GuiSlider(this, 3, guiLeft+27, guiTop+72, "Blue", 0, 255, te.getBlue(), this));
 		blueSlider.width=114;
-		paintPart.enabled = false;
+		stainPart.enabled = false;
 		super.initGui();
 	}
 
@@ -79,22 +77,31 @@ public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.Gu
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		this.drawString(fontRenderer, String.valueOf(3-te.getRed()/85), 149-fontRenderer.getStringWidth(String.valueOf(3-te.getRed()/85)), 22, te.hasEnoughRed() ? Color.GREEN.getRGB() : Color.RED.getRGB());
-		this.drawString(fontRenderer, String.valueOf(3-te.getGreen()/85), 149-fontRenderer.getStringWidth(String.valueOf(3-te.getGreen()/85)), 44, te.hasEnoughGreen() ? Color.GREEN.getRGB() : Color.RED.getRGB());
-		this.drawString(fontRenderer, String.valueOf(3-te.getBlue()/85), 149-fontRenderer.getStringWidth(String.valueOf(3-te.getBlue()/85)), 66, te.hasEnoughBlue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+		this.drawString(fontRenderer, String.valueOf(te.getFinalRedCost()), 149-fontRenderer.getStringWidth(String.valueOf(te.getFinalRedCost())), 34, te.hasEnoughRed() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+		this.drawString(fontRenderer, String.valueOf(te.getFinalGreenCost()), 149-fontRenderer.getStringWidth(String.valueOf(te.getFinalGreenCost())), 56, te.hasEnoughGreen() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+		this.drawString(fontRenderer, String.valueOf(te.getFinalBlueCost()), 149-fontRenderer.getStringWidth(String.valueOf(te.getFinalBlueCost())), 78, te.hasEnoughBlue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
 
-		drawRect(27, 5, 170, 12, new Color(te.getRed(), te.getGreen(), te.getBlue()).getRGB());
+		drawRect(27, 5, 148, 24, new Color(te.getRed(), te.getGreen(), te.getBlue()).getRGB());
+
+		if (te.getStackInSlot(5).isEmpty()) {
+			GlStateManager.enableBlend();
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
+			Minecraft.getMinecraft().getTextureManager().bindTexture(ink_texture);
+			drawModalRectWithCustomSizedTexture(152, 8, 0, 0, 16, 16, 16, 16);
+			GlStateManager.resetColor();
+			GlStateManager.disableBlend();
+		}
 	}
 
 	@Override
 	public void updateScreen() {
-		paintPart.enabled = isButtonEnabled();
+		stainPart.enabled = isButtonEnabled();
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		if (button.enabled) {
-			if (button == paintPart) {
+			if (button == stainPart) {
 				PacketDispatcher.sendToServer(new CreateSkeletonMessage(te.getPos()));
 			}
 		}
@@ -113,13 +120,13 @@ public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.Gu
 	public void setEntryValue(int id, float value) {
 		switch(id){
 			case 1:
-				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 0, (int)-value));
+				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 0, (int)value));
 				break;
 			case 2:
-				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 1, (int)-value));
+				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 1, (int)value));
 				break;
 			case 3:
-				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 2, (int)-value));
+				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 2, (int)value));
 				break;
 		}
 	}
@@ -131,7 +138,7 @@ public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.Gu
 
 	@Override
 	public String getText(int id, String name, float value) {
-		return name;
+		return Overlord.proxy.translateToLocal(name);
 	}
 }
 

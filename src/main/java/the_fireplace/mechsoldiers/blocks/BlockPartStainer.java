@@ -23,7 +23,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import the_fireplace.mechsoldiers.MechSoldiers;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartPainter;
+import the_fireplace.mechsoldiers.tileentity.TileEntityPartStainer;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotBox;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.overlord.Overlord;
@@ -37,9 +37,9 @@ import java.util.Random;
  */
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockPartPainter extends BlockContainer {
+public class BlockPartStainer extends BlockContainer {
 
-	public BlockPartPainter(String name) {
+	public BlockPartStainer(String name) {
 		super(Material.ROCK);
 		setUnlocalizedName(name);
 		//setRegistryName(name);
@@ -51,14 +51,14 @@ public class BlockPartPainter extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityPartPainter();
+		return new TileEntityPartStainer();
 	}
 
 	@Override
 	public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
-		if (tileentity instanceof TileEntityPartPainter) {
+		if (tileentity instanceof TileEntityPartStainer) {
 			InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
@@ -73,7 +73,7 @@ public class BlockPartPainter extends BlockContainer {
 		else if (!playerIn.isSneaking()) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
-			if (tileentity instanceof TileEntityPartPainter) {
+			if (tileentity instanceof TileEntityPartStainer) {
 				FMLNetworkHandler.openGui(playerIn, MechSoldiers.MODID, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			}
 			return true;

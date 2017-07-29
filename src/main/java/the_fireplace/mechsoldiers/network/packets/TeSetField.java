@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartPainter;
+import the_fireplace.mechsoldiers.tileentity.TileEntityPartStainer;
 import the_fireplace.overlord.network.packets.AbstractServerMessageHandler;
 import the_fireplace.overlord.tileentity.ISkeletonMaker;
 
@@ -49,7 +49,7 @@ public class TeSetField implements IMessage {
 		@Override
 		public IMessage handleServerMessage(EntityPlayer player, TeSetField message, MessageContext ctx) {
 			FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-				if (player.world.getTileEntity(message.pos) instanceof TileEntityPartPainter) {
+				if (player.world.getTileEntity(message.pos) instanceof TileEntityPartStainer) {
 					((IInventory) player.world.getTileEntity(message.pos)).setField(message.field, message.value);
 				}
 			});

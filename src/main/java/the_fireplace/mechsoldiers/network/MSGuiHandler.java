@@ -11,7 +11,7 @@ import the_fireplace.mechsoldiers.container.*;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.tileentity.TileEntityCPUMelter;
 import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartPainter;
+import the_fireplace.mechsoldiers.tileentity.TileEntityPartStainer;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.overlord.tools.Squads;
 
@@ -31,8 +31,8 @@ public final class MSGuiHandler implements IGuiHandler {
 						return new ContainerMetalPartConstructor(player.inventory, (IInventory) entity);
 					else if(entity instanceof TileEntityCPUMelter)
 						return new ContainerCPUMelter(player.inventory, (IInventory) entity);
-					else if(entity instanceof TileEntityPartPainter)
-						return new ContainerPartPainter(player.inventory, (IInventory) entity);
+					else if(entity instanceof TileEntityPartStainer)
+						return new ContainerPartStainer(player.inventory, (IInventory) entity);
 				} else {
 					return null;
 				}
@@ -58,8 +58,8 @@ public final class MSGuiHandler implements IGuiHandler {
 						return new GuiMetalPartConstructor(player.inventory, (IInventory) entity);
 					else if(entity instanceof TileEntityCPUMelter)
 						return new GuiCPUMelter(player.inventory, (IInventory) entity);
-					else if(entity instanceof TileEntityPartPainter)
-						return new GuiPartPainter(player.inventory, (TileEntityPartPainter) entity);
+					else if(entity instanceof TileEntityPartStainer)
+						return new GuiPartStainer(player.inventory, (TileEntityPartStainer) entity);
 				} else {
 					return null;
 				}
