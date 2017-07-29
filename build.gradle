@@ -44,7 +44,7 @@ minecraft {
 
 dependencies {
 	deobfCompile group: "mezz.jei", name: "jei_1.11.2", version: "4.5.0.287"
-	deobfCompile "info.amerifrance.guideapi:Guide-API:1.11.2-2.1.1-52"
+	deobfCompile "info.amerifrance.guideapi:Guide-API:1.11.2-2.1.4-56"
 	deobfCompile "the_fireplace.overlord:Overlord-1.11.2:2.4.1"
 	deobfCompile "appeng:applied-llamagistics-1.11.2:rv5-beta-2"
 }

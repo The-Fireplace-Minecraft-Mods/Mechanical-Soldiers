@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import the_fireplace.mechsoldiers.MechSoldiers;
@@ -27,12 +28,12 @@ import java.util.Map;
 
 import static the_fireplace.overlord.Overlord.proxy;
 
-@GuideBook
+@GuideBook(priority = EventPriority.LOW)
 public class MechSoldiersGuideCompat implements IGuideBook {
 	@Override
 	public Book buildBook() {
 		if(OverlordGuide.myGuide == null){
-			Overlord.logError("Mechanical Soldiers guide book modifier loaded before the Overlord guide book.");
+			Overlord.logError("Mechanical Soldiers guide book modifier loaded before the Overlord guide book. THIS SHOULD NOT HAPPEN. USERS, REPORT THIS.");
 			return null;
 		}
 		Map<ResourceLocation, EntryAbstract> entries = Maps.newLinkedHashMap();
