@@ -9,9 +9,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.util.PaintedItemUtil;
 import the_fireplace.overlord.entity.EntityArmyMember;
@@ -23,6 +25,7 @@ import java.awt.*;
  */
 @SideOnly(Side.CLIENT)
 public class ModelMechSkeleton extends ModelBiped {
+
 	public ModelRenderer neck;
 	public ModelRenderer rightShoulder;
 	public ModelRenderer leftShoulder;
@@ -110,15 +113,15 @@ public class ModelMechSkeleton extends ModelBiped {
 			EntityMechSkeleton entityskeleton = (EntityMechSkeleton) entityIn;
 			Color color = PaintedItemUtil.getColor(entityskeleton.getSkeleton());
 			if(color != null)
-				GlStateManager.color(color.getRed(), color.getGreen(), color.getBlue(), 0.9F);
+				GlStateManager.color(((float)color.getRed())/255f/2f, ((float)color.getGreen())/255f/2f, ((float)color.getBlue())/255f/2f);
 			super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 			if(color != null)
-				GlStateManager.color(-1, -1, -1, -1);
+				GlStateManager.resetColor();
 		}else {
 			EntityMechSkeleton entityskeleton = (EntityMechSkeleton) entityIn;
 			Color color = PaintedItemUtil.getColor(entityskeleton.getJoints());
 			if(color != null)
-				GlStateManager.color(color.getRed(), color.getGreen(), color.getBlue(), 0.9F);
+				GlStateManager.color(((float)color.getRed())/255f/2f, ((float)color.getGreen())/255f/2f, ((float)color.getBlue())/255f/2f);
 			this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 			GlStateManager.pushMatrix();
 			if (entityIn.isSneaking()) {
@@ -131,9 +134,10 @@ public class ModelMechSkeleton extends ModelBiped {
 			this.leftElbow.render(scale);
 			this.rightKnee.render(scale);
 			this.leftKnee.render(scale);
+
 			GlStateManager.popMatrix();
 			if(color != null)
-				GlStateManager.color(-1, -1, -1, -1);
+				GlStateManager.resetColor();
 		}
 	}
 

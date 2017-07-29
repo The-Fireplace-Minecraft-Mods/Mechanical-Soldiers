@@ -26,6 +26,7 @@ tile.metal_part_constructor.name=Skeleton Mould Melter
 tile.metal_part_constructor_active.name=Skeleton Mould Melter
 tile.mini_tank.name=Mini Tank
 tile.cpu_melter.name=CPU Mould Melter
+tile.part_painter.name=Robot Part Stainer
 
 itemGroup.robot_parts=Robot Parts
 jei.metal_melt=Skeleton Mould Melting

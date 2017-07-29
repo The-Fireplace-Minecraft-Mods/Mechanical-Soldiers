@@ -126,7 +126,7 @@ public class MechSoldiers {
 		Overlord.instance.registerBlock(metal_part_constructor);
 		Overlord.instance.registerBlock(cpu_melter);
 		GameRegistry.register(metal_part_constructor_active);
-		GameRegistry.register(part_painter);
+		Overlord.instance.registerBlock(part_painter);
 
 		GameRegistry.register(mini_tank);
 		GameRegistry.register(full_mini_tank);
@@ -137,6 +137,7 @@ public class MechSoldiers {
 		GameRegistry.registerTileEntity(TileEntityPartConstructor.class, "metal_part_constructor");
 		GameRegistry.registerTileEntity(TileEntityMiniTank.class, "mini_tank");
 		GameRegistry.registerTileEntity(TileEntityCPUMelter.class, "cpu_melter");
+		GameRegistry.registerTileEntity(TileEntityPartPainter.class, "part_painter");
 
 		PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
 		PartRegistry.registerSkeleton(skeleton_term, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/terminator_skeleton.png"));

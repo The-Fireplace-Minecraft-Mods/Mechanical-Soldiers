@@ -6,17 +6,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import the_fireplace.mechsoldiers.client.gui.GuiCPUMelter;
-import the_fireplace.mechsoldiers.client.gui.GuiMetalPartConstructor;
-import the_fireplace.mechsoldiers.client.gui.GuiRobot;
-import the_fireplace.mechsoldiers.client.gui.GuiRobotConstructor;
-import the_fireplace.mechsoldiers.container.ContainerCPUMelter;
-import the_fireplace.mechsoldiers.container.ContainerMetalPartConstructor;
-import the_fireplace.mechsoldiers.container.ContainerRobot;
-import the_fireplace.mechsoldiers.container.ContainerRobotConstructor;
+import the_fireplace.mechsoldiers.client.gui.*;
+import the_fireplace.mechsoldiers.container.*;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.tileentity.TileEntityCPUMelter;
 import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
+import the_fireplace.mechsoldiers.tileentity.TileEntityPartPainter;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.overlord.tools.Squads;
 
@@ -29,13 +24,15 @@ public final class MSGuiHandler implements IGuiHandler {
 		TileEntity entity = world.getTileEntity(new BlockPos(x, y, z));
 		switch (ID) {
 			case 0:
-				if (entity != null && (entity instanceof TileEntityRobotConstructor || entity instanceof TileEntityPartConstructor || entity instanceof TileEntityCPUMelter)) {
+				if (entity != null) {
 					if (entity instanceof TileEntityRobotConstructor)
 						return new ContainerRobotConstructor(player.inventory, (IInventory) entity);
 					else if(entity instanceof TileEntityPartConstructor)
 						return new ContainerMetalPartConstructor(player.inventory, (IInventory) entity);
-					else //if(entity instanceof TileEntityCPUMelter)
+					else if(entity instanceof TileEntityCPUMelter)
 						return new ContainerCPUMelter(player.inventory, (IInventory) entity);
+					else if(entity instanceof TileEntityPartPainter)
+						return new ContainerPartPainter(player.inventory, (IInventory) entity);
 				} else {
 					return null;
 				}
@@ -54,13 +51,15 @@ public final class MSGuiHandler implements IGuiHandler {
 		TileEntity entity = world.getTileEntity(new BlockPos(x, y, z));
 		switch (ID) {
 			case 0:
-				if (entity != null && (entity instanceof TileEntityRobotConstructor || entity instanceof TileEntityPartConstructor || entity instanceof TileEntityCPUMelter)) {
+				if (entity != null) {
 					if (entity instanceof TileEntityRobotConstructor)
 						return new GuiRobotConstructor(player.inventory, (TileEntityRobotConstructor) entity);
 					else if (entity instanceof TileEntityPartConstructor)
 						return new GuiMetalPartConstructor(player.inventory, (IInventory) entity);
-					else //if(entity instanceof TileEntityCPUMelter)
+					else if(entity instanceof TileEntityCPUMelter)
 						return new GuiCPUMelter(player.inventory, (IInventory) entity);
+					else if(entity instanceof TileEntityPartPainter)
+						return new GuiPartPainter(player.inventory, (TileEntityPartPainter) entity);
 				} else {
 					return null;
 				}

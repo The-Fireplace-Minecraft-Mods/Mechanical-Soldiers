@@ -12,10 +12,10 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.container.ContainerRobotConstructor;
-import the_fireplace.mechsoldiers.network.PacketDispatcher;
-import the_fireplace.mechsoldiers.network.packets.ConstructRobotMessage;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.overlord.Overlord;
+import the_fireplace.overlord.network.PacketDispatcher;
+import the_fireplace.overlord.network.packets.CreateSkeletonMessage;
 
 import java.awt.*;
 import java.util.UUID;
@@ -124,7 +124,7 @@ public class GuiRobotConstructor extends GuiContainer {
 	protected void actionPerformed(GuiButton button) {
 		if (button.enabled) {
 			if (button.id == 0) {
-				PacketDispatcher.sendToServer(new ConstructRobotMessage(te.getPos()));
+				PacketDispatcher.sendToServer(new CreateSkeletonMessage(te.getPos()));
 			}
 		}
 	}

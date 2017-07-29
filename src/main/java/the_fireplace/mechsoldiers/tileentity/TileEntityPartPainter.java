@@ -19,17 +19,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.oredict.OreDictionary;
-import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.container.ContainerMetalPartConstructor;
 import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.mechsoldiers.util.EnumPartType;
-import the_fireplace.overlord.items.ItemOverlordsSeal;
+import the_fireplace.overlord.tileentity.ISkeletonMaker;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.awt.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TileEntityPartPainter extends TileEntityLockable implements ISidedInventory {
+public class TileEntityPartPainter extends TileEntityLockable implements ISidedInventory, ISkeletonMaker {//Implements ISkeletonMaker so I don't have to make more packets
 	private static final int[] SLOTS_TOP = new int[]{0};
 	private static final int[] SLOTS_BOTTOM = new int[]{4};
 	private static final int[] SLOTS_SIDES = new int[]{1, 2, 3};
@@ -38,35 +38,60 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 	private short greenValue;
 	private short blueValue;
 
-	public void spawnSkeleton() {
-		if (getStackInSlot(0).isEmpty() || (redValue > 0 && getStackInSlot(1).isEmpty()) || getStackInSlot(1).getCount()<redValue/85 || (greenValue > 0 && getStackInSlot(2).isEmpty()) || getStackInSlot(2).getCount()<greenValue/85 || (blueValue > 0 && getStackInSlot(3).isEmpty()) || getStackInSlot(3).getCount()<blueValue/85)
+	public int getRed(){
+		return redValue;
+	}
+
+	public boolean hasEnoughRed(){
+		return getStackInSlot(1).getCount()>=redValue/85 && !(redValue > 0 && getStackInSlot(1).isEmpty());
+	}
+
+	public int getGreen(){
+		return greenValue;
+	}
+
+	public boolean hasEnoughGreen(){
+		return getStackInSlot(2).getCount()>=greenValue/85 && !(greenValue > 0 && getStackInSlot(2).isEmpty());
+	}
+
+	public int getBlue(){
+		return blueValue;
+	}
+
+	public boolean hasEnoughBlue(){
+		return getStackInSlot(3).getCount()>=blueValue/85 && !(blueValue > 0 && getStackInSlot(3).isEmpty());
+	}
+
+	@Override
+	public void spawnSkeleton() {//I am using this method so I can piggyback off the Overlord packets as much as possible.
+		if (getStackInSlot(0).isEmpty() || !getStackInSlot(4).isEmpty() || !hasEnoughRed() || !hasEnoughGreen() || !hasEnoughBlue())
 			return;
-		ItemStack output = getStackInSlot(0);
+		ItemStack output = getStackInSlot(0).copy();
 		NBTTagCompound outData = new NBTTagCompound();
-		outData.setInteger("RobotCPU", oneCPU.writeToNBT(new NBTTagCompound()));
-		outData.setTag("RobotSkeleton", oneSkeleton.writeToNBT(new NBTTagCompound()));
-		outData.setTag("RobotJoints", oneJoints.writeToNBT(new NBTTagCompound()));
+		outData.setInteger("PaintColor", new Color(redValue, greenValue, blueValue).getRGB());
 
-		robotBox.setTagCompound(outData);
+		output.setTagCompound(outData);
+		output.setCount(1);
 
-		setInventorySlotContents(5, robotBox);
+		setInventorySlotContents(4, output);
 
-		for (int i = 1; i < 5; i++) {
-			if (getStackInSlot(i).getCount() > 1)
-				getStackInSlot(i).shrink(1);
-			else
-				setInventorySlotContents(i, ItemStack.EMPTY);
-		}
+		if (getStackInSlot(0).getCount() > 1)
+			getStackInSlot(0).shrink(1);
+		else
+			setInventorySlotContents(0, ItemStack.EMPTY);
 
-		if (!getStackInSlot(0).isEmpty()) {
-			if (getStackInSlot(0).getItem() instanceof ItemOverlordsSeal) {
-				if (((ItemOverlordsSeal) getStackInSlot(0).getItem()).isConsumable())
-					if (getStackInSlot(0).getCount() > 1)
-						getStackInSlot(0).shrink(1);
-					else
-						setInventorySlotContents(0, ItemStack.EMPTY);
-			}
-		}
+		if (getStackInSlot(1).getCount() > 1)
+			getStackInSlot(1).shrink(redValue/85);
+		if(getStackInSlot(1).isEmpty())
+			setInventorySlotContents(1, ItemStack.EMPTY);
+		if (getStackInSlot(2).getCount() > 1)
+			getStackInSlot(2).shrink(greenValue/85);
+		if(getStackInSlot(2).isEmpty())
+			setInventorySlotContents(2, ItemStack.EMPTY);
+		if (getStackInSlot(3).getCount() > 1)
+			getStackInSlot(3).shrink(blueValue/85);
+		if(getStackInSlot(3).isEmpty())
+			setInventorySlotContents(3, ItemStack.EMPTY);
 	}
 
 	@Override

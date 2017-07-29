@@ -42,7 +42,7 @@ public class BlockPartPainter extends BlockContainer {
 	public BlockPartPainter(String name) {
 		super(Material.ROCK);
 		setUnlocalizedName(name);
-		setRegistryName(name);
+		//setRegistryName(name);
 		setCreativeTab(Overlord.tabOverlord);
 		setHardness(1.5F);
 		setResistance(10.0F);
