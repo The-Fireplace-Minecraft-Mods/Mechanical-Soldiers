@@ -13,7 +13,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
+import the_fireplace.mechsoldiers.util.PaintedItemUtil;
 import the_fireplace.overlord.entity.EntityArmyMember;
+
+import java.awt.*;
 
 /**
  * @author The_Fireplace
@@ -90,7 +93,7 @@ public class ModelMechSkeleton extends ModelBiped {
 		this.leftArmPose = ModelBiped.ArmPose.EMPTY;
 		ItemStack itemstack = entitylivingbaseIn.getHeldItem(EnumHand.MAIN_HAND);
 
-		if (itemstack != null && itemstack.getItem() == Items.BOW && ((EntityArmyMember) entitylivingbaseIn).isSwingingArms()) {
+		if (!itemstack.isEmpty() && itemstack.getItem() == Items.BOW && ((EntityArmyMember) entitylivingbaseIn).isSwingingArms()) {
 			if (entitylivingbaseIn.getPrimaryHand() == EnumHandSide.RIGHT) {
 				this.rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
 			} else {
@@ -103,9 +106,19 @@ public class ModelMechSkeleton extends ModelBiped {
 
 	@Override
 	public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		if (!isJointLayer)
+		if (!isJointLayer) {
+			EntityMechSkeleton entityskeleton = (EntityMechSkeleton) entityIn;
+			Color color = PaintedItemUtil.getColor(entityskeleton.getSkeleton());
+			if(color != null)
+				GlStateManager.color(color.getRed(), color.getGreen(), color.getBlue(), 0.9F);
 			super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		else {
+			if(color != null)
+				GlStateManager.color(-1, -1, -1, -1);
+		}else {
+			EntityMechSkeleton entityskeleton = (EntityMechSkeleton) entityIn;
+			Color color = PaintedItemUtil.getColor(entityskeleton.getJoints());
+			if(color != null)
+				GlStateManager.color(color.getRed(), color.getGreen(), color.getBlue(), 0.9F);
 			this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 			GlStateManager.pushMatrix();
 			if (entityIn.isSneaking()) {
@@ -119,6 +132,8 @@ public class ModelMechSkeleton extends ModelBiped {
 			this.rightKnee.render(scale);
 			this.leftKnee.render(scale);
 			GlStateManager.popMatrix();
+			if(color != null)
+				GlStateManager.color(-1, -1, -1, -1);
 		}
 	}
 
@@ -128,7 +143,7 @@ public class ModelMechSkeleton extends ModelBiped {
 		ItemStack itemstack = ((EntityLivingBase) entityIn).getHeldItemMainhand();
 		EntityMechSkeleton entityskeleton = (EntityMechSkeleton) entityIn;
 
-		if (entityskeleton.isSwingingArms() && (itemstack == null || itemstack.getItem() != Items.BOW)) {
+		if (entityskeleton.isSwingingArms() && (itemstack.isEmpty() || itemstack.getItem() != Items.BOW)) {
 			float f = MathHelper.sin(this.swingProgress * (float) Math.PI);
 			float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
 			this.bipedRightArm.rotateAngleZ = 0.0F;
