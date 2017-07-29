@@ -24,6 +24,7 @@ import the_fireplace.mechsoldiers.registry.PartRegistry;
 import the_fireplace.mechsoldiers.util.EnumPartType;
 import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.items.ItemOverlordsSeal;
+import the_fireplace.overlord.tileentity.ISkeletonMaker;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -33,19 +34,20 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TileEntityRobotConstructor extends TileEntity implements ISidedInventory {
+public class TileEntityRobotConstructor extends TileEntity implements ISidedInventory, ISkeletonMaker {
 	private NonNullList<ItemStack> inventory;
 
 	public TileEntityRobotConstructor() {
 		inventory = NonNullList.withSize(6, ItemStack.EMPTY);
 	}
 
-	public void constructRobot() {
+	@Override
+	public void spawnSkeleton() {
 		if (getStackInSlot(1).isEmpty() || getStackInSlot(2).isEmpty() || getStackInSlot(3).isEmpty() || getStackInSlot(4).isEmpty() || !getStackInSlot(5).isEmpty())
 			return;
 		ItemStack robotBox = new ItemStack(MechSoldiers.robot_box);
 		NBTTagCompound robotData = new NBTTagCompound();
-		if (!getStackInSlot(0).isEmpty() && getStackInSlot(0).getTagCompound() != null && getStackInSlot(0).getTagCompound().getString("Owner") != null) {
+		if (!getStackInSlot(0).isEmpty() && getStackInSlot(0).getTagCompound() != null && !getStackInSlot(0).getTagCompound().getString("Owner").isEmpty()) {
 			robotData.setString("OwnerUUID", getStackInSlot(0).getTagCompound().getString("Owner"));
 		} else {
 			robotData.setString("OwnerUUID", "0b1ec5ad-cb2a-43b7-995d-889320eb2e5b");
@@ -282,7 +284,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			if (facing == EnumFacing.DOWN)
 				return (T) handlerBottom;

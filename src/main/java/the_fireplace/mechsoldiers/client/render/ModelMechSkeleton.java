@@ -84,10 +84,6 @@ public class ModelMechSkeleton extends ModelBiped {
 		}
 	}
 
-	/**
-	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-	 * and third as in the setRotationAngles method.
-	 */
 	@Override
 	public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
 		this.rightArmPose = ModelBiped.ArmPose.EMPTY;

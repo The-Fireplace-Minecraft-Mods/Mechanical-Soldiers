@@ -40,7 +40,7 @@ public class ConstructRobotMessage implements IMessage {
 		public IMessage handleServerMessage(EntityPlayer player, ConstructRobotMessage message, MessageContext ctx) {
 			FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
 				if (player.world.getTileEntity(message.pos) instanceof TileEntityRobotConstructor) {
-					((TileEntityRobotConstructor) player.world.getTileEntity(message.pos)).constructRobot();
+					((TileEntityRobotConstructor) player.world.getTileEntity(message.pos)).spawnSkeleton();
 				}
 			});
 			return null;
