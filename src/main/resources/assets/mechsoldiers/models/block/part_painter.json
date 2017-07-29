@@ -1,8 +1,25 @@
 {
-    "parent": "block/orientable",
+    "parent": "block/block",
     "textures": {
-        "top": "blocks/furnace_top",
-        "front": "blocks/furnace_front_off",
-        "side": "blocks/furnace_side"
-    }
+        "up": "mechsoldiers:blocks/ominous_machine_top_bottom",
+        "down": "mechsoldiers:blocks/ominous_machine_top_bottom",
+        "north": "mechsoldiers:blocks/ominous_machine_front",
+        "east": "mechsoldiers:blocks/ominous_machine_left",
+        "west": "mechsoldiers:blocks/ominous_machine_right",
+        "south": "mechsoldiers:blocks/ominous_machine_top_bottom",
+        "particle": "mechsoldiers:blocks/ominous_machine_left"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#down", "cullface": "down", "rotation":  180 },
+                "up":    { "texture": "#up", "cullface": "up", "rotation":  180 },
+                "north": { "texture": "#north", "cullface": "north" },
+                "south": { "texture": "#south", "cullface": "south", "rotation":  180 },
+                "west":  { "texture": "#west", "cullface": "west", "rotation":  270 },
+                "east":  { "texture": "#east", "cullface": "east", "rotation":  90 }
+            }
+        }
+    ]
 }
