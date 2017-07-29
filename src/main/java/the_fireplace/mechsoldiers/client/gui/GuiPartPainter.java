@@ -58,11 +58,11 @@ public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.Gu
 		guiTop = (height - ySize) / 2;
 		this.buttonList.clear();
 		this.buttonList.add(paintPart = new GuiButton(0, guiLeft + 6, guiTop + 27, 20, 20, ""));
-		this.buttonList.add(redSlider = new GuiSlider(this, 1, guiLeft+27, guiTop+16, "Red", 0, 255, te.getRed(), this));
+		this.buttonList.add(redSlider = new GuiSlider(this, 1, guiLeft+27, guiTop+16, "Red", -255, 0, -te.getRed(), this));
 		redSlider.width=114;
-		this.buttonList.add(greenSlider = new GuiSlider(this, 2, guiLeft+27, guiTop+38, "Green", 0, 255, te.getGreen(), this));
+		this.buttonList.add(greenSlider = new GuiSlider(this, 2, guiLeft+27, guiTop+38, "Green", -255, 0, -te.getGreen(), this));
 		greenSlider.width=114;
-		this.buttonList.add(blueSlider = new GuiSlider(this, 3, guiLeft+27, guiTop+60, "Blue", 0, 255, te.getBlue(), this));
+		this.buttonList.add(blueSlider = new GuiSlider(this, 3, guiLeft+27, guiTop+60, "Blue", -255, 0, -te.getBlue(), this));
 		blueSlider.width=114;
 		paintPart.enabled = false;
 		super.initGui();
@@ -79,9 +79,9 @@ public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.Gu
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		this.drawString(fontRenderer, String.valueOf(te.getRed()/85), 149-fontRenderer.getStringWidth(String.valueOf(te.getRed()/85)), 22, te.hasEnoughRed() ? Color.GREEN.getRGB() : Color.RED.getRGB());
-		this.drawString(fontRenderer, String.valueOf(te.getGreen()/85), 149-fontRenderer.getStringWidth(String.valueOf(te.getGreen()/85)), 44, te.hasEnoughGreen() ? Color.GREEN.getRGB() : Color.RED.getRGB());
-		this.drawString(fontRenderer, String.valueOf(te.getBlue()/85), 149-fontRenderer.getStringWidth(String.valueOf(te.getBlue()/85)), 66, te.hasEnoughBlue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+		this.drawString(fontRenderer, String.valueOf(3-te.getRed()/85), 149-fontRenderer.getStringWidth(String.valueOf(3-te.getRed()/85)), 22, te.hasEnoughRed() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+		this.drawString(fontRenderer, String.valueOf(3-te.getGreen()/85), 149-fontRenderer.getStringWidth(String.valueOf(3-te.getGreen()/85)), 44, te.hasEnoughGreen() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+		this.drawString(fontRenderer, String.valueOf(3-te.getBlue()/85), 149-fontRenderer.getStringWidth(String.valueOf(3-te.getBlue()/85)), 66, te.hasEnoughBlue() ? Color.GREEN.getRGB() : Color.RED.getRGB());
 
 		drawRect(27, 5, 170, 12, new Color(te.getRed(), te.getGreen(), te.getBlue()).getRGB());
 	}
@@ -113,13 +113,13 @@ public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.Gu
 	public void setEntryValue(int id, float value) {
 		switch(id){
 			case 1:
-				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 0, (int)value));
+				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 0, (int)-value));
 				break;
 			case 2:
-				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 1, (int)value));
+				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 1, (int)-value));
 				break;
 			case 3:
-				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 2, (int)value));
+				the_fireplace.mechsoldiers.network.PacketDispatcher.sendToServer(new TeSetField(te.getPos(), 2, (int)-value));
 				break;
 		}
 	}
@@ -131,7 +131,7 @@ public class GuiPartPainter extends GuiContainer implements GuiPageButtonList.Gu
 
 	@Override
 	public String getText(int id, String name, float value) {
-		return "";
+		return name;
 	}
 }
 

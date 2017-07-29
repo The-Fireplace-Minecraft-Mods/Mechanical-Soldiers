@@ -34,16 +34,16 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 	private static final int[] SLOTS_BOTTOM = new int[]{4};
 	private static final int[] SLOTS_SIDES = new int[]{1, 2, 3};
 	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
-	private short redValue;
-	private short greenValue;
-	private short blueValue;
+	private short redValue=255;
+	private short greenValue=255;
+	private short blueValue=255;
 
 	public int getRed(){
 		return redValue;
 	}
 
 	public boolean hasEnoughRed(){
-		return getStackInSlot(1).getCount()>=redValue/85 && !(redValue > 0 && getStackInSlot(1).isEmpty());
+		return getStackInSlot(1).getCount()>=3-redValue/85 && !(redValue < 255 && getStackInSlot(1).isEmpty());
 	}
 
 	public int getGreen(){
@@ -51,7 +51,7 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 	}
 
 	public boolean hasEnoughGreen(){
-		return getStackInSlot(2).getCount()>=greenValue/85 && !(greenValue > 0 && getStackInSlot(2).isEmpty());
+		return getStackInSlot(2).getCount()>=3-greenValue/85 && !(greenValue < 255 && getStackInSlot(2).isEmpty());
 	}
 
 	public int getBlue(){
@@ -59,7 +59,7 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 	}
 
 	public boolean hasEnoughBlue(){
-		return getStackInSlot(3).getCount()>=blueValue/85 && !(blueValue > 0 && getStackInSlot(3).isEmpty());
+		return getStackInSlot(3).getCount()>=3-blueValue/85 && !(blueValue < 255 && getStackInSlot(3).isEmpty());
 	}
 
 	@Override
@@ -81,15 +81,15 @@ public class TileEntityPartPainter extends TileEntityLockable implements ISidedI
 			setInventorySlotContents(0, ItemStack.EMPTY);
 
 		if (getStackInSlot(1).getCount() > 1)
-			getStackInSlot(1).shrink(redValue/85);
+			getStackInSlot(1).shrink(3-redValue/85);
 		if(getStackInSlot(1).isEmpty())
 			setInventorySlotContents(1, ItemStack.EMPTY);
 		if (getStackInSlot(2).getCount() > 1)
-			getStackInSlot(2).shrink(greenValue/85);
+			getStackInSlot(2).shrink(3-greenValue/85);
 		if(getStackInSlot(2).isEmpty())
 			setInventorySlotContents(2, ItemStack.EMPTY);
 		if (getStackInSlot(3).getCount() > 1)
-			getStackInSlot(3).shrink(blueValue/85);
+			getStackInSlot(3).shrink(3-blueValue/85);
 		if(getStackInSlot(3).isEmpty())
 			setInventorySlotContents(3, ItemStack.EMPTY);
 	}
