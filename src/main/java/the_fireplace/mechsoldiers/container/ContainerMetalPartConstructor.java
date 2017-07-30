@@ -10,10 +10,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 import the_fireplace.overlord.container.SlotOutput;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
@@ -55,9 +53,7 @@ public class ContainerMetalPartConstructor extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		for (int i = 0; i < this.listeners.size(); ++i) {
-			IContainerListener icontainerlistener = this.listeners.get(i);
-
+		for (IContainerListener icontainerlistener : this.listeners) {
 			if (this.cookTime != this.tileConstructor.getField(2)) {
 				icontainerlistener.sendWindowProperty(this, 2, this.tileConstructor.getField(2));
 			}

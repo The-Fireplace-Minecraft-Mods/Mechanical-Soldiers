@@ -34,92 +34,92 @@ public class TileEntityPartStainer extends TileEntityLockable implements ISidedI
 	private static final int[] SLOTS_BOTTOM = new int[]{4};
 	private static final int[] SLOTS_SIDES = new int[]{1, 2, 3, 5};
 	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(6, ItemStack.EMPTY);
-	private short redValue=255;
-	private short greenValue=255;
-	private short blueValue=255;
+	private short redValue = 255;
+	private short greenValue = 255;
+	private short blueValue = 255;
 
-	public int getRed(){
+	public int getRed() {
 		return redValue;
 	}
 
-	public int getGreen(){
+	public int getGreen() {
 		return greenValue;
 	}
 
-	public int getBlue(){
+	public int getBlue() {
 		return blueValue;
 	}
 
-	public boolean hasEnoughRed(){
-		return getStackInSlot(1).getCount()>= getFinalRedCost() && !(redValue < 255 && getStackInSlot(1).isEmpty());
+	public boolean hasEnoughRed() {
+		return getStackInSlot(1).getCount() >= getFinalRedCost() && !(redValue < 255 && getStackInSlot(1).isEmpty());
 	}
 
-	public boolean hasEnoughGreen(){
-		return getStackInSlot(2).getCount()>= getFinalGreenCost() && !(greenValue < 255 && getStackInSlot(2).isEmpty());
+	public boolean hasEnoughGreen() {
+		return getStackInSlot(2).getCount() >= getFinalGreenCost() && !(greenValue < 255 && getStackInSlot(2).isEmpty());
 	}
 
-	public boolean hasEnoughBlue(){
-		return getStackInSlot(3).getCount()>= getFinalBlueCost() && !(blueValue < 255 && getStackInSlot(3).isEmpty());
+	public boolean hasEnoughBlue() {
+		return getStackInSlot(3).getCount() >= getFinalBlueCost() && !(blueValue < 255 && getStackInSlot(3).isEmpty());
 	}
 
-	public int getFinalRedCost(){
-		return getRedCost()+ getDarknessCompensationCost();
+	public int getFinalRedCost() {
+		return getRedCost() + getDarknessCompensationCost();
 	}
 
-	public int getFinalGreenCost(){
-		return getGreenCost()+ getDarknessCompensationCost();
+	public int getFinalGreenCost() {
+		return getGreenCost() + getDarknessCompensationCost();
 	}
 
-	public int getFinalBlueCost(){
-		return getBlueCost()+ getDarknessCompensationCost();
+	public int getFinalBlueCost() {
+		return getBlueCost() + getDarknessCompensationCost();
 	}
 
-	public int getRedCost(){
-		int initCost = (greenValue/85)*(blueValue/85)/-3+(redValue/85);
-		if(initCost <= 0)
+	public int getRedCost() {
+		int initCost = (greenValue / 85) * (blueValue / 85) / -3 + (redValue / 85);
+		if (initCost <= 0)
 			return 0;
 		else
 			return initCost;
 	}
 
-	public int getGreenCost(){
-		int initCost = (redValue/85)*(blueValue/85)/-3+(greenValue/85);
-		if(initCost <= 0)
+	public int getGreenCost() {
+		int initCost = (redValue / 85) * (blueValue / 85) / -3 + (greenValue / 85);
+		if (initCost <= 0)
 			return 0;
 		else
 			return initCost;
 	}
 
-	public int getBlueCost(){
-		int initCost = (redValue/85)*(greenValue/85)/-3+(blueValue/85);
-		if(initCost <= 0)
+	public int getBlueCost() {
+		int initCost = (redValue / 85) * (greenValue / 85) / -3 + (blueValue / 85);
+		if (initCost <= 0)
 			return 0;
 		else
 			return initCost;
 	}
 
-	public int getDarknessCost(){
+	public int getDarknessCost() {
 		int cost = 0;
-		if(redValue<85)
+		if (redValue < 85)
 			cost += 1;
-		if(greenValue<85)
+		if (greenValue < 85)
 			cost += 1;
-		if(blueValue<85)
+		if (blueValue < 85)
 			cost += 1;
 		return cost;
 	}
 
-	public int getDarknessCompensationCost(){
-		return getDarknessCost()-getBlackDyeCost();
+	public int getDarknessCompensationCost() {
+		return getDarknessCost() - getBlackDyeCost();
 	}
 
-	public int getBlackDyeCost(){
-		if(!getStackInSlot(5).isEmpty()){
-			if(getStackInSlot(5).getCount() >= getDarknessCost())
+	public int getBlackDyeCost() {
+		if (!getStackInSlot(5).isEmpty()) {
+			if (getStackInSlot(5).getCount() >= getDarknessCost())
 				return getDarknessCost();
 			else
 				return getStackInSlot(5).getCount();
-		}else
+		} else
 			return 0;
 	}
 
@@ -144,19 +144,19 @@ public class TileEntityPartStainer extends TileEntityLockable implements ISidedI
 
 		if (getStackInSlot(1).getCount() > 1)
 			getStackInSlot(1).shrink(getFinalRedCost());
-		if(getStackInSlot(1).isEmpty())
+		if (getStackInSlot(1).isEmpty())
 			setInventorySlotContents(1, ItemStack.EMPTY);
 		if (getStackInSlot(2).getCount() > 1)
 			getStackInSlot(2).shrink(getFinalGreenCost());
-		if(getStackInSlot(2).isEmpty())
+		if (getStackInSlot(2).isEmpty())
 			setInventorySlotContents(2, ItemStack.EMPTY);
 		if (getStackInSlot(3).getCount() > 1)
 			getStackInSlot(3).shrink(getFinalBlueCost());
-		if(getStackInSlot(3).isEmpty())
+		if (getStackInSlot(3).isEmpty())
 			setInventorySlotContents(3, ItemStack.EMPTY);
 		if (getStackInSlot(5).getCount() > 1)
 			getStackInSlot(5).shrink(getBlackDyeCost());
-		if(getStackInSlot(5).isEmpty())
+		if (getStackInSlot(5).isEmpty())
 			setInventorySlotContents(5, ItemStack.EMPTY);
 	}
 
@@ -167,10 +167,8 @@ public class TileEntityPartStainer extends TileEntityLockable implements ISidedI
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.furnaceItemStacks)
-		{
-			if (!itemstack.isEmpty())
-			{
+		for (ItemStack itemstack : this.furnaceItemStacks) {
+			if (!itemstack.isEmpty()) {
 				return false;
 			}
 		}
@@ -289,7 +287,7 @@ public class TileEntityPartStainer extends TileEntityLockable implements ISidedI
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		switch(index){
+		switch (index) {
 			case 0:
 				return isSkeletonOrJoint(stack);
 			case 1:
@@ -306,13 +304,13 @@ public class TileEntityPartStainer extends TileEntityLockable implements ISidedI
 		}
 	}
 
-	public static boolean isSkeletonOrJoint(ItemStack stack){
+	public static boolean isSkeletonOrJoint(ItemStack stack) {
 		return PartRegistry.isPartOfType(stack, EnumPartType.SKELETON) || PartRegistry.isPartOfType(stack, EnumPartType.JOINTS);
 	}
 
-	public static boolean isDyeColor(ItemStack stack, String color){
-		for(int id : OreDictionary.getOreIDs(stack))
-			if(OreDictionary.getOreName(id).equals("dye"+color))
+	public static boolean isDyeColor(ItemStack stack, String color) {
+		for (int id : OreDictionary.getOreIDs(stack))
+			if (OreDictionary.getOreName(id).equals("dye" + color))
 				return true;
 		return false;
 	}
@@ -360,13 +358,13 @@ public class TileEntityPartStainer extends TileEntityLockable implements ISidedI
 	public void setField(int id, int value) {
 		switch (id) {
 			case 0:
-				this.redValue = (short)value;
+				this.redValue = (short) value;
 				break;
 			case 1:
-				this.greenValue = (short)value;
+				this.greenValue = (short) value;
 				break;
 			case 2:
-				this.blueValue = (short)value;
+				this.blueValue = (short) value;
 				break;
 			default:
 

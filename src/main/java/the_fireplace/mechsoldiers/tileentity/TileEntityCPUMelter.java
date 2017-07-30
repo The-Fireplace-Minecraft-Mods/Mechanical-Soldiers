@@ -1,18 +1,14 @@
 package the_fireplace.mechsoldiers.tileentity;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -22,23 +18,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
-import the_fireplace.mechsoldiers.blocks.BlockMetalPartConstructor;
 import the_fireplace.mechsoldiers.container.ContainerCPUMelter;
-import the_fireplace.mechsoldiers.container.ContainerMetalPartConstructor;
-import the_fireplace.mechsoldiers.container.SlotMPConstructorFuel;
 import the_fireplace.mechsoldiers.registry.CPUMeltRecipes;
 import the_fireplace.mechsoldiers.registry.MetalMeltRecipes;
 
@@ -183,7 +174,7 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 			if (!isLoaded)
 				isLoaded = true;
 			if (!this.furnaceItemStacks.get(0).isEmpty() && FluidUtil.getFluidHandler(furnaceItemStacks.get(0)) != null && this.heldLavaAmount < heldLavaAmountMax) {
-				  FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks.get(0), this, this.handlerBottom, 1000, null);
+				FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks.get(0), this, this.handlerBottom, 1000, null);
 			}
 			if (this.isActive() || !this.furnaceItemStacks.get(1).isEmpty() && !this.furnaceItemStacks.get(2).isEmpty()) {
 				if (!this.isActive() && this.canSmelt()) {
@@ -195,7 +186,7 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 				}
 
 				if (this.isActive() && this.canSmelt()) {
-					if(furnaceBurnTime % 5 == 0)
+					if (furnaceBurnTime % 5 == 0)
 						--this.heldLavaAmount;
 					--this.furnaceBurnTime;
 
@@ -254,7 +245,7 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 				this.furnaceItemStacks.set(2, ItemStack.EMPTY);
 			}
 			drain(MetalMeltRecipes.instance().getWaterCost(itemstack), true);
-			world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f+((float)world.rand.nextInt(4))*0.1f);
+			world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f + ((float) world.rand.nextInt(4)) * 0.1f);
 		}
 	}
 
@@ -349,10 +340,8 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.furnaceItemStacks)
-		{
-			if (!itemstack.isEmpty())
-			{
+		for (ItemStack itemstack : this.furnaceItemStacks) {
+			if (!itemstack.isEmpty()) {
 				return false;
 			}
 		}
@@ -469,9 +458,7 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-			return true;
+		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 
-		return super.hasCapability(capability, facing);
 	}
 }

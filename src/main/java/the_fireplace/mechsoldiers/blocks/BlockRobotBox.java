@@ -101,11 +101,10 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		ItemStack pick = new ItemStack(MechSoldiers.robot_box);
 		TileEntity te = world.getTileEntity(pos);
-		if(te instanceof TileEntityRobotBox){
+		if (te instanceof TileEntityRobotBox) {
 			NBTTagCompound skellyData = new NBTTagCompound();
 			skellyData.setTag("RobotCPU", ((TileEntityRobotBox) te).getCPU().writeToNBT(new NBTTagCompound()));
 			skellyData.setTag("RobotSkeleton", ((TileEntityRobotBox) te).getSkeleton().writeToNBT(new NBTTagCompound()));

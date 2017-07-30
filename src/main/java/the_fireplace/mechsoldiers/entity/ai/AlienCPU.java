@@ -1,27 +1,15 @@
 package the_fireplace.mechsoldiers.entity.ai;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.util.ICPU;
 import the_fireplace.overlord.entity.EntityArmyMember;
 import the_fireplace.overlord.entity.ai.*;
-
-import java.util.Random;
 
 public class AlienCPU implements ICPU {
 
@@ -36,7 +24,7 @@ public class AlienCPU implements ICPU {
 				public void resetTask() {
 					super.resetTask();
 					skeleton.setSwingingArms(false);
-					if(skeleton.getRNG().nextInt(5) == 3) {
+					if (skeleton.getRNG().nextInt(5) == 3) {
 						double d0 = skeleton.posX + (skeleton.world.rand.nextDouble() - 0.5D) * 64.0D;
 						double d1 = skeleton.posY + (double) (skeleton.world.rand.nextInt(64) - 32);
 						double d2 = skeleton.posZ + (skeleton.world.rand.nextDouble() - 0.5D) * 64.0D;

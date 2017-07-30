@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class StainedItemUtil {
 	@Nullable
-	public static Color getColor(ItemStack stack){
+	public static Color getColor(ItemStack stack) {
 		return stack.hasTagCompound() && stack.getTagCompound().hasKey("StainColor") ? new Color(stack.getTagCompound().getInteger("StainColor")) : null;
 	}
 }

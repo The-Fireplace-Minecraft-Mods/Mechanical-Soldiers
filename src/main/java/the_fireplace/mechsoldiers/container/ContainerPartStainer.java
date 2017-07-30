@@ -52,9 +52,7 @@ public class ContainerPartStainer extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		for (int i = 0; i < this.listeners.size(); ++i) {
-			IContainerListener icontainerlistener = this.listeners.get(i);
-
+		for (IContainerListener icontainerlistener : this.listeners) {
 			if (this.redValue != this.tileConstructor.getField(0)) {
 				icontainerlistener.sendWindowProperty(this, 0, this.tileConstructor.getField(0));
 			}

@@ -5,12 +5,10 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.IFluidTank;
 import the_fireplace.mechsoldiers.blocks.BlockHalfMiniTank;
 import the_fireplace.mechsoldiers.blocks.BlockMiniTank;
 import the_fireplace.mechsoldiers.tileentity.TileEntityMiniTank;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 
 /**
  * @author The_Fireplace
@@ -29,11 +27,11 @@ public class MiniTankTESR extends TileEntitySpecialRenderer<TileEntityMiniTank> 
 				GlStateManager.enableBlend();
 
 				double yOffset = 0.0d;
-				if(te.hasWorld()) {
+				if (te.hasWorld()) {
 					IBlockState state = te.getWorld().getBlockState(te.getPos());
 					Block block = state.getBlock();
-					if(block instanceof BlockHalfMiniTank)
-						if(state.getValue(BlockMiniTank.HALF).equals(BlockSlab.EnumBlockHalf.TOP))
+					if (block instanceof BlockHalfMiniTank)
+						if (state.getValue(BlockMiniTank.HALF).equals(BlockSlab.EnumBlockHalf.TOP))
 							yOffset = 0.5d;
 				}
 

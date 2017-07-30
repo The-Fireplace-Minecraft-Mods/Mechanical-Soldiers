@@ -121,10 +121,8 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.inventory)
-		{
-			if (!itemstack.isEmpty())
-			{
+		for (ItemStack itemstack : this.inventory) {
+			if (!itemstack.isEmpty()) {
 				return false;
 			}
 		}
@@ -256,7 +254,7 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 		} else if (side == EnumFacing.DOWN) {
 			return new int[]{6};
 		} else
-			throw new IllegalArgumentException("Invalid EnumFacing: "+side);
+			throw new IllegalArgumentException("Invalid EnumFacing: " + side);
 	}
 
 	@Override

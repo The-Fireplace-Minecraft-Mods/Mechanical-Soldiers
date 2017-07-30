@@ -9,7 +9,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import the_fireplace.mechsoldiers.tileentity.TileEntityPartStainer;
 import the_fireplace.overlord.network.packets.AbstractServerMessageHandler;
-import the_fireplace.overlord.tileentity.ISkeletonMaker;
 
 /**
  * @author The_Fireplace
@@ -25,8 +24,8 @@ public class TeSetField implements IMessage {
 
 	public TeSetField(BlockPos pos, int field, int value) {
 		this.pos = pos;
-		this.field=field;
-		this.value=value;
+		this.field = field;
+		this.value = value;
 	}
 
 	@Override

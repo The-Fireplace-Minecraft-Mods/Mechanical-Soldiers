@@ -350,77 +350,58 @@ public class EntityMechSkeleton extends EntityArmyMember {
 	}
 
 	@Override
-	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn)
-	{
+	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
 		return slotIn == EntityEquipmentSlot.MAINHAND ? equipInventory.getStackInSlot(0) : (slotIn == EntityEquipmentSlot.OFFHAND ? equipInventory.getStackInSlot(1) : ItemStack.EMPTY);
 	}
 
 	@Override
-	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack)
-	{
-		if (slotIn == EntityEquipmentSlot.MAINHAND)
-		{
+	public void setItemStackToSlot(EntityEquipmentSlot slotIn, ItemStack stack) {
+		if (slotIn == EntityEquipmentSlot.MAINHAND) {
 			this.playEquipSound(stack);
 			this.equipInventory.setInventorySlotContents(0, stack);
 			initEntityAI();
-		}
-		else if (slotIn == EntityEquipmentSlot.OFFHAND)
-		{
+		} else if (slotIn == EntityEquipmentSlot.OFFHAND) {
 			this.playEquipSound(stack);
 			this.equipInventory.setInventorySlotContents(1, stack);
 		}
 	}
 
 	@Override
-	public Iterable<ItemStack> getHeldEquipment()
-	{
+	public Iterable<ItemStack> getHeldEquipment() {
 		return Lists.newArrayList(this.getHeldItemMainhand(), this.getHeldItemOffhand());
 	}
 
 	@Override
-	public ItemStack getHeldItemMainhand()
-	{
-		if(equipInventory == null)
+	public ItemStack getHeldItemMainhand() {
+		if (equipInventory == null)
 			return ItemStack.EMPTY;
 		return equipInventory.getStackInSlot(0);
 	}
 
 	@Override
-	public ItemStack getHeldItemOffhand()
-	{
-		if(equipInventory == null)
+	public ItemStack getHeldItemOffhand() {
+		if (equipInventory == null)
 			return ItemStack.EMPTY;
 		return equipInventory.getStackInSlot(1);
 	}
 
 	@Override
-	public ItemStack getHeldItem(EnumHand hand)
-	{
-		if (hand == EnumHand.MAIN_HAND)
-		{
+	public ItemStack getHeldItem(EnumHand hand) {
+		if (hand == EnumHand.MAIN_HAND) {
 			return getHeldItemMainhand();
-		}
-		else if (hand == EnumHand.OFF_HAND)
-		{
+		} else if (hand == EnumHand.OFF_HAND) {
 			return getHeldItemOffhand();
-		}
-		else
-		{
+		} else {
 			throw new IllegalArgumentException("Invalid hand " + hand);
 		}
 	}
 
 	@Override
-	public void setHeldItem(EnumHand hand, ItemStack stack)
-	{
-		if (hand == EnumHand.MAIN_HAND)
-		{
+	public void setHeldItem(EnumHand hand, ItemStack stack) {
+		if (hand == EnumHand.MAIN_HAND) {
 			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
-		}
-		else
-		{
-			if (hand != EnumHand.OFF_HAND)
-			{
+		} else {
+			if (hand != EnumHand.OFF_HAND) {
 				throw new IllegalArgumentException("Invalid hand " + hand);
 			}
 

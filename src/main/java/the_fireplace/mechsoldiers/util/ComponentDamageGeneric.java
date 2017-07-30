@@ -29,17 +29,17 @@ public class ComponentDamageGeneric implements IComponentDamageBehavior {
 					amount *= 2.0;
 				if (source == DamageSource.field_191552_t)//FIREWORKS
 					amount *= 1.5;
-				itemToDamage.damageItem((int)Math.ceil(amount), entity);
+				itemToDamage.damageItem((int) Math.ceil(amount), entity);
 				return itemToDamage;
 			case "iron":
 				if (source == DamageSource.DROWN)
 					amount *= 2.5;
-				itemToDamage.damageItem((int)Math.ceil(amount), entity);
+				itemToDamage.damageItem((int) Math.ceil(amount), entity);
 				return itemToDamage;
 			case "bronze":
 				if (source == DamageSource.LAVA)
 					amount *= 1.2;
-				itemToDamage.damageItem((int)Math.ceil(amount), entity);
+				itemToDamage.damageItem((int) Math.ceil(amount), entity);
 				return itemToDamage;
 			case "copper_redstone":
 				if (source == DamageSource.DROWN)
@@ -54,7 +54,7 @@ public class ComponentDamageGeneric implements IComponentDamageBehavior {
 				if (source.isFireDamage())
 					amount *= 1.1;
 			default:
-				itemToDamage.damageItem((int)Math.ceil(amount), entity);
+				itemToDamage.damageItem((int) Math.ceil(amount), entity);
 				return itemToDamage;
 		}
 	}

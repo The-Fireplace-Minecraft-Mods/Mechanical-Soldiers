@@ -168,7 +168,7 @@ public class MechSoldiers {
 		PartRegistry.registerPotatoCPU(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
 
 		int eid = -1;
-		EntityRegistry.registerModEntity(new ResourceLocation(MODID+":mechanical_skeleton"), EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(MODID + ":mechanical_skeleton"), EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
 
 		proxy.registerClient();
 	}

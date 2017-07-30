@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class RecipeMaker {
 	public static IStackHelper stackHelper;
+
 	@Nonnull
 	public static List<MetalMeltRecipe> getMetalMeltRecipes(IJeiHelpers helpers) {
 		RecipeMaker.stackHelper = helpers.getStackHelper();
@@ -34,12 +35,13 @@ public class RecipeMaker {
 			inputs.add(input2);
 			inputs.add(input1);
 			MetalMeltRecipe recipe = new MetalMeltRecipe(inputs, output);
-			if(isRecipeValid(recipe))
+			if (isRecipeValid(recipe))
 				recipes.add(recipe);
 		}
 
 		return recipes;
 	}
+
 	@Nonnull
 	public static List<CPUMeltRecipe> getCPUMeltRecipes(IJeiHelpers helpers) {
 		RecipeMaker.stackHelper = helpers.getStackHelper();
@@ -58,7 +60,7 @@ public class RecipeMaker {
 			inputs.add(input2);
 			inputs.add(input1);
 			CPUMeltRecipe recipe = new CPUMeltRecipe(inputs, output);
-			if(isRecipeValid(recipe))
+			if (isRecipeValid(recipe))
 				recipes.add(recipe);
 		}
 

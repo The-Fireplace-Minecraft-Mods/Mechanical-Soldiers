@@ -12,7 +12,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.overlord.container.SlotOutput;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
@@ -50,9 +49,7 @@ public class ContainerCPUMelter extends Container {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		for (int i = 0; i < this.listeners.size(); ++i) {
-			IContainerListener icontainerlistener = this.listeners.get(i);
-
+		for (IContainerListener icontainerlistener : this.listeners) {
 			if (this.furnaceBurnTime != this.tileConstructor.getField(0)) {
 				icontainerlistener.sendWindowProperty(this, 0, this.tileConstructor.getField(0));
 			}

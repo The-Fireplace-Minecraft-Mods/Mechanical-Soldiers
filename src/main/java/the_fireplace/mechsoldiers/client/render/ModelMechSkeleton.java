@@ -9,11 +9,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.util.StainedItemUtil;
 import the_fireplace.overlord.entity.EntityArmyMember;
@@ -112,16 +110,16 @@ public class ModelMechSkeleton extends ModelBiped {
 		if (!isJointLayer) {
 			EntityMechSkeleton entityskeleton = (EntityMechSkeleton) entityIn;
 			Color color = StainedItemUtil.getColor(entityskeleton.getSkeleton());
-			if(color != null)
-				GlStateManager.color(((float)color.getRed())/255f/2f, ((float)color.getGreen())/255f/2f, ((float)color.getBlue())/255f/2f);
+			if (color != null)
+				GlStateManager.color(((float) color.getRed()) / 255f / 2f, ((float) color.getGreen()) / 255f / 2f, ((float) color.getBlue()) / 255f / 2f);
 			super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-			if(color != null)
+			if (color != null)
 				GlStateManager.resetColor();
-		}else {
+		} else {
 			EntityMechSkeleton entityskeleton = (EntityMechSkeleton) entityIn;
 			Color color = StainedItemUtil.getColor(entityskeleton.getJoints());
-			if(color != null)
-				GlStateManager.color(((float)color.getRed())/255f/2f, ((float)color.getGreen())/255f/2f, ((float)color.getBlue())/255f/2f);
+			if (color != null)
+				GlStateManager.color(((float) color.getRed()) / 255f / 2f, ((float) color.getGreen()) / 255f / 2f, ((float) color.getBlue()) / 255f / 2f);
 			this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 			GlStateManager.pushMatrix();
 			if (entityIn.isSneaking()) {
@@ -136,7 +134,7 @@ public class ModelMechSkeleton extends ModelBiped {
 			this.leftKnee.render(scale);
 
 			GlStateManager.popMatrix();
-			if(color != null)
+			if (color != null)
 				GlStateManager.resetColor();
 		}
 	}

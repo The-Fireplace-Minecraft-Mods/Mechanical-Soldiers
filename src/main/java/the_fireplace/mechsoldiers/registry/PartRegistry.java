@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import the_fireplace.mechsoldiers.util.IComponentDamageBehavior;
 import the_fireplace.mechsoldiers.util.EnumPartType;
 import the_fireplace.mechsoldiers.util.ICPU;
+import the_fireplace.mechsoldiers.util.IComponentDamageBehavior;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;

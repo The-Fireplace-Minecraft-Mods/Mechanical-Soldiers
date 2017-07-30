@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.fluids.IFluidTank;
 import the_fireplace.mechsoldiers.tileentity.TileEntityCPUMelter;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 
 /**
  * @author The_Fireplace

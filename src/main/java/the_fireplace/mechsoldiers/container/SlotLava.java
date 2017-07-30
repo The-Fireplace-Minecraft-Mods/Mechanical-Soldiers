@@ -1,12 +1,10 @@
 package the_fireplace.mechsoldiers.container;
 
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidUtil;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 
 import javax.annotation.Nullable;
 

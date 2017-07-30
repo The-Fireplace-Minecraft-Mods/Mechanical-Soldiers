@@ -33,7 +33,7 @@ import static the_fireplace.overlord.Overlord.proxy;
 public class MechSoldiersGuideCompat implements IGuideBook {
 	@Override
 	public Book buildBook() {
-		if(OverlordGuide.myGuide == null){
+		if (OverlordGuide.myGuide == null) {
 			Overlord.logError("Mechanical Soldiers guide book modifier loaded before the Overlord guide book. THIS SHOULD NOT HAPPEN. USERS, REPORT THIS.");
 			return null;
 		}
@@ -79,8 +79,8 @@ public class MechSoldiersGuideCompat implements IGuideBook {
 		List<CategoryAbstract> categories = OverlordGuide.myGuide.getCategoryList();
 		categories.add(new CategoryItemStack(entries, proxy.translateToLocal("mechsoldiers.guide.1"), new ItemStack(MechSoldiers.robot_constructor)));
 
-		for(CategoryAbstract cat:categories){
-			if(cat.name.equals(proxy.translateToLocal("overlord.guide.2"))){
+		for (CategoryAbstract cat : categories) {
+			if (cat.name.equals(proxy.translateToLocal("overlord.guide.2"))) {
 				pages = Lists.newArrayList();
 				pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.2.1.1")));
 				pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.2.1.2")));

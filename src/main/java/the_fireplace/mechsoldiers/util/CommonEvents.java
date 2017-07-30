@@ -8,9 +8,9 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
 public final class CommonEvents {
-	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event){
+	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 		IBlockState state = event.getWorld().getBlockState(event.getPos());
-		if(state.getBlock() == Blocks.CAULDRON && state.getValue(BlockCauldron.LEVEL) > 0 && StainedItemUtil.getColor(event.getItemStack()) != null){
+		if (state.getBlock() == Blocks.CAULDRON && state.getValue(BlockCauldron.LEVEL) > 0 && StainedItemUtil.getColor(event.getItemStack()) != null) {
 			event.getItemStack().getTagCompound().removeTag("StainColor");
 		}
 	}

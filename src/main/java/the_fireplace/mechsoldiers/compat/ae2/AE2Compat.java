@@ -10,13 +10,14 @@ import java.util.Optional;
 
 @AEPlugin
 public class AE2Compat {
-	public AE2Compat(){
+	public AE2Compat() {
 		addRecipes();
 	}
+
 	public void addRecipes() {
 		Optional<ItemStack> logicProcessor = AEApi.instance().definitions().materials().logicProcessor().maybeStack(1);
 		Optional<ItemStack> storageHousing = AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
-		if(logicProcessor.isPresent() && storageHousing.isPresent())
+		if (logicProcessor.isPresent() && storageHousing.isPresent())
 			CraftingRecipes.addShapelessRecipe(MechCraftingRecipes.gold_redstone_cpu, logicProcessor.get(), storageHousing.get());
 	}
 }

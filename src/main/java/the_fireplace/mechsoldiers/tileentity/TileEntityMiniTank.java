@@ -52,7 +52,7 @@ public class TileEntityMiniTank extends TileEntity implements IFluidHandler, IFl
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setInteger("HeldFluid", this.heldFluidAmount);
-		if(heldFluid != null)
+		if (heldFluid != null)
 			compound.setString("FluidId", FluidRegistry.getFluidName(heldFluid));
 		return compound;
 	}
@@ -60,7 +60,7 @@ public class TileEntityMiniTank extends TileEntity implements IFluidHandler, IFl
 	@Nullable
 	@Override
 	public FluidStack getFluid() {
-		if(getFluidAmount() > 0)
+		if (getFluidAmount() > 0)
 			return new FluidStack(heldFluid, heldFluidAmount);
 		return null;
 	}
@@ -72,7 +72,7 @@ public class TileEntityMiniTank extends TileEntity implements IFluidHandler, IFl
 
 	@Override
 	public int getCapacity() {
-		return getBlockType().getRegistryName().toString().contains("full") ? maxCapacity : maxCapacity /2;
+		return getBlockType().getRegistryName().toString().contains("full") ? maxCapacity : maxCapacity / 2;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class TileEntityMiniTank extends TileEntity implements IFluidHandler, IFl
 	public int fill(FluidStack resource, boolean doFill) {
 		int maxFillAmount = getCapacity() - getFluidAmount();
 		if (maxFillAmount > 0 && (heldFluid == null || resource.getFluid().equals(heldFluid))) {
-			if(doFill && heldFluid == null)
+			if (doFill && heldFluid == null)
 				heldFluid = resource.getFluid();
 			if (maxFillAmount < resource.amount) {
 				if (doFill) {
@@ -116,7 +116,7 @@ public class TileEntityMiniTank extends TileEntity implements IFluidHandler, IFl
 				return new FluidStack(heldFluid, resource.amount);
 			} else {
 				int prevHeldAmount = getFluidAmount();
-				if(heldFluid == null || prevHeldAmount <= 0)
+				if (heldFluid == null || prevHeldAmount <= 0)
 					return null;
 				FluidStack out = new FluidStack(heldFluid, prevHeldAmount);
 				if (doDrain) {
@@ -139,7 +139,7 @@ public class TileEntityMiniTank extends TileEntity implements IFluidHandler, IFl
 				return new FluidStack(heldFluid, maxDrain);
 			} else {
 				int prevHeldAmount = getFluidAmount();
-				if(heldFluid == null || prevHeldAmount <= 0)
+				if (heldFluid == null || prevHeldAmount <= 0)
 					return null;
 				FluidStack out = new FluidStack(heldFluid, prevHeldAmount);
 				if (doDrain) {

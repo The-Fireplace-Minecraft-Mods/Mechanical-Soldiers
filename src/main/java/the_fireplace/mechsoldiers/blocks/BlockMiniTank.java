@@ -1,7 +1,6 @@
 package the_fireplace.mechsoldiers.blocks;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -21,14 +20,12 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.tileentity.TileEntityMiniTank;
 import the_fireplace.overlord.Overlord;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
@@ -62,8 +59,7 @@ public abstract class BlockMiniTank extends BlockSlab implements ITileEntityProv
 	}
 
 	@Override
-	public Comparable<?> getTypeForItem(ItemStack stack)
-	{
+	public Comparable<?> getTypeForItem(ItemStack stack) {
 		return false;
 	}
 
@@ -148,7 +144,7 @@ public abstract class BlockMiniTank extends BlockSlab implements ITileEntityProv
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileEntityMiniTank && !player.isSneaking()) {
 			boolean interact = FluidUtil.interactWithFluidHandler(player, hand, world, pos, side);
-			if(interact)
+			if (interact)
 				tile.markDirty();
 			return interact;
 		}
@@ -157,14 +153,12 @@ public abstract class BlockMiniTank extends BlockSlab implements ITileEntityProv
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer()
-	{
+	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
@@ -174,8 +168,7 @@ public abstract class BlockMiniTank extends BlockSlab implements ITileEntityProv
 	}
 
 	@Override
-	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
-	{
+	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
 		return false;
 	}
 }

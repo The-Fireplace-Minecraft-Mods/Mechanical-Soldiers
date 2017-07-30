@@ -24,7 +24,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 

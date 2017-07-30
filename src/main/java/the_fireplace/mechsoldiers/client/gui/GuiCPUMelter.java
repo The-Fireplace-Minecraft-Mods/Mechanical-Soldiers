@@ -12,9 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.container.ContainerCPUMelter;
-import the_fireplace.mechsoldiers.container.ContainerMetalPartConstructor;
 import the_fireplace.mechsoldiers.tileentity.TileEntityCPUMelter;
-import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 
 @SideOnly(Side.CLIENT)
 public class GuiCPUMelter extends GuiContainer {
@@ -57,14 +55,14 @@ public class GuiCPUMelter extends GuiContainer {
 
 		if (TileEntityCPUMelter.isActive(this.tileFurnace)) {
 			int l = this.getCookProgressScaled(24);
-			this.drawTexturedModalRect(i + 83, j + 30, 176, 0, 18, 1+l);
+			this.drawTexturedModalRect(i + 83, j + 30, 176, 0, 18, 1 + l);
 		}
 	}
 
 	private int getCookProgressScaled(int pixels) {
 		int i = this.tileFurnace.getField(0);
 		int j = 5000;
-		return 24-(i != 0 ? i * pixels / j : 0);
+		return 24 - (i != 0 ? i * pixels / j : 0);
 	}
 
 	private int getLiquidAmountScaled(int pixels) {

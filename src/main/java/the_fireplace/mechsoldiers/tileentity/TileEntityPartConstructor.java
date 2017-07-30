@@ -66,10 +66,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.furnaceItemStacks)
-		{
-			if (!itemstack.isEmpty())
-			{
+		for (ItemStack itemstack : this.furnaceItemStacks) {
+			if (!itemstack.isEmpty()) {
 				return false;
 			}
 		}
@@ -213,7 +211,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			if (!isLoaded)
 				isLoaded = true;
 			if (!this.furnaceItemStacks.get(4).isEmpty() && FluidUtil.getFluidHandler(furnaceItemStacks.get(4)) != null && this.heldWaterAmount < heldWaterAmountMax) {
-				  FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks.get(4), this, this.handlerBottom, 1000, null);
+				FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks.get(4), this, this.handlerBottom, 1000, null);
 			}
 			if (this.isActive() || !this.furnaceItemStacks.get(2).isEmpty() && !this.furnaceItemStacks.get(0).isEmpty() && !this.furnaceItemStacks.get(1).isEmpty()) {
 				if (!this.isActive() && this.canSmelt()) {
@@ -300,7 +298,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			}
 
 			drain(MetalMeltRecipes.instance().getWaterCost(itemstack), true);
-			world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f+((float)world.rand.nextInt(4))*0.1f);
+			world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f + ((float) world.rand.nextInt(4)) * 0.1f);
 		}
 	}
 
@@ -557,9 +555,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-			return true;
+		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 
-		return super.hasCapability(capability, facing);
 	}
 }

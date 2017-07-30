@@ -4,11 +4,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumHand;
@@ -54,16 +52,14 @@ public class GreenCPU implements ICPU {
 				}
 
 				@Override
-				protected void checkAndPerformAttack(EntityLivingBase entity, double distance)
-				{
+				protected void checkAndPerformAttack(EntityLivingBase entity, double distance) {
 					double d0 = this.getAttackReachSqr(entity);
 
-					if (distance <= d0 && this.attackTick <= 0)
-					{
+					if (distance <= d0 && this.attackTick <= 0) {
 						this.attackTick = 30;
 						this.attacker.swingArm(EnumHand.MAIN_HAND);
 						this.attacker.attackEntityAsMob(entity);
-						entity.playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1.0f, 1.0f - ((float)entity.world.rand.nextInt(8)) * 0.1f);
+						entity.playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1.0f, 1.0f - ((float) entity.world.rand.nextInt(8)) * 0.1f);
 					}
 				}
 			};

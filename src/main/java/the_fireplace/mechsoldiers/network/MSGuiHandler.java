@@ -27,11 +27,11 @@ public final class MSGuiHandler implements IGuiHandler {
 				if (entity != null) {
 					if (entity instanceof TileEntityRobotConstructor)
 						return new ContainerRobotConstructor(player.inventory, (IInventory) entity);
-					else if(entity instanceof TileEntityPartConstructor)
+					else if (entity instanceof TileEntityPartConstructor)
 						return new ContainerMetalPartConstructor(player.inventory, (IInventory) entity);
-					else if(entity instanceof TileEntityCPUMelter)
+					else if (entity instanceof TileEntityCPUMelter)
 						return new ContainerCPUMelter(player.inventory, (IInventory) entity);
-					else if(entity instanceof TileEntityPartStainer)
+					else if (entity instanceof TileEntityPartStainer)
 						return new ContainerPartStainer(player.inventory, (IInventory) entity);
 				} else {
 					return null;
@@ -56,9 +56,9 @@ public final class MSGuiHandler implements IGuiHandler {
 						return new GuiRobotConstructor(player.inventory, (TileEntityRobotConstructor) entity);
 					else if (entity instanceof TileEntityPartConstructor)
 						return new GuiMetalPartConstructor(player.inventory, (IInventory) entity);
-					else if(entity instanceof TileEntityCPUMelter)
+					else if (entity instanceof TileEntityCPUMelter)
 						return new GuiCPUMelter(player.inventory, (IInventory) entity);
-					else if(entity instanceof TileEntityPartStainer)
+					else if (entity instanceof TileEntityPartStainer)
 						return new GuiPartStainer(player.inventory, (TileEntityPartStainer) entity);
 				} else {
 					return null;
