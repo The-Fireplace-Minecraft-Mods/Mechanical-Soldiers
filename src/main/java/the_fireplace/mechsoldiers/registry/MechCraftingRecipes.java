@@ -13,6 +13,7 @@ public class MechCraftingRecipes {
 	public static ItemStack furnace = new ItemStack(Blocks.FURNACE);
 
 	public static ItemStack robot_constructor = new ItemStack(MechSoldiers.robot_constructor);
+	public static ItemStack part_stainer = new ItemStack(MechSoldiers.part_stainer);
 	public static ItemStack mpc = new ItemStack(MechSoldiers.metal_part_constructor);
 	public static ItemStack cpum = new ItemStack(MechSoldiers.cpu_melter);
 	public static ItemStack mini_tank = new ItemStack(MechSoldiers.mini_tank);
@@ -40,6 +41,7 @@ public class MechCraftingRecipes {
 		CraftingRecipes.addRecipe(mpc, "ifi", "iti", 'i', "ingotIron", 'f', furnace, 't', mini_tank);
 		CraftingRecipes.addRecipe(cpum, "ift", "ibi", "tfi", 'i', "ingotIron", 'f', furnace, 't', mini_tank, 'b', blueprint);
 		CraftingRecipes.addShapelessRecipe(blueprint2, blueprint, "paper", "dyeBlue", "dyeWhite", "nuggetIron");
+		CraftingRecipes.addRecipe(part_stainer, "sbb", "sib", "sbb", 's', "stone", 'i', "ingotIron", 'b', Blocks.STONEBRICK);
 
 		MetalMeltRecipes.instance().addMeltingRecipe(iron_skeleton, "ingotIron", "blockIron");
 		MetalMeltRecipes.instance().addMeltingRecipe(steel_skeleton, "ingotSteel", "blockSteel");
