@@ -18,6 +18,8 @@ item.cpu_gold_redstone.name=Gold-Redstone CPU
 item.cpu_electrum_redstone.name=Electrum-Redstone CPU
 item.cpu_terminator.name=Terminator CPU
 item.cpu_green.name=Green CPU
+item.cpu_wood.name=Wood-Encased CPU
+item.cpu_alien.name=Alien CPU
 item.blueprint.name=Skeletal Component Blueprint
 
 tile.robot_box.name=Robot Crate

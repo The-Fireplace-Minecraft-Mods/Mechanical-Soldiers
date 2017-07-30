@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import the_fireplace.mechsoldiers.util.ComponentDamageBehavior;
+import the_fireplace.mechsoldiers.util.IComponentDamageBehavior;
 import the_fireplace.mechsoldiers.util.EnumPartType;
 import the_fireplace.mechsoldiers.util.ICPU;
 
@@ -22,7 +22,7 @@ import java.util.HashMap;
 public final class PartRegistry {
 	private static PartRegistry instance;
 	private HashMap<ItemStack, EnumPartType> partTypes = Maps.newHashMap();
-	private HashMap<ItemStack, ComponentDamageBehavior> partBehaviors = Maps.newHashMap();
+	private HashMap<ItemStack, IComponentDamageBehavior> partBehaviors = Maps.newHashMap();
 	private HashMap<ItemStack, String> partMaterials = Maps.newHashMap();
 	private HashMap<ItemStack, ResourceLocation> partTextures = Maps.newHashMap();
 	private HashMap<ItemStack, ICPU> itemAIHandlers = Maps.newHashMap();
@@ -44,7 +44,7 @@ public final class PartRegistry {
 	 * @param texture
 	 * 		The texture to render the part with.
 	 */
-	public static void registerSkeleton(Item item, ComponentDamageBehavior behavior, String material, ResourceLocation texture) {
+	public static void registerSkeleton(Item item, IComponentDamageBehavior behavior, String material, ResourceLocation texture) {
 		registerPart(item, OreDictionary.WILDCARD_VALUE, EnumPartType.SKELETON, behavior, material, texture);
 	}
 
@@ -60,7 +60,7 @@ public final class PartRegistry {
 	 * @param texture
 	 * 		The texture to render the part with.
 	 */
-	public static void registerJoints(Item item, ComponentDamageBehavior behavior, String material, ResourceLocation texture) {
+	public static void registerJoints(Item item, IComponentDamageBehavior behavior, String material, ResourceLocation texture) {
 		registerPart(item, OreDictionary.WILDCARD_VALUE, EnumPartType.JOINTS, behavior, material, texture);
 	}
 
@@ -76,7 +76,7 @@ public final class PartRegistry {
 	 * @param material
 	 * 		The material the item is made of. Used in determining how much damage an item takes.
 	 */
-	public static void registerCPU(Item item, ICPU logicHandler, ComponentDamageBehavior behavior, String material) {
+	public static void registerCPU(Item item, ICPU logicHandler, IComponentDamageBehavior behavior, String material) {
 		registerPart(item, OreDictionary.WILDCARD_VALUE, EnumPartType.CPU, behavior, material, null);
 		instance.itemAIHandlers.put(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE), logicHandler);
 	}
@@ -93,11 +93,11 @@ public final class PartRegistry {
 	 * @param material
 	 * 		The material the item is made of. Used in determining how much damage an item takes.
 	 */
-	public static void registerPotatoCPU(Item item, int meta, ComponentDamageBehavior behavior, String material) {
+	public static void registerPotatoCPU(Item item, int meta, IComponentDamageBehavior behavior, String material) {
 		registerPart(item, meta, EnumPartType.CPU, behavior, material, null);
 	}
 
-	private static void registerPart(Item item, int meta, EnumPartType type, ComponentDamageBehavior behavior, String material, @Nullable ResourceLocation texture) {
+	private static void registerPart(Item item, int meta, EnumPartType type, IComponentDamageBehavior behavior, String material, @Nullable ResourceLocation texture) {
 		instance.partTypes.put(new ItemStack(item, 1, meta), type);
 		instance.partBehaviors.put(new ItemStack(item, 1, meta), behavior);
 		instance.partMaterials.put(new ItemStack(item, 1, meta), material);

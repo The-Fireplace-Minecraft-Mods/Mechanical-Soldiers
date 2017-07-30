@@ -7,7 +7,7 @@ import net.minecraft.util.DamageSource;
 /**
  * @author The_Fireplace
  */
-public class ComponentDamageGeneric extends ComponentDamageBehavior {
+public class ComponentDamageGeneric implements IComponentDamageBehavior {
 	private static ComponentDamageGeneric instance;
 
 	public static ComponentDamageGeneric getInstance() {
@@ -19,6 +19,11 @@ public class ComponentDamageGeneric extends ComponentDamageBehavior {
 	@Override
 	public ItemStack getDamagedItemStack(ItemStack itemToDamage, DamageSource source, float amount, String material, EntityLivingBase entity) {
 		switch (material.toLowerCase()) {
+			case "wood_cpu":
+				if (source == DamageSource.LIGHTNING_BOLT)
+					amount *= 4.0;
+				if (source == DamageSource.DROWN)
+					amount *= 2.0;
 			case "wood":
 				if (source.isFireDamage())
 					amount *= 2.0;

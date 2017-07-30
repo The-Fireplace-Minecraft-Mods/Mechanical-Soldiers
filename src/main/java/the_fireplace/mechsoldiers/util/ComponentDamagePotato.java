@@ -8,7 +8,7 @@ import net.minecraft.util.DamageSource;
 /**
  * @author The_Fireplace
  */
-public final class ComponentDamagePotato extends ComponentDamageBehavior {
+public final class ComponentDamagePotato implements IComponentDamageBehavior {
 	private static ComponentDamagePotato instance;
 
 	public static ComponentDamagePotato getInstance() {

@@ -23,8 +23,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.blocks.*;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
+import the_fireplace.mechsoldiers.entity.ai.AlienCPU;
 import the_fireplace.mechsoldiers.entity.ai.GreenCPU;
 import the_fireplace.mechsoldiers.entity.ai.TerminatorCPU;
+import the_fireplace.mechsoldiers.entity.ai.WoodCPU;
 import the_fireplace.mechsoldiers.items.*;
 import the_fireplace.mechsoldiers.network.CommonProxy;
 import the_fireplace.mechsoldiers.network.MSGuiHandler;
@@ -81,6 +83,8 @@ public class MechSoldiers {
 	public static final Item cpu_electrum_redstone = new ItemCPU("electrum_redstone", 50);
 	public static final Item cpu_terminator = new ItemCPU("terminator", 32);
 	public static final Item cpu_green = new ItemCPU("green", 40);
+	public static final Item cpu_alien = new ItemCPU("alien", 60);
+	public static final Item cpu_wood = new ItemCPU("wood", 20);
 	public static final Item blueprint = new Item().setUnlocalizedName("blueprint").setRegistryName("blueprint").setCreativeTab(CreativeTabs.MISC);
 
 	public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
@@ -115,6 +119,8 @@ public class MechSoldiers {
 		GameRegistry.register(cpu_electrum_redstone);
 		GameRegistry.register(cpu_terminator);
 		GameRegistry.register(cpu_green);
+		GameRegistry.register(cpu_wood);
+		GameRegistry.register(cpu_alien);
 		GameRegistry.register(blueprint);
 
 		GameRegistry.register(robot_box);
@@ -156,6 +162,8 @@ public class MechSoldiers {
 		PartRegistry.registerCPU(cpu_electrum_redstone, (ICPU) cpu_electrum_redstone, ComponentDamageGeneric.getInstance(), "gold_redstone");
 		PartRegistry.registerCPU(cpu_terminator, new TerminatorCPU(), ComponentDamageGeneric.getInstance(), "iron");
 		PartRegistry.registerCPU(cpu_green, new GreenCPU(), ComponentDamageGeneric.getInstance(), "copper");
+		PartRegistry.registerCPU(cpu_wood, new WoodCPU(), ComponentDamageGeneric.getInstance(), "wood_cpu");
+		PartRegistry.registerCPU(cpu_alien, new AlienCPU(), ComponentDamageGeneric.getInstance(), "gold");
 		PartRegistry.registerPotatoCPU(Items.POTATO, 0, ComponentDamagePotato.getInstance(), "potato");
 		PartRegistry.registerPotatoCPU(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
 
@@ -190,6 +198,8 @@ public class MechSoldiers {
 		rmm(cpu_electrum_redstone);
 		rmm(cpu_terminator);
 		rmm(cpu_green);
+		rmm(cpu_wood);
+		rmm(cpu_alien);
 		rmm(blueprint);
 
 		rmm(robot_constructor);
