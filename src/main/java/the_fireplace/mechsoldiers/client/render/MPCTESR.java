@@ -10,7 +10,7 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
  */
 public class MPCTESR extends TileEntitySpecialRenderer<TileEntityPartConstructor> {
 	@Override
-	public void renderTileEntityAt(TileEntityPartConstructor te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityPartConstructor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
 		if (te != null) {
 

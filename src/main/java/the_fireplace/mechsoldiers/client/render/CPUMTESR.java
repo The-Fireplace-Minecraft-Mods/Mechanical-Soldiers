@@ -10,7 +10,7 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityCPUMelter;
  */
 public class CPUMTESR extends TileEntitySpecialRenderer<TileEntityCPUMelter> {
 	@Override
-	public void renderTileEntityAt(TileEntityCPUMelter te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityCPUMelter te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
 		if (te != null) {
 

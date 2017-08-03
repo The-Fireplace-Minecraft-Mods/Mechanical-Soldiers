@@ -68,6 +68,7 @@ mechsoldiers.guide.1.5=Part Staining
 mechsoldiers.guide.1.5.1=You can stain Skeletons and Joints different colors. To do this, you need to make a Robot Part Stainer.
 mechsoldiers.guide.1.5.2=In the Stainer, you can stain Skeletons and Joints. Staining parts consumes Dyes. The accepted colors are Red, Green, Blue, and Black. Black is not absolutely required for any color, but it does reduce the number of red, green, and blue dyes used for staining parts with darker colors.
 mechsoldiers.guide.1.5.3=The number next to a dye slot tells you how many of that dye are needed to make that color. If the number is green, you have enough. If it is red, you don't. If the number is a red 0, that means the dye needs to be present, but it won't be consumed.
+mechsoldiers.guide.1.5.4=Stained parts have a tooltip that shows you what color they are. To remove stain from a part, you can right click a Cauldron(with water in it) while holding the part.
 mechsoldiers.guide.2.1=Robots
 mechsoldiers.guide.2.1.1=Robots are highly configurable units. Their damage is determined not by a set amount of health, but by what they are made of. If any one of three essential components breaks, the robot falls apart.
 mechsoldiers.guide.2.1.2=The components robots are made of are: Skeleton, Joints, and CPU. The Skeleton is the most durable part, and takes the most damage. The Joints are weaker, and take less damage than the Skeleton.

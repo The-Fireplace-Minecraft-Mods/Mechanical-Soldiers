@@ -125,8 +125,13 @@ public class TileEntityPartStainer extends TileEntityLockable implements ISidedI
 
 
 	@Override
-	public void spawnSkeleton() {//I am using this method so I can piggyback off the Overlord packets as much as possible.
-		if (getStackInSlot(0).isEmpty() || !getStackInSlot(4).isEmpty() || !hasEnoughRed() || !hasEnoughGreen() || !hasEnoughBlue())
+	public boolean canSpawnSkeleton() {
+		return !getStackInSlot(0).isEmpty() && getStackInSlot(4).isEmpty() && hasEnoughRed() && hasEnoughGreen() && hasEnoughBlue();
+	}
+
+	@Override
+	public void spawnSkeleton(EntityPlayer playerSpawning) {//I am using this method so I can piggyback off the Overlord packets as much as possible.
+		if (!canSpawnSkeleton())
 			return;
 		ItemStack output = getStackInSlot(0).copy();
 		NBTTagCompound outData = new NBTTagCompound();

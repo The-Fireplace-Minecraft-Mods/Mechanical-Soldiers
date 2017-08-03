@@ -4,7 +4,6 @@ import appeng.api.AEApi;
 import appeng.api.AEPlugin;
 import net.minecraft.item.ItemStack;
 import the_fireplace.mechsoldiers.registry.MechCraftingRecipes;
-import the_fireplace.overlord.registry.CraftingRecipes;
 
 import java.util.Optional;
 
@@ -18,6 +17,6 @@ public class AE2Compat {
 		Optional<ItemStack> logicProcessor = AEApi.instance().definitions().materials().logicProcessor().maybeStack(1);
 		Optional<ItemStack> storageHousing = AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
 		if (logicProcessor.isPresent() && storageHousing.isPresent())
-			CraftingRecipes.addShapelessRecipe(MechCraftingRecipes.gold_redstone_cpu, logicProcessor.get(), storageHousing.get());
+			MechCraftingRecipes.addShapelessRecipe(MechCraftingRecipes.gold_redstone_cpu, logicProcessor.get(), storageHousing.get());
 	}
 }

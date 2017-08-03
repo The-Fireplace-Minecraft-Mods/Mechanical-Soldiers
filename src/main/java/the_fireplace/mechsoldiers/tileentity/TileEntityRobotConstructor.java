@@ -42,8 +42,13 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 	}
 
 	@Override
-	public void spawnSkeleton() {
-		if (getStackInSlot(1).isEmpty() || getStackInSlot(2).isEmpty() || getStackInSlot(3).isEmpty() || getStackInSlot(4).isEmpty() || !getStackInSlot(5).isEmpty())
+	public boolean canSpawnSkeleton() {
+		return !getStackInSlot(1).isEmpty() && !getStackInSlot(2).isEmpty() && !getStackInSlot(3).isEmpty() && !getStackInSlot(4).isEmpty() && getStackInSlot(5).isEmpty();
+	}
+
+	@Override
+	public void spawnSkeleton(EntityPlayer playerSpawning) {
+		if (!canSpawnSkeleton())
 			return;
 		ItemStack robotBox = new ItemStack(MechSoldiers.robot_box);
 		NBTTagCompound robotData = new NBTTagCompound();

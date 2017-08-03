@@ -33,7 +33,7 @@ public class BlockRobotConstructor extends BlockContainer {
 	public BlockRobotConstructor(String name) {
 		super(Material.IRON);
 		setUnlocalizedName(name);
-		//setRegistryName(name);//Handled when registering
+		setRegistryName(name);
 		setCreativeTab(Overlord.tabOverlord);
 		setHarvestLevel("pickaxe", 2);
 		setHardness(5.0F);

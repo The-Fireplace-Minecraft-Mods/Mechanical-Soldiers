@@ -47,6 +47,7 @@ public class GuiMetalPartConstructor extends GuiContainer {
 	 * Draws the background layer of this container (behind the items).
 	 */
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		this.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(MPC_GUI_TEX);
 		int i = (this.width - this.xSize) / 2;

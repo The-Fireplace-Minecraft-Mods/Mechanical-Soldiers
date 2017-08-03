@@ -63,6 +63,7 @@ public class GuiRobotConstructor extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		this.drawDefaultBackground();
 		GL11.glColor4f(1F, 1F, 1F, 1F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		int k = (this.width - this.xSize) / 2;
@@ -117,7 +118,7 @@ public class GuiRobotConstructor extends GuiContainer {
 
 	@Override
 	public void updateScreen() {
-		createSkeleton.enabled = isButtonEnabled();
+		createSkeleton.enabled = te.canSpawnSkeleton();
 	}
 
 	@Override
@@ -127,10 +128,6 @@ public class GuiRobotConstructor extends GuiContainer {
 				PacketDispatcher.sendToServer(new CreateSkeletonMessage(te.getPos()));
 			}
 		}
-	}
-
-	private boolean isButtonEnabled() {
-		return !te.getStackInSlot(1).isEmpty() && !te.getStackInSlot(2).isEmpty() && !te.getStackInSlot(3).isEmpty() && !te.getStackInSlot(4).isEmpty() && te.getStackInSlot(5).isEmpty();
 	}
 
 	private String getWarning() {

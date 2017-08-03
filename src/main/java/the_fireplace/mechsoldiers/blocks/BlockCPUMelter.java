@@ -27,7 +27,7 @@ public class BlockCPUMelter extends BlockContainer {
 	public BlockCPUMelter(String name) {
 		super(Material.ROCK);
 		setUnlocalizedName(name);
-		//setRegistryName(name);//Handled when registering
+		setRegistryName(name);
 		useNeighborBrightness = true;
 		setHardness(1.5F);
 		setResistance(1.0F);

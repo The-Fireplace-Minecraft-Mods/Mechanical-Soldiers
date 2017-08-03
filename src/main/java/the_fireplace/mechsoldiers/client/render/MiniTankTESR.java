@@ -3,6 +3,7 @@ package the_fireplace.mechsoldiers.client.render;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.fluids.IFluidTank;
@@ -15,10 +16,9 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityMiniTank;
  */
 public class MiniTankTESR extends TileEntitySpecialRenderer<TileEntityMiniTank> {
 	@Override
-	public void renderTileEntityAt(TileEntityMiniTank te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityMiniTank te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
 		if (te != null) {
-
 			final IFluidTank fluid = te;
 
 			if (fluid != null && fluid.getFluid() != null && fluid.getFluidAmount() > 0) {

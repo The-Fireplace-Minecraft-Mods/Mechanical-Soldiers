@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,13 +18,19 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotBox;
 import the_fireplace.overlord.Overlord;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+
+import static the_fireplace.overlord.Overlord.proxy;
 
 /**
  * @author The_Fireplace
@@ -113,5 +120,21 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 			pick.setTagCompound(skellyData);
 		}
 		return pick;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag advanced) {
+		NBTTagCompound nbt = stack.getTagCompound();
+		if (nbt != null) {
+			if (nbt.hasKey("OwnerUUID") && world.getPlayerEntityByUUID(UUID.fromString(nbt.getString("OwnerUUID"))) != null)
+				tooltip.add(proxy.translateToLocal("tooltip.owner") + ' ' + world.getPlayerEntityByUUID(UUID.fromString(nbt.getString("OwnerUUID"))).getDisplayNameString());
+			if (nbt.hasKey("RobotCPU"))
+				tooltip.add(proxy.translateToLocal("color.turq") + proxy.translateToLocal("tooltip.robot_cpu") + ' ' + new ItemStack(nbt.getCompoundTag("RobotCPU")).getDisplayName());
+			if (nbt.hasKey("RobotSkeleton"))
+				tooltip.add(proxy.translateToLocal("color.turq") + proxy.translateToLocal("tooltip.robot_skeleton") + ' ' + new ItemStack(nbt.getCompoundTag("RobotSkeleton")).getDisplayName());
+			if (nbt.hasKey("RobotJoints"))
+				tooltip.add(proxy.translateToLocal("color.turq") + proxy.translateToLocal("tooltip.robot_joints") + ' ' + new ItemStack(nbt.getCompoundTag("RobotJoints")).getDisplayName());
+		}
 	}
 }

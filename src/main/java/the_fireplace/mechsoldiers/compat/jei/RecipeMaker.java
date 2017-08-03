@@ -70,7 +70,7 @@ public class RecipeMaker {
 	public static boolean isRecipeValid(MetalMeltRecipe recipe) {
 		if (recipe.outputs.isEmpty()) {
 			String recipeInfo = ErrorUtil.getInfoFromRecipe(recipe, recipe);
-			Log.error("Recipe has no outputs. {}", recipeInfo);
+			Log.get().error("Recipe has no outputs. {}", recipeInfo);
 			return false;
 		}
 		int inputCount = 0;
@@ -87,12 +87,12 @@ public class RecipeMaker {
 		}
 		if (inputCount == 0) {
 			String recipeInfo = ErrorUtil.getInfoFromRecipe(recipe, recipe);
-			Log.error("Recipe has no inputs. {}", recipeInfo);
+			Log.get().error("Recipe has no inputs. {}", recipeInfo);
 			return false;
 		}
 		if (inputCount < 2) {
 			String recipeInfo = ErrorUtil.getInfoFromRecipe(recipe, recipe);
-			Log.error("Recipe does not have enough inputs. {}", recipeInfo);
+			Log.get().error("Recipe does not have enough inputs. {}", recipeInfo);
 			return false;
 		}
 		return true;
@@ -101,7 +101,7 @@ public class RecipeMaker {
 	public static boolean isRecipeValid(CPUMeltRecipe recipe) {
 		if (recipe.outputs.isEmpty()) {
 			String recipeInfo = ErrorUtil.getInfoFromRecipe(recipe, recipe);
-			Log.error("Recipe has no outputs. {}", recipeInfo);
+			Log.get().error("Recipe has no outputs. {}", recipeInfo);
 			return false;
 		}
 		int inputCount = 0;
@@ -118,12 +118,12 @@ public class RecipeMaker {
 		}
 		if (inputCount == 0) {
 			String recipeInfo = ErrorUtil.getInfoFromRecipe(recipe, recipe);
-			Log.error("Recipe has no inputs. {}", recipeInfo);
+			Log.get().error("Recipe has no inputs. {}", recipeInfo);
 			return false;
 		}
 		if (inputCount < 2) {
 			String recipeInfo = ErrorUtil.getInfoFromRecipe(recipe, recipe);
-			Log.error("Recipe does not have enough inputs. {}", recipeInfo);
+			Log.get().error("Recipe does not have enough inputs. {}", recipeInfo);
 			return false;
 		}
 		return true;

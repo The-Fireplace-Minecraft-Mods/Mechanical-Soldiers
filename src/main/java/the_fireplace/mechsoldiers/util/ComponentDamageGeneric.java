@@ -27,7 +27,7 @@ public class ComponentDamageGeneric implements IComponentDamageBehavior {
 			case "wood":
 				if (source.isFireDamage())
 					amount *= 2.0;
-				if (source == DamageSource.field_191552_t)//FIREWORKS
+				if (source == DamageSource.FIREWORKS)
 					amount *= 1.5;
 				itemToDamage.damageItem((int) Math.ceil(amount), entity);
 				return itemToDamage;

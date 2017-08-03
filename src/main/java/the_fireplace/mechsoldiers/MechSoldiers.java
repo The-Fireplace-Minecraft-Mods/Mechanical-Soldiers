@@ -12,15 +12,18 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 import the_fireplace.mechsoldiers.blocks.*;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.entity.ai.AlienCPU;
@@ -43,6 +46,7 @@ import the_fireplace.overlord.Overlord;
 /**
  * @author The_Fireplace
  */
+@Mod.EventBusSubscriber
 @Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,)", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json")
 public class MechSoldiers {
 	public static final String MODID = "mechsoldiers";
@@ -90,7 +94,7 @@ public class MechSoldiers {
 	public static final Block robot_constructor = new BlockRobotConstructor("robot_constructor");
 	public static final Block robot_box = new BlockRobotBox("robot_box");
 	public static final Block metal_part_constructor = new BlockMetalPartConstructor(false, "metal_part_constructor").setCreativeTab(Overlord.tabOverlord);
-	public static final Block metal_part_constructor_active = new BlockMetalPartConstructor(true, "metal_part_constructor_active").setRegistryName("metal_part_constructor_active");
+	public static final Block metal_part_constructor_active = new BlockMetalPartConstructor(true, "metal_part_constructor_active");
 	public static final Block cpu_melter = new BlockCPUMelter("cpu_melter").setCreativeTab(Overlord.tabOverlord);
 	public static final Block part_stainer = new BlockPartStainer("part_stainer");
 
@@ -102,41 +106,6 @@ public class MechSoldiers {
 		PacketDispatcher.registerPackets();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new MSGuiHandler());
 		new PartRegistry();
-		GameRegistry.register(skeleton_iron);
-		GameRegistry.register(skeleton_steel);
-		GameRegistry.register(skeleton_bronze);
-		GameRegistry.register(skeleton_invar);
-		GameRegistry.register(skeleton_term);
-		GameRegistry.register(skeleton_gold);
-		GameRegistry.register(skeleton_wood);
-		GameRegistry.register(joints_iron);
-		GameRegistry.register(joints_steel);
-		GameRegistry.register(joints_bronze);
-		GameRegistry.register(joints_invar);
-		GameRegistry.register(joints_gold);
-		GameRegistry.register(cpu_copper_redstone);
-		GameRegistry.register(cpu_gold_redstone);
-		GameRegistry.register(cpu_electrum_redstone);
-		GameRegistry.register(cpu_terminator);
-		GameRegistry.register(cpu_green);
-		GameRegistry.register(cpu_wood);
-		GameRegistry.register(cpu_alien);
-		GameRegistry.register(blueprint);
-
-		GameRegistry.register(robot_box);
-		ItemBlock robotBoxItem = new ItemBlockSkeletonCrate(robot_box);
-		robotBoxItem.setMaxStackSize(1);
-		robotBoxItem.setRegistryName(robot_box.getRegistryName());
-		GameRegistry.register(robotBoxItem);
-		Overlord.instance.registerBlock(robot_constructor);
-		Overlord.instance.registerBlock(metal_part_constructor);
-		Overlord.instance.registerBlock(cpu_melter);
-		GameRegistry.register(metal_part_constructor_active);
-		Overlord.instance.registerBlock(part_stainer);
-
-		GameRegistry.register(mini_tank);
-		GameRegistry.register(full_mini_tank);
-		GameRegistry.register(new ItemBlockMiniTank(mini_tank, mini_tank, full_mini_tank).setRegistryName("mini_tank"));
 
 		GameRegistry.registerTileEntity(TileEntityRobotConstructor.class, "robot_constructor");
 		GameRegistry.registerTileEntity(TileEntityRobotBox.class, "robot_box");
@@ -144,6 +113,16 @@ public class MechSoldiers {
 		GameRegistry.registerTileEntity(TileEntityMiniTank.class, "mini_tank");
 		GameRegistry.registerTileEntity(TileEntityCPUMelter.class, "cpu_melter");
 		GameRegistry.registerTileEntity(TileEntityPartStainer.class, "part_stainer");
+
+		int eid = -1;
+		EntityRegistry.registerModEntity(new ResourceLocation(MODID + ":mechanical_skeleton"), EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
+
+		proxy.registerClient();
+	}
+
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent event) {
+		new LootHandler();
 
 		PartRegistry.registerSkeleton(skeleton_iron, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(Overlord.MODID, "textures/entity/iron_skeleton.png"));
 		PartRegistry.registerSkeleton(skeleton_term, ComponentDamageGeneric.getInstance(), "iron", new ResourceLocation(MODID, "textures/entity/terminator_skeleton.png"));
@@ -166,21 +145,86 @@ public class MechSoldiers {
 		PartRegistry.registerCPU(cpu_alien, new AlienCPU(), ComponentDamageGeneric.getInstance(), "gold");
 		PartRegistry.registerPotatoCPU(Items.POTATO, 0, ComponentDamagePotato.getInstance(), "potato");
 		PartRegistry.registerPotatoCPU(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
-
-		int eid = -1;
-		EntityRegistry.registerModEntity(new ResourceLocation(MODID + ":mechanical_skeleton"), EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
-
-		proxy.registerClient();
 	}
 
-	@Mod.EventHandler
-	public void init(FMLInitializationEvent event) {
+	private static IForgeRegistry<Block> blockRegistry = null;
+
+	public static void registerBlock(Block block) {
+		if(blockRegistry == null){
+			Overlord.logError("Block registry was null, could not register: "+block.getUnlocalizedName());
+			return;
+		}
+		blockRegistry.register(block);
+	}
+
+	private static IForgeRegistry<Item> itemRegistry = null;
+
+	public static void registerItem(Item item) {
+		if(itemRegistry == null){
+			Overlord.logError("Item registry was null, could not register: "+item.getUnlocalizedName());
+			return;
+		}
+		itemRegistry.register(item);
+	}
+
+	public static void registerItemForBlock(Block block) {
+		if(itemRegistry == null){
+			Overlord.logError("Item registry was null, could not register: "+block.getUnlocalizedName());
+			return;
+		}
+		itemRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+	}
+
+	@SubscribeEvent
+	public static void itemRegistry(RegistryEvent.Register<Item> event) {
+		itemRegistry = event.getRegistry();
+		registerItem(skeleton_iron);
+		registerItem(skeleton_steel);
+		registerItem(skeleton_bronze);
+		registerItem(skeleton_invar);
+		registerItem(skeleton_term);
+		registerItem(skeleton_gold);
+		registerItem(skeleton_wood);
+		registerItem(joints_iron);
+		registerItem(joints_steel);
+		registerItem(joints_bronze);
+		registerItem(joints_invar);
+		registerItem(joints_gold);
+		registerItem(cpu_copper_redstone);
+		registerItem(cpu_gold_redstone);
+		registerItem(cpu_electrum_redstone);
+		registerItem(cpu_terminator);
+		registerItem(cpu_green);
+		registerItem(cpu_wood);
+		registerItem(cpu_alien);
+		registerItem(blueprint);
+
+		registerItem(new ItemBlock(robot_box).setMaxStackSize(1).setRegistryName(robot_box.getRegistryName()));
+		registerItemForBlock(robot_constructor);
+		registerItemForBlock(metal_part_constructor);
+		registerItemForBlock(cpu_melter);
+		registerItemForBlock(part_stainer);
+		registerItem(new ItemBlockMiniTank(mini_tank, mini_tank, full_mini_tank).setRegistryName("mini_tank"));
+
 		MechCraftingRecipes.register();
-		new LootHandler();
+	}
+
+	@SubscribeEvent
+	public static void blockRegistry(RegistryEvent.Register<Block> event) {
+		blockRegistry = event.getRegistry();
+		registerBlock(robot_box);
+		registerBlock(robot_constructor);
+		registerBlock(metal_part_constructor);
+		registerBlock(cpu_melter);
+		registerBlock(metal_part_constructor_active);
+		registerBlock(part_stainer);
+
+		registerBlock(mini_tank);
+		registerBlock(full_mini_tank);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void registerItemRenders() {
+	public static void registerItemRenders() {
 		rmm(skeleton_gold);
 		rmm(skeleton_iron);
 		rmm(skeleton_steel);
@@ -209,18 +253,18 @@ public class MechSoldiers {
 		rmm(cpu_melter);
 		rmm(part_stainer);
 		IStateMapper mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY).build();
-		IStateMapper full_mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY, BlockSlab.HALF).build();
 		ModelLoader.setCustomStateMapper(mini_tank, mini_tank_mapper);
+		IStateMapper full_mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY, BlockSlab.HALF).build();
 		ModelLoader.setCustomStateMapper(full_mini_tank, full_mini_tank_mapper);
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void rmm(Block b) {
+	private static void rmm(Block b) {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(b), 0, new ModelResourceLocation(MODID + ":" + b.getUnlocalizedName().substring(5), "inventory"));
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void rmm(Item i) {
+	private static void rmm(Item i) {
 		ModelLoader.setCustomModelResourceLocation(i, 0, new ModelResourceLocation(MODID + ":" + i.getUnlocalizedName().substring(5), "inventory"));
 	}
 }

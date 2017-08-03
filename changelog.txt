@@ -1,2 +1,2 @@
-Added the Robot Part Stainer
-Added two new CPUs
+Updated to 1.12
+Stained Robot Parts can now be used on Cauldrons(with water) to remove the color.

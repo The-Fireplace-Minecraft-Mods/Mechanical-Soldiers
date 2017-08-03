@@ -1,5 +1,8 @@
 {
   "variants": {
-    "normal": { "model": "mechsoldiers:part_stainer" }
+    "facing=north": { "model": "mechsoldiers:part_stainer" },
+    "facing=south": { "model": "mechsoldiers:part_stainer", "y": 180 },
+    "facing=west":  { "model": "mechsoldiers:part_stainer", "y": 270 },
+    "facing=east":  { "model": "mechsoldiers:part_stainer", "y": 90 }
   }
 }

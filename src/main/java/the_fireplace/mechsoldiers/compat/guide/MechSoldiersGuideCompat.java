@@ -22,7 +22,6 @@ import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.registry.MechCraftingRecipes;
 import the_fireplace.overlord.Overlord;
 import the_fireplace.overlord.compat.guide.OverlordGuide;
-import the_fireplace.overlord.registry.CraftingRecipes;
 
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class MechSoldiersGuideCompat implements IGuideBook {
 
 		List<IPage> pages = Lists.newArrayList();
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.1.1")));
-		pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.robot_constructor, " d ", "drd", "ddd", 'd', "gemDiamond", 'r', CraftingRecipes.skeleton_maker)));
+		//pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.robot_constructor, " d ", "drd", "ddd", 'd', "gemDiamond", 'r', CraftingRecipes.skeleton_maker)));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.1.2")));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.1.3")));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.1.4")));
@@ -49,31 +48,32 @@ public class MechSoldiersGuideCompat implements IGuideBook {
 
 		pages = Lists.newArrayList();
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.2.1")));
-		pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.metal_part_constructor, "ifi", "iti", 'i', "ingotIron", 'f', MechCraftingRecipes.furnace, 't', MechCraftingRecipes.mini_tank)));
+		//pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.metal_part_constructor, "ifi", "iti", 'i', "ingotIron", 'f', MechCraftingRecipes.furnace, 't', MechCraftingRecipes.mini_tank)));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.2.2")));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.2.3")));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.2.4")));
-		pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.skeleton_wood, "sls", "sss", "sss", 's', "stickWood", 'l', "logWood")));
+		//pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.skeleton_wood, "sls", "sss", "sss", 's', "stickWood", 'l', "logWood")));
 		entries.put(new ResourceLocation(MechSoldiers.MODID, "1.2"), new EntryItemStack(pages, proxy.translateToLocal("mechsoldiers.guide.1.2"), new ItemStack(MechSoldiers.metal_part_constructor)));
 
 		pages = Lists.newArrayList();
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.3.1")));
-		pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.cpu_melter, "ift", "ibi", "tfi", 'i', "ingotIron", 'f', MechCraftingRecipes.furnace, 't', MechCraftingRecipes.mini_tank, 'b', MechCraftingRecipes.blueprint)));
+		//pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.cpu_melter, "ift", "ibi", "tfi", 'i', "ingotIron", 'f', MechCraftingRecipes.furnace, 't', MechCraftingRecipes.mini_tank, 'b', MechCraftingRecipes.blueprint)));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.3.2")));
 		entries.put(new ResourceLocation(MechSoldiers.MODID, "1.3"), new EntryItemStack(pages, proxy.translateToLocal("mechsoldiers.guide.1.3"), new ItemStack(MechSoldiers.cpu_melter)));
 
 		pages = Lists.newArrayList();
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.4.1")));
-		pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.mini_tank, "ggg", "g g", "ggg", 'g', MechCraftingRecipes.glass_pane)));
+		//pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.mini_tank, "ggg", "g g", "ggg", 'g', MechCraftingRecipes.glass_pane)));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.4.2")));
-		pages.add(new PageIRecipe(new ShapelessOreRecipe(MechCraftingRecipes.blueprint2, MechCraftingRecipes.blueprint, "paper", "dyeBlue", "dyeWhite", "nuggetIron")));
+		//pages.add(new PageIRecipe(new ShapelessOreRecipe(MechCraftingRecipes.blueprint2, MechCraftingRecipes.blueprint, "paper", "dyeBlue", "dyeWhite", "nuggetIron")));
 		entries.put(new ResourceLocation(MechSoldiers.MODID, "1.4"), new EntryItemStack(pages, proxy.translateToLocal("mechsoldiers.guide.1.4"), new ItemStack(MechSoldiers.blueprint)));
 
 		pages = Lists.newArrayList();
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.5.1")));
-		pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.part_stainer, "sbb", "sib", "sbb", 's', "stone", 'i', "ingotIron", 'b', Blocks.STONEBRICK)));
+		//pages.add(new PageIRecipe(new ShapedOreRecipe(MechSoldiers.part_stainer, "sbb", "sib", "sbb", 's', "stone", 'i', "ingotIron", 'b', Blocks.STONEBRICK)));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.5.2")));
 		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.5.3")));
+		pages.add(new PageText(proxy.translateToLocal("mechsoldiers.guide.1.5.4")));
 		entries.put(new ResourceLocation(MechSoldiers.MODID, "1.5"), new EntryItemStack(pages, proxy.translateToLocal("mechsoldiers.guide.1.5"), new ItemStack(MechSoldiers.part_stainer)));
 
 		List<CategoryAbstract> categories = OverlordGuide.myGuide.getCategoryList();

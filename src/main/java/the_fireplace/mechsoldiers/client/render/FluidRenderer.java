@@ -1,10 +1,10 @@
 package the_fireplace.mechsoldiers.client.render;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -32,7 +32,7 @@ public abstract class FluidRenderer {
 
 		final Minecraft mc = Minecraft.getMinecraft();
 		final Tessellator tess = Tessellator.getInstance();
-		final VertexBuffer buff = tess.getBuffer();
+		final BufferBuilder buff = tess.getBuffer();
 		final int brightness = mc.world.getCombinedLight(pos, fluid.getFluid().getLuminosity());
 
 		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
@@ -63,7 +63,7 @@ public abstract class FluidRenderer {
 		RenderHelper.enableStandardItemLighting();
 	}
 
-	private static void addQuad(VertexBuffer buff, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int color, int brightness) {
+	private static void addQuad(BufferBuilder buff, TextureAtlasSprite sprite, double x, double y, double z, double width, double height, double length, EnumFacing face, int color, int brightness) {
 		if (sprite == null)
 			return;
 		final int flv = brightness >> 0x10 & 0xFFFF;

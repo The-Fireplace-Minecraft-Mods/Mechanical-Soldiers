@@ -68,6 +68,7 @@ public class GuiPartStainer extends GuiContainer implements GuiPageButtonList.Gu
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		this.drawDefaultBackground();
 		GlStateManager.color(1F, 1F, 1F, 1F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		int k = (this.width - this.xSize) / 2;
@@ -95,7 +96,7 @@ public class GuiPartStainer extends GuiContainer implements GuiPageButtonList.Gu
 
 	@Override
 	public void updateScreen() {
-		stainPart.enabled = isButtonEnabled();
+		stainPart.enabled = te.canSpawnSkeleton();
 	}
 
 	@Override
@@ -105,10 +106,6 @@ public class GuiPartStainer extends GuiContainer implements GuiPageButtonList.Gu
 				PacketDispatcher.sendToServer(new CreateSkeletonMessage(te.getPos()));
 			}
 		}
-	}
-
-	private boolean isButtonEnabled() {
-		return !te.getStackInSlot(0).isEmpty() && te.hasEnoughRed() && te.hasEnoughGreen() && te.hasEnoughBlue() && te.getStackInSlot(4).isEmpty();
 	}
 
 	@Override

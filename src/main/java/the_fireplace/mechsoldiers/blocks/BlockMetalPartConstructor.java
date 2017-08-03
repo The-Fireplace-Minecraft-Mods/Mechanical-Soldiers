@@ -39,7 +39,7 @@ public class BlockMetalPartConstructor extends BlockContainer {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		this.isBurning = isBurning;
 		setUnlocalizedName(name);
-		//setRegistryName(name);//Handled when registering
+		setRegistryName(name);
 		useNeighborBrightness = true;
 		setHardness(1.5F);
 		setResistance(5.0F);

@@ -19,7 +19,6 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerClient() {
-		MechSoldiers.instance.registerItemRenders();
 		RenderingRegistry.registerEntityRenderingHandler(EntityMechSkeleton.class, new MechSkeletonRenderFactory());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPartConstructor.class, new MPCTESR());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMiniTank.class, new MiniTankTESR());
