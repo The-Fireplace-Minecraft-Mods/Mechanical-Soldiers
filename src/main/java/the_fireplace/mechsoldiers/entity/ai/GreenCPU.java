@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityParrot;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -91,7 +92,8 @@ public class GreenCPU implements ICPU {
 			case 1:
 				skeleton.setHomePosAndDistance(new BlockPos(skeleton.posX, skeleton.posY, skeleton.posZ), -1);
 				skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityOcelot.class, 20.0F, 1.5D, 2.0D));
-				skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityWolf.class, 10.0F, 1.2D, 1.5D));//TODO: Avoid parrots
+				skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityWolf.class, 10.0F, 1.2D, 1.5D));
+				skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityParrot.class, 10.0F, 1.0D, 1.3D));
 				skeleton.tasks.addTask(4, new EntityAIOpenDoor(skeleton, false));
 				skeleton.tasks.addTask(6, new EntityAIFollowMaster(skeleton, 1.0D, 16.0F, 3.0F));
 				break;
@@ -101,7 +103,8 @@ public class GreenCPU implements ICPU {
 			default:
 				skeleton.setHomePosAndDistance(new BlockPos(skeleton.posX, skeleton.posY, skeleton.posZ), 20);
 				skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityOcelot.class, 20.0F, 1.5D, 2.0D));
-				skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityWolf.class, 10.0F, 1.2D, 1.5D));//TODO: Avoid parrots
+				skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityWolf.class, 10.0F, 1.2D, 1.5D));
+				skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityParrot.class, 10.0F, 1.0D, 1.3D));
 				skeleton.tasks.addTask(4, new EntityAIOpenDoor(skeleton, false));
 				skeleton.tasks.addTask(7, new EntityAIWanderBase(skeleton, 1.0D));
 		}
