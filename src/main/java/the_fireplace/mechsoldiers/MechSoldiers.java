@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import the_fireplace.mechsoldiers.blocks.*;
+import the_fireplace.mechsoldiers.compat.top.TOPCompatibility;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.entity.ai.AlienCPU;
 import the_fireplace.mechsoldiers.entity.ai.GreenCPU;
@@ -47,7 +49,7 @@ import the_fireplace.overlord.Overlord;
  * @author The_Fireplace
  */
 @Mod.EventBusSubscriber
-@Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,)", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json")
+@Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,);after:theoneprobe", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json")
 public class MechSoldiers {
 	public static final String MODID = "mechsoldiers";
 	public static final String MODNAME = "Mechanical Soldiers";
@@ -118,6 +120,8 @@ public class MechSoldiers {
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID + ":mechanical_skeleton"), EntityMechSkeleton.class, "mechanical_skeleton", ++eid, instance, 128, 2, false);
 
 		proxy.registerClient();
+		if (Loader.isModLoaded("theoneprobe"))
+			TOPCompatibility.register();
 	}
 
 	@Mod.EventHandler

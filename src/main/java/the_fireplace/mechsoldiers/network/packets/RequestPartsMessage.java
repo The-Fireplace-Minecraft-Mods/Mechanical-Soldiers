@@ -6,6 +6,7 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
@@ -23,7 +24,7 @@ public class RequestPartsMessage implements IMessage {
 	}
 
 	public RequestPartsMessage(EntityMechSkeleton skeleton) {
-		this.mechSkeletonId = skeleton.hashCode();
+		this.mechSkeletonId = skeleton.getEntityId();
 	}
 
 	@Override
@@ -49,7 +50,8 @@ public class RequestPartsMessage implements IMessage {
 					Overlord.logError("Entity is not a Mech Skeleton. It is " + player.world.getEntityByID(message.mechSkeletonId).toString());
 				}
 			} else {
-				Overlord.logError("Error 404: Mech Skeleton not found: " + message.mechSkeletonId);
+				if(!Loader.isModLoaded("theoneprobe"))
+					Overlord.logError("Error 404: Mech Skeleton not found: " + message.mechSkeletonId);
 			}
 
 			if (parts == null)

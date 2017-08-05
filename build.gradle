@@ -47,13 +47,15 @@ dependencies {
 	deobfCompile "the_fireplace.overlord:Overlord-1.12:2.4.3"
 	deobfProvided "appeng:applied-llamagistics-1.12:rv5-beta-3"
 	deobfCompile "appeng:appliedenergistics2:rv5-alpha-1"//AE2 is on the Forge Maven
+	deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.15-8"
+	deobfCompile "mcp.mobius.waila:Hwyla:1.8.19-B33_1.12"
 }
 
 repositories{
     maven { //JEI, Natura, Mantle, TiCon
         url "http://dvs1.progwml6.com/files/maven"
     }
-    maven { //Guide API
+    maven { //Guide API, Waila
 		url "http://tehnut.info/maven/"
 	}
     maven { //Overlord
@@ -61,6 +63,12 @@ repositories{
 	}
 	maven { //Applied Llamagistics
         url = "http://maven.thiakil.com/"
+    }
+	maven { //EnderIO, EnderCore, EnderZoo, The One Probe, Chisel
+		url = "http://maven.tterrag.com"
+	}
+	maven { //CoFH Mods
+        url = "http://maven.covers1624.net"
     }
 	flatDir {
         dirs "lib"
@@ -126,6 +134,8 @@ curseforge {
 			requiredLibrary 'overlord'
 			optionalLibrary 'applied-llamagistics'
 			optionalLibrary 'applied-energistics-2'
+			optionalLibrary 'hwyla'
+			optionalLibrary 'the-one-probe'
 		}
     }
     addArtifact(sourceJar) {

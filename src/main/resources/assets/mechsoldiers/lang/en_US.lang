@@ -34,6 +34,11 @@ itemGroup.robot_parts=Robot Parts
 jei.metal_melt=Skeleton Mould Melting
 jei.cpu_melt=CPU Mould Melting
 
+mechsoldiers.top.robotbox=Building: %d percent done.
+mechsoldiers.top.cpu=CPU Health: %d/%d
+mechsoldiers.top.skeleton=Skeleton Health: %d/%d
+mechsoldiers.top.joints=Joints Health: %d/%d
+
 Red=Red
 Green=Green
 Blue=Blue

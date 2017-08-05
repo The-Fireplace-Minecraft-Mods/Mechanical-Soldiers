@@ -48,7 +48,7 @@ public class RenderMechSkeleton extends RenderBiped<EntityMechSkeleton> {
 	public void doRender(@Nonnull EntityMechSkeleton entityMechSkeleton, double x, double y, double z, float entityYaw, float partialTicks) {
 		super.doRender(entityMechSkeleton, x, y, z, entityYaw, partialTicks);
 
-		if (Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null)
+		if (!Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty())
 			if (Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Overlord.crown) {
 				if (!entityMechSkeleton.cachedClientAugment)
 					PacketDispatcher.sendToServer(new RequestAugmentMessage(entityMechSkeleton));

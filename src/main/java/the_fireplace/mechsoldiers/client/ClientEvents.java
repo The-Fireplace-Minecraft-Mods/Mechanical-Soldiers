@@ -12,6 +12,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +22,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.IOUtils;
 import the_fireplace.mechsoldiers.MechSoldiers;
+import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
+import the_fireplace.mechsoldiers.network.PacketDispatcher;
+import the_fireplace.mechsoldiers.network.packets.RequestPartsMessage;
 import the_fireplace.mechsoldiers.util.StainedItemUtil;
 import the_fireplace.overlord.Overlord;
 
@@ -229,5 +233,11 @@ public final class ClientEvents {
 			GlStateManager.enableRescaleNormal();
 			event.setCanceled(true);
 		}
+	}
+
+	@SubscribeEvent
+	public static void entityDamage(LivingHurtEvent e){
+		if(e.getEntityLiving() instanceof EntityMechSkeleton)
+			PacketDispatcher.sendToServer(new RequestPartsMessage((EntityMechSkeleton)e.getEntityLiving()));
 	}
 }
