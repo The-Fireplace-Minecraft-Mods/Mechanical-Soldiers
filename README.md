@@ -1,7 +1,7 @@
 [Mechanical Soldiers](https://minecraft.curseforge.com/projects/mechanical-soldiers)
 ============================================================================
 
-[![Curse Forge](http://cf.way2muchnoise.eu/short_250836_downloads.svg)](https://minecraft.curseforge.com/projects/mechanical-soldiers)
+[![Curse Forge](http://cf.way2muchnoise.eu/short_273117_downloads.svg)](https://minecraft.curseforge.com/projects/mechanical-soldiers)
 
 [Issue Reporting](https://github.com/The-Fireplace/Mechanical-Soldiers/issues)
 ------------------------------------------------------------------
