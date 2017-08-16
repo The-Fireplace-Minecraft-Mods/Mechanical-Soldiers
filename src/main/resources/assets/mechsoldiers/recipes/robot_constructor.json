@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "mechsoldiers:robot_constructor"
+  },
+  "pattern": [
+    " d ",
+    "drd",
+    "ddd"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "r": {
+      "item": "overlord:skeleton_maker"
+    },
+    "d": {
+      "item": "#GEMDIAMOND"
+    }
+  }
+}

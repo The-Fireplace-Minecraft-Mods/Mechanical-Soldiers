@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mechsoldiers:cpu_gold_redstone"
+    ]
+  },
+  "criteria": {
+    "has_the_ingredients": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "appliedenergistics2:material",
+            "data": 22
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mechsoldiers:cpu_gold_redstone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_ingredients",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "mechsoldiers:mini_tank"
+  },
+  "pattern": [
+    "ggg",
+    "g g",
+    "ggg"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "g": {
+      "item": "minecraft:glass_pane"
+    }
+  }
+}

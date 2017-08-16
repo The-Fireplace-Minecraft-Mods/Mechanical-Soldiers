@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "mechsoldiers:blueprint",
+    "count": 2
+  },
+  "ingredients": [
+    {
+      "item": "mechsoldiers:blueprint"
+    },
+    {
+      "item": "#PAPER"
+    },
+    {
+      "item": "#DYEBLUE"
+    },
+    {
+      "item": "#DYEWHITE"
+    },
+    {
+      "item": "#NUGGETIRON"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

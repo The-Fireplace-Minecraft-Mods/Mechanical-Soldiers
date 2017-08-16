@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "mechsoldiers:metal_part_constructor"
+  },
+  "pattern": [
+    "ifi",
+    "iti"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "t": {
+      "item": "mechsoldiers:mini_tank"
+    },
+    "f": {
+      "item": "minecraft:furnace"
+    },
+    "i": {
+      "item": "#INGOTIRON"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "mechsoldiers:part_stainer"
+  },
+  "pattern": [
+    "sbb",
+    "sib",
+    "sbb"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "b": {
+      "item": "minecraft:stonebrick",
+      "data": 0
+    },
+    "s": {
+      "item": "#STONE"
+    },
+    "i": {
+      "item": "#INGOTIRON"
+    }
+  }
+}

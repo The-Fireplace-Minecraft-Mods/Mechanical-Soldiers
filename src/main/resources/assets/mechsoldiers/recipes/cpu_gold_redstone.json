@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "mechsoldiers:cpu_gold_redstone"
+  },
+  "ingredients": [
+    {
+      "item": "appliedenergistics2:material",
+      "data": 22
+    },
+    {
+      "item": "appliedenergistics2:material",
+      "data": 39
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

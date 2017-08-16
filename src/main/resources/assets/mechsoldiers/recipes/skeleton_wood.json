@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "mechsoldiers:skeleton_wood"
+  },
+  "pattern": [
+    "sls",
+    "sss",
+    "sss"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "s": {
+      "item": "#STICKWOOD"
+    },
+    "l": {
+      "item": "#LOGWOOD"
+    }
+  }
+}
