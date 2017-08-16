@@ -1,2 +1,4 @@
 Updated to 1.12
 Stained Robot Parts can now be used on Cauldrons(with water) to remove the color.
+Added HWYLA and The One Probe integration
+Fixed server log spam when The One Probe looks at a Robot
