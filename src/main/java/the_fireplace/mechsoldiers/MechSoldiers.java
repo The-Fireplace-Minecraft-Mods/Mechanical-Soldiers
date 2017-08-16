@@ -54,11 +54,6 @@ public class MechSoldiers {
 	public static final String MODID = "mechsoldiers";
 	public static final String MODNAME = "Mechanical Soldiers";
 
-    /*TODO:
-    Add splash text(1.12 only)
-    Advancements(1.12 only)
-     */
-
 	@Mod.Instance(MODID)
 	public static MechSoldiers instance;
 

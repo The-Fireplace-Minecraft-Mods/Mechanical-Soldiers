@@ -26,7 +26,7 @@ apply plugin: 'maven-publish'
 
 version = "1.1.0"
 group= "the_fireplace.mechsoldiers"
-archivesBaseName = "MechSoldiers-1.12"
+archivesBaseName = "MechSoldiers-1.12.1"
 
 allprojects {
     sourceCompatibility = 1.8
@@ -34,17 +34,17 @@ allprojects {
 }
 
 minecraft {
-    version = "1.12-14.21.1.2413"
+    version = "1.12.1-14.22.0.2456"
     runDir = "run"
     replace '${version}', project.version
-    mappings = "snapshot_20170628"
+    mappings = "snapshot_20170815"
 	
-	clientRunArgs += "-uuid=0b1ec5ad-cb2a-43b7-995d-889320eb2e5b -username=The_Fireplace"
+	clientRunArgs += "--uuid=0b1ec5ad-cb2a-43b7-995d-889320eb2e5b --username=The_Fireplace"
 }
 
 dependencies {
 	deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.4-56"
-	deobfCompile "the_fireplace.overlord:Overlord-1.12:2.4.3"
+	deobfCompile "the_fireplace.overlord:Overlord-1.12.1:2.4.5"
 	deobfProvided "appeng:applied-llamagistics-1.12:rv5-beta-3"
 	deobfCompile "appeng:appliedenergistics2:rv5-alpha-1"//AE2 is on the Forge Maven
 	deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.15-8"
@@ -126,6 +126,7 @@ curseforge {
     id = '273117'
     changelog = file('changelog.txt')
     releaseType = 'release'
+    addGameVersion '1.12.1'
     addGameVersion '1.12'
 	addGameVersion 'Java 8'
     mainArtifact(jar) {
@@ -154,7 +155,7 @@ modsIO {
     project{
 		artifact = new File(jar.destinationDir, archivesBaseName+"-"+version+".jar")
 		modid = "1270"
-		minecraft = "1.12"
+		minecraft = "1.12.1"
 		try{changelog = file('changelog.txt').text}catch(Exception e){changelog=""}
 		tag = ""
 		current = true

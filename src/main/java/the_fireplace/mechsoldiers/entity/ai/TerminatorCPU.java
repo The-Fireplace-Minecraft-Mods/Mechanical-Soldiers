@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.util.ICPU;
+import the_fireplace.overlord.config.ConfigValues;
 import the_fireplace.overlord.entity.EntityArmyMember;
 import the_fireplace.overlord.entity.ai.*;
 
@@ -75,9 +76,8 @@ public class TerminatorCPU implements ICPU {
 		switch (mode) {
 			case 1:
 				skeleton.setHomePosAndDistance(new BlockPos(skeleton.posX, skeleton.posY, skeleton.posZ), -1);
-				if (skeleton.shouldMobAttack(new EntityCreeper(skeleton.world))) {
+				if (!ConfigValues.HUNTCREEPERS)
 					skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityCreeper.class, 10.0F, 1.2D, 1.6D));
-				}
 				skeleton.tasks.addTask(4, new EntityAIOpenDoor(skeleton, false));
 				skeleton.tasks.addTask(6, new EntityAIFollowMaster(skeleton, 1.0D, 20.0F, 1.0F));
 				skeleton.tasks.addTask(7, new EntityAIWanderBase(skeleton, 1.0D));
@@ -89,9 +89,8 @@ public class TerminatorCPU implements ICPU {
 			case 2:
 			default:
 				skeleton.setHomePosAndDistance(new BlockPos(skeleton.posX, skeleton.posY, skeleton.posZ), 20);
-				if (skeleton.shouldMobAttack(new EntityCreeper(skeleton.world))) {
+				if (!ConfigValues.HUNTCREEPERS)
 					skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityCreeper.class, 10.0F, 1.2D, 1.6D));
-				}
 				skeleton.tasks.addTask(4, new EntityAIOpenDoor(skeleton, false));
 				skeleton.tasks.addTask(7, new EntityAIWanderBase(skeleton, 1.0D));
 		}

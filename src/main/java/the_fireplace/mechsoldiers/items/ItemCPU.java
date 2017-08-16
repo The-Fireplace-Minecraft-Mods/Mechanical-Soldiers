@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.util.ICPU;
+import the_fireplace.overlord.config.ConfigValues;
 import the_fireplace.overlord.entity.EntityArmyMember;
 import the_fireplace.overlord.entity.ai.*;
 
@@ -90,9 +91,8 @@ public class ItemCPU extends Item implements ICPU {
 	public void addMovementAi(EntityMechSkeleton skeleton, byte mode) {
 		switch (mode) {
 			case 1:
-				if (skeleton.shouldMobAttack(new EntityCreeper(skeleton.world))) {
+				if (!ConfigValues.HUNTCREEPERS)
 					skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityCreeper.class, 10.0F, 1.2D, 1.6D));
-				}
 				skeleton.tasks.addTask(4, new EntityAIOpenDoor(skeleton, material.contains("redstone")));
 				skeleton.tasks.addTask(6, new EntityAIFollowMaster(skeleton, 0.75D, 8.0F, 3.0F));
 			case 0:
@@ -101,9 +101,8 @@ public class ItemCPU extends Item implements ICPU {
 			case 2:
 			default:
 				skeleton.setHomePosAndDistance(new BlockPos(skeleton.posX, skeleton.posY, skeleton.posZ), 20);
-				if (skeleton.shouldMobAttack(new EntityCreeper(skeleton.world))) {
+				if (!ConfigValues.HUNTCREEPERS)
 					skeleton.tasks.addTask(3, new EntityAIAvoidEntity(skeleton, EntityCreeper.class, 8.0F, 0.8D, 1.2D));
-				}
 				skeleton.tasks.addTask(4, new EntityAIOpenDoor(skeleton, material.contains("redstone")));
 				skeleton.tasks.addTask(7, new EntityAIWanderBase(skeleton, 0.5D));
 		}
