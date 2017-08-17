@@ -4,10 +4,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -28,10 +25,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import the_fireplace.mechsoldiers.container.ContainerCPUMelter;
+import the_fireplace.mechsoldiers.container.SlotCPUMelter;
+import the_fireplace.mechsoldiers.container.SlotLava;
 import the_fireplace.mechsoldiers.registry.CPUMeltRecipes;
-import the_fireplace.mechsoldiers.registry.MetalMeltRecipes;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -40,9 +39,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class TileEntityCPUMelter extends TileEntityLockable implements ITickable, ISidedInventory, IFluidHandler, IFluidTank {
 	private static final int[] SLOTS_TOP = new int[]{1, 2};
-	private static final int[] SLOTS_BOTTOM = new int[]{3};
+	private static final int[] SLOTS_BOTTOM = new int[]{0, 3, 4};
 	private static final int[] SLOTS_SIDES = new int[]{0};
-	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(4, ItemStack.EMPTY);
+	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
 	private int furnaceBurnTime;
 	private int heldLavaAmount;
 	public static final int heldLavaAmountMax = 10000;
@@ -173,8 +172,22 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 		if (!this.world.isRemote) {
 			if (!isLoaded)
 				isLoaded = true;
-			if (!this.furnaceItemStacks.get(0).isEmpty() && FluidUtil.getFluidHandler(furnaceItemStacks.get(0)) != null && this.heldLavaAmount < heldLavaAmountMax) {
-				FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks.get(0), this, this.handlerBottom, 1000, null);
+			if (!getStackInSlot(0).isEmpty() && FluidUtil.getFluidHandler(getStackInSlot(0)) != null && this.heldLavaAmount < heldLavaAmountMax) {
+				InvWrapper thisInv = new InvWrapper(this);
+				FluidActionResult result = FluidUtil.tryEmptyContainer(getStackInSlot(0), this, Fluid.BUCKET_VOLUME, null, true);
+				if(result.isSuccess()){
+					getStackInSlot(0).shrink(1);
+					if(getStackInSlot(0).isEmpty())
+						setInventorySlotContents(0, ItemStack.EMPTY);
+					if(FluidUtil.getFluidContained(result.getResult()) == null){
+						ItemStack inserted1 = thisInv.insertItem(4, result.getResult(), false);
+						if(!inserted1.isEmpty()){
+							ItemStack inserted2 = thisInv.insertItem(0, inserted1, false);
+							if(!inserted2.isEmpty())
+								InventoryHelper.spawnItemStack(this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ(), inserted2);
+						}
+					}
+				}
 			}
 			if (this.isActive() || !this.furnaceItemStacks.get(1).isEmpty() && !this.furnaceItemStacks.get(2).isEmpty()) {
 				if (!this.isActive() && this.canSmelt()) {
@@ -215,12 +228,12 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 		if (this.furnaceItemStacks.get(1).isEmpty() || this.furnaceItemStacks.get(2).isEmpty() || heldLavaAmount <= 0) {
 			return false;
 		} else {
-			ItemStack itemstack = CPUMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks.get(1), this.furnaceItemStacks.get(2));
-			if (itemstack.isEmpty()) return false;
+			ItemStack result = CPUMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks.get(1), this.furnaceItemStacks.get(2));
+			if (result.isEmpty()) return false;
 			if (this.furnaceItemStacks.get(3).isEmpty()) return true;
-			if (!this.furnaceItemStacks.get(3).isItemEqual(itemstack)) return false;
-			int result = furnaceItemStacks.get(3).getCount() + itemstack.getCount();
-			return result <= getInventoryStackLimit() && result <= this.furnaceItemStacks.get(3).getMaxStackSize();
+			if (!this.furnaceItemStacks.get(3).isItemEqual(result)) return false;
+			int resultCount = furnaceItemStacks.get(3).getCount() + result.getCount();
+			return resultCount <= getInventoryStackLimit() && resultCount <= this.furnaceItemStacks.get(3).getMaxStackSize();
 		}
 	}
 
@@ -228,24 +241,19 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 		if (this.canSmelt()) {
 			ItemStack itemstack = CPUMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks.get(1), this.furnaceItemStacks.get(2));
 
-			if (this.furnaceItemStacks.get(3).isEmpty()) {
+			if (this.furnaceItemStacks.get(3).isEmpty())
 				this.furnaceItemStacks.set(3, itemstack.copy());
-			} else if (this.furnaceItemStacks.get(3).getItem() == itemstack.getItem()) {
+			else if (this.furnaceItemStacks.get(3).getItem() == itemstack.getItem())
 				this.furnaceItemStacks.get(3).grow(itemstack.getCount());
-			}
 
 			this.furnaceItemStacks.get(1).shrink(1);
 			this.furnaceItemStacks.get(2).shrink(1);
 
-			if (this.furnaceItemStacks.get(1).isEmpty()) {
+			if (this.furnaceItemStacks.get(1).isEmpty())
 				this.furnaceItemStacks.set(1, ItemStack.EMPTY);
-			}
 
-			if (this.furnaceItemStacks.get(2).isEmpty()) {
+			if (this.furnaceItemStacks.get(2).isEmpty())
 				this.furnaceItemStacks.set(2, ItemStack.EMPTY);
-			}
-			drain(MetalMeltRecipes.instance().getWaterCost(itemstack), true);
-			world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f + ((float) world.rand.nextInt(4)) * 0.1f);
 		}
 	}
 
@@ -264,13 +272,17 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		if (index == 3) {
-			return false;
-		} else if (index != 0) {
-			return true;
-		} else {
-			ItemStack itemstack = this.furnaceItemStacks.get(0);
-			return FluidUtil.getFluidContained(itemstack) != null && FluidUtil.getFluidContained(itemstack).getFluid() == FluidRegistry.LAVA;
+		switch(index){
+			case 0:
+				return SlotLava.isLava(stack);
+			case 1:
+				return SlotCPUMelter.isStackValid("left", stack);
+			case 2:
+				return SlotCPUMelter.isStackValid("right", stack);
+			case 4:
+				return FluidUtil.getFluidHandler(stack) != null;
+			default:
+				return false;
 		}
 	}
 

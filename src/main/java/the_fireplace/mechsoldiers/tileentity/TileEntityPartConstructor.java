@@ -8,10 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,6 +21,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
@@ -34,10 +32,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import the_fireplace.mechsoldiers.blocks.BlockMetalPartConstructor;
-import the_fireplace.mechsoldiers.container.ContainerMetalPartConstructor;
-import the_fireplace.mechsoldiers.container.SlotMPConstructorFuel;
+import the_fireplace.mechsoldiers.container.*;
 import the_fireplace.mechsoldiers.registry.MetalMeltRecipes;
 
 import javax.annotation.Nullable;
@@ -47,9 +45,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class TileEntityPartConstructor extends TileEntityLockable implements ITickable, ISidedInventory, IFluidHandler, IFluidTank {
 	private static final int[] SLOTS_TOP = new int[]{0, 1};
-	private static final int[] SLOTS_BOTTOM = new int[]{3, 2};
+	private static final int[] SLOTS_BOTTOM = new int[]{2, 3, 4, 5};
 	private static final int[] SLOTS_SIDES = new int[]{2, 4};
-	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
+	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(6, ItemStack.EMPTY);
 	private int furnaceBurnTime;
 	private int currentItemBurnTime;
 	private int cookTime;
@@ -211,7 +209,21 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			if (!isLoaded)
 				isLoaded = true;
 			if (!this.furnaceItemStacks.get(4).isEmpty() && FluidUtil.getFluidHandler(furnaceItemStacks.get(4)) != null && this.heldWaterAmount < heldWaterAmountMax) {
-				FluidUtil.tryEmptyContainerAndStow(furnaceItemStacks.get(4), this, this.handlerBottom, 1000, null);
+				InvWrapper thisInv = new InvWrapper(this);
+				FluidActionResult result = FluidUtil.tryEmptyContainer(furnaceItemStacks.get(4), this, Fluid.BUCKET_VOLUME, null, true);
+				if(result.isSuccess()){
+					getStackInSlot(4).shrink(1);
+					if(getStackInSlot(4).isEmpty())
+						setInventorySlotContents(4, ItemStack.EMPTY);
+					if(FluidUtil.getFluidContained(result.getResult()) == null){
+						ItemStack inserted1 = thisInv.insertItem(5, result.getResult(), false);
+						if(!inserted1.isEmpty()){
+							ItemStack inserted2 = thisInv.insertItem(4, inserted1, false);
+							if(!inserted2.isEmpty())
+								InventoryHelper.spawnItemStack(this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ(), inserted2);
+						}
+					}
+				}
 			}
 			if (this.isActive() || !this.furnaceItemStacks.get(2).isEmpty() && !this.furnaceItemStacks.get(0).isEmpty() && !this.furnaceItemStacks.get(1).isEmpty()) {
 				if (!this.isActive() && this.canSmelt()) {
@@ -267,7 +279,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			return false;
 		} else {
 			ItemStack itemstack = MetalMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks.get(0), this.furnaceItemStacks.get(1));
-			if (itemstack == null) return false;
+			if (itemstack.isEmpty()) return false;
 			if (MetalMeltRecipes.instance().getWaterCost(itemstack) > heldWaterAmount) return false;
 			if (this.furnaceItemStacks.get(3).isEmpty()) return true;
 			if (!this.furnaceItemStacks.get(3).isItemEqual(itemstack)) return false;
@@ -332,7 +344,7 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			if (item == Items.LAVA_BUCKET) return 20000;
 			if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
 			if (item == Items.BLAZE_ROD) return 2400;
-			return GameRegistry.getFuelValue(stack);
+			return ForgeEventFactory.getItemBurnTime(stack);
 		}
 	}
 
@@ -355,13 +367,19 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		if (index == 3 || index == 5) {
-			return false;
-		} else if (index != 2) {
-			return true;
-		} else {
-			ItemStack itemstack = this.furnaceItemStacks.get(2);
-			return isItemFuel(stack) || SlotMPConstructorFuel.isBucket(stack) && (itemstack.isEmpty() || itemstack.getItem() != Items.BUCKET);
+		switch(index){
+			case 0:
+				return SlotMPC.isStackValid("right", stack);
+			case 1:
+				return SlotMPC.isStackValid("left", stack);
+			case 2:
+				return isItemFuel(stack);
+			case 4:
+				return SlotWater.holdsWater(stack);
+			case 5:
+				return FluidUtil.getFluidHandler(stack) != null;
+			default:
+				return false;
 		}
 	}
 
@@ -377,12 +395,11 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		if (direction == EnumFacing.DOWN && index == 1) {
-			Item item = stack.getItem();
-
-			if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
+		if (direction == EnumFacing.DOWN) {
+			if (index == 4 && SlotWater.holdsWater(stack))
 				return false;
-			}
+			else if (index == 2 && isItemFuel(stack))
+				return false;
 		}
 
 		return true;
@@ -556,6 +573,5 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
-
 	}
 }

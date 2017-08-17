@@ -6,9 +6,11 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
+import the_fireplace.overlord.Overlord;
 
 import java.util.Random;
 import java.util.UUID;
@@ -116,6 +118,8 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 		robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());
 		world.spawnEntity(robot);
 		robot.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rand.nextFloat(), rand.nextFloat());
+
+		world.playSound(null, pos, Overlord.CREATE_SKELETON_2_SOUND, SoundCategory.BLOCKS, 1.0f, 0.5f + world.rand.nextFloat());
 
 		world.removeTileEntity(pos);
 		world.destroyBlock(pos, false);

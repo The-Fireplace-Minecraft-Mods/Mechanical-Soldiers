@@ -97,7 +97,6 @@ public class GuiRobot extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		this.drawDefaultBackground();
 		GL11.glColor4f(1F, 1F, 1F, 1F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		int k = (this.width - this.xSize) / 2;
@@ -109,6 +108,14 @@ public class GuiRobot extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		drawRect(26, 49, 73, 69, new Color(0, 0, 0, 100).getRGB());
 		this.drawCenteredString(fontRenderer, squadIndex != -1 ? squads.get(squadIndex) : I18n.format("overlord.no_squad"), 50, 55, -1);
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override

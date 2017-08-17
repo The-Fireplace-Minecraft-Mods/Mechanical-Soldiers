@@ -89,11 +89,11 @@ public class ContainerPartStainer extends Container {
 			ItemStack is = slot.getStack();
 			ItemStack result = is.copy();
 
-			if (i >= 36) {
-				if (!mergeItemStack(is, 0, 36, false)) {
+			if (i >= tileConstructor.getSizeInventory()) {
+				if (!mergeItemStack(is, 0, tileConstructor.getSizeInventory(), false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!mergeItemStack(is, 36, 36 + tileConstructor.getSizeInventory(), false)) {
+			} else if (!mergeItemStack(is, tileConstructor.getSizeInventory(), 36 + tileConstructor.getSizeInventory(), false)) {
 				return ItemStack.EMPTY;
 			}
 			if (is.isEmpty()) {

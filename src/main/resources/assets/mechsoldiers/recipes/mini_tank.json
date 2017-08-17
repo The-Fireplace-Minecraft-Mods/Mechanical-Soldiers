@@ -1,6 +1,7 @@
 {
   "result": {
-    "item": "mechsoldiers:mini_tank"
+    "item": "mechsoldiers:mini_tank",
+    "data": 0
   },
   "pattern": [
     "ggg",

@@ -1,8 +1,11 @@
 package the_fireplace.mechsoldiers.blocks;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,14 +25,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import the_fireplace.mechsoldiers.MechSoldiers;
 import the_fireplace.mechsoldiers.tileentity.TileEntityRobotConstructor;
 import the_fireplace.overlord.Overlord;
+import the_fireplace.overlord.tileentity.ISkeletonMaker;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 
 /**
  * @author The_Fireplace
  */
 @MethodsReturnNonnullByDefault
 public class BlockRobotConstructor extends BlockContainer {
+	public static final PropertyBool TRIGGERED = PropertyBool.create("triggered");
 	public BlockRobotConstructor(String name) {
 		super(Material.IRON);
 		setUnlocalizedName(name);
@@ -38,6 +44,13 @@ public class BlockRobotConstructor extends BlockContainer {
 		setHarvestLevel("pickaxe", 2);
 		setHardness(5.0F);
 		setResistance(10.0F);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(TRIGGERED, Boolean.valueOf(false)));
+	}
+
+	@Override
+	public int tickRate(World worldIn)
+	{
+		return 4;
 	}
 
 	@Override
@@ -91,6 +104,61 @@ public class BlockRobotConstructor extends BlockContainer {
 		}
 
 		super.breakBlock(worldIn, pos, state);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+	{
+		boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.up());
+		boolean flag1 = ((Boolean)state.getValue(TRIGGERED)).booleanValue();
+
+		if (flag && !flag1)
+		{
+			worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+			worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(true)), 4);
+		}
+		else if (!flag && flag1)
+		{
+			worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(false)), 4);
+		}
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+	{
+		TileEntity te = worldIn.getTileEntity(pos);
+		if (!worldIn.isRemote && te instanceof ISkeletonMaker)
+		{
+			((ISkeletonMaker)te).spawnSkeleton(null);
+		}
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return this.getDefaultState().withProperty(TRIGGERED, Boolean.valueOf((meta & 8) > 0));
+	}
+
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		int i = 0;
+
+		if (((Boolean)state.getValue(TRIGGERED)).booleanValue())
+		{
+			i |= 8;
+		}
+
+		return i;
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState()
+	{
+		return new BlockStateContainer(this, TRIGGERED);
 	}
 }
 

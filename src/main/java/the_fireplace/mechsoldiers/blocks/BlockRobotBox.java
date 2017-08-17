@@ -61,8 +61,6 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		if (skellyData == null && !worldIn.isRemote)
-			Overlord.logError("Error: Skeleton Data for a crate was null!");
 		return new TileEntityRobotBox(skellyData, worldIn.rand.nextInt(24000) + 12000);
 	}
 
@@ -127,7 +125,7 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag advanced) {
 		NBTTagCompound nbt = stack.getTagCompound();
 		if (nbt != null) {
-			if (nbt.hasKey("OwnerUUID") && world.getPlayerEntityByUUID(UUID.fromString(nbt.getString("OwnerUUID"))) != null)
+			if (nbt.hasKey("OwnerUUID") && !nbt.getString("OwnerUUID").isEmpty() && world.getPlayerEntityByUUID(UUID.fromString(nbt.getString("OwnerUUID"))) != null)
 				tooltip.add(proxy.translateToLocal("tooltip.owner") + ' ' + world.getPlayerEntityByUUID(UUID.fromString(nbt.getString("OwnerUUID"))).getDisplayNameString());
 			if (nbt.hasKey("RobotCPU"))
 				tooltip.add(proxy.translateToLocal("color.turq") + proxy.translateToLocal("tooltip.robot_cpu") + ' ' + new ItemStack(nbt.getCompoundTag("RobotCPU")).getDisplayName());

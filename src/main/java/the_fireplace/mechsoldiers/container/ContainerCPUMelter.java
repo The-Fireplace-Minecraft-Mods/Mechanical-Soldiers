@@ -24,9 +24,10 @@ public class ContainerCPUMelter extends Container {
 	public ContainerCPUMelter(InventoryPlayer playerInventory, IInventory furnaceInventory) {
 		this.tileConstructor = furnaceInventory;
 		this.addSlotToContainer(new SlotLava(furnaceInventory, 0, 7, 7));
-		this.addSlotToContainer(new Slot(furnaceInventory, 1, 74, 13));
-		this.addSlotToContainer(new Slot(furnaceInventory, 2, 94, 13));
+		this.addSlotToContainer(new SlotCPUMelter(furnaceInventory, 1, 74, 13, "left"));
+		this.addSlotToContainer(new SlotCPUMelter(furnaceInventory, 2, 94, 13, "right"));
 		this.addSlotToContainer(new SlotOutput(furnaceInventory, 3, 84, 60));
+		this.addSlotToContainer(new SlotOutput(furnaceInventory, 4, 44, 64));
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
@@ -81,11 +82,11 @@ public class ContainerCPUMelter extends Container {
 			ItemStack is = slot.getStack();
 			ItemStack result = is.copy();
 
-			if (i >= 36) {
-				if (!mergeItemStack(is, 0, 36, false)) {
+			if (i >= tileConstructor.getSizeInventory()) {
+				if (!mergeItemStack(is, 0, tileConstructor.getSizeInventory(), false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!mergeItemStack(is, 36, 36 + tileConstructor.getSizeInventory(), false)) {
+			} else if (!mergeItemStack(is, tileConstructor.getSizeInventory(), 36 + tileConstructor.getSizeInventory(), false)) {
 				return ItemStack.EMPTY;
 			}
 			if (is.isEmpty()) {

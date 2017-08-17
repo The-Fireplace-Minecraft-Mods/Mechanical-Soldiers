@@ -13,7 +13,8 @@
       "item": "mechsoldiers:blueprint"
     },
     "t": {
-      "item": "mechsoldiers:mini_tank"
+      "item": "mechsoldiers:mini_tank",
+      "data": 0
     },
     "f": {
       "item": "minecraft:furnace"

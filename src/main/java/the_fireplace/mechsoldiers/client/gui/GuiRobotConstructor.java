@@ -63,7 +63,6 @@ public class GuiRobotConstructor extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		this.drawDefaultBackground();
 		GL11.glColor4f(1F, 1F, 1F, 1F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		int k = (this.width - this.xSize) / 2;
@@ -114,6 +113,14 @@ public class GuiRobotConstructor extends GuiContainer {
 			GlStateManager.resetColor();
 			GlStateManager.disableBlend();
 		}
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override

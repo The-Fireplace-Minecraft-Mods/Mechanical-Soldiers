@@ -33,65 +33,65 @@ public class CPUMeltRecipes {
 			leftInput = new ItemStack((Item) leftInput);
 		if (leftInput instanceof Block)
 			leftInput = new ItemStack((Block) leftInput);
-		if (!getMeltingResult(rightInput, leftInput).isEmpty()) {
-			Overlord.logInfo("Ignored melting recipe with conflicting input: " + output + " = " + rightInput + " + " + leftInput);
+		if (!getMeltingResult(leftInput, rightInput).isEmpty()) {
+			Overlord.logInfo("Ignored melting recipe with conflicting input: " + output + " = " + leftInput + " + " + rightInput);
 			return;
 		}
 		this.smeltingListRight.put(output, rightInput);
 		this.smeltingListLeft.put(output, leftInput);
 	}
 
-	public ItemStack getMeltingResult(Object stack1, Object stack2) {
-		ItemStack compStack1 = ItemStack.EMPTY;
-		boolean useCompDict1 = true;
-		ItemStack compStack2 = ItemStack.EMPTY;
-		boolean useCompDict2 = true;
-		if (stack1 instanceof ItemStack) {
-			compStack1 = (ItemStack) stack1;
-			useCompDict1 = false;
+	public ItemStack getMeltingResult(Object leftObj, Object rightObj) {
+		ItemStack compStackLeft = ItemStack.EMPTY;
+		boolean useCompDictLeft = true;
+		ItemStack compStackRight = ItemStack.EMPTY;
+		boolean useCompDictRight = true;
+		if (leftObj instanceof ItemStack) {
+			compStackLeft = (ItemStack) leftObj;
+			useCompDictLeft = false;
 		}
-		if (useCompDict1 && !(stack1 instanceof String))
-			throw new IllegalArgumentException("input must be ItemStack or String: " + stack1.toString());
-		if (stack2 instanceof ItemStack) {
-			compStack2 = (ItemStack) stack2;
-			useCompDict2 = false;
+		if (useCompDictLeft && !(leftObj instanceof String))
+			throw new IllegalArgumentException("input must be ItemStack or String: " + leftObj.toString());
+		if (rightObj instanceof ItemStack) {
+			compStackRight = (ItemStack) rightObj;
+			useCompDictRight = false;
 		}
-		if (useCompDict2 && !(stack2 instanceof String))
-			throw new IllegalArgumentException("input must be ItemStack or String: " + stack2.toString());
-		for (int i = 0; i < (useCompDict1 ? OreDictionary.getOres((String) stack1).size() : 1); i++) {
-			if (useCompDict1)
-				compStack1 = OreDictionary.getOres((String) stack1).get(i);
-			for (int j = 0; j < (useCompDict2 ? OreDictionary.getOres((String) stack2).size() : 1); j++) {
-				if (useCompDict2)
-					compStack2 = OreDictionary.getOres((String) stack2).get(j);
-				for (Entry<ItemStack, Object> entry : this.smeltingListRight.entrySet()) {
-					for (Entry<ItemStack, Object> entry2 : this.smeltingListLeft.entrySet()) {
-						Object input1 = entry.getValue();
-						ItemStack inputStack1 = ItemStack.EMPTY;
-						boolean useDict1 = true;
-						Object input2 = entry2.getValue();
-						ItemStack inputStack2 = ItemStack.EMPTY;
-						boolean useDict2 = true;
-						if (input1 instanceof ItemStack) {
-							inputStack1 = (ItemStack) input1;
-							useDict1 = false;
+		if (useCompDictRight && !(rightObj instanceof String))
+			throw new IllegalArgumentException("input must be ItemStack or String: " + rightObj.toString());
+		for (int i = 0; i < (useCompDictLeft ? OreDictionary.getOres((String) leftObj).size() : 1); i++) {
+			if (useCompDictLeft)
+				compStackLeft = OreDictionary.getOres((String) leftObj).get(i);
+			for (int j = 0; j < (useCompDictRight ? OreDictionary.getOres((String) rightObj).size() : 1); j++) {
+				if (useCompDictRight)
+					compStackRight = OreDictionary.getOres((String) rightObj).get(j);
+				for (Entry<ItemStack, Object> rightListEntry : this.smeltingListRight.entrySet()) {
+					for (Entry<ItemStack, Object> leftListEntry : this.smeltingListLeft.entrySet()) {
+						Object inputObjRight = rightListEntry.getValue();
+						ItemStack inputStackRight = ItemStack.EMPTY;
+						boolean useDictRight = true;
+						Object inputObjLeft = leftListEntry.getValue();
+						ItemStack inputStackLeft = ItemStack.EMPTY;
+						boolean useDictLeft = true;
+						if (inputObjRight instanceof ItemStack) {
+							inputStackRight = (ItemStack) inputObjRight;
+							useDictRight = false;
 						}
-						if (useDict1 && !(input1 instanceof String))
-							throw new IllegalArgumentException("input must be ItemStack or String: " + input1.toString());
-						if (input2 instanceof ItemStack) {
-							inputStack2 = (ItemStack) input2;
-							useDict2 = false;
+						if (useDictRight && !(inputObjRight instanceof String))
+							throw new IllegalArgumentException("input must be ItemStack or String: " + inputObjRight.toString());
+						if (inputObjLeft instanceof ItemStack) {
+							inputStackLeft = (ItemStack) inputObjLeft;
+							useDictLeft = false;
 						}
-						if (useDict2 && !(input2 instanceof String))
-							throw new IllegalArgumentException("input must be ItemStack or String: " + input2.toString());
-						for (int k = 0; k < (useDict1 ? OreDictionary.getOres((String) input1).size() : 1); k++) {
-							if (useDict1)
-								inputStack1 = OreDictionary.getOres((String) input1).get(k);
-							for (int l = 0; l < (useDict2 ? OreDictionary.getOres((String) input2).size() : 1); l++) {
-								if (useDict2)
-									inputStack2 = OreDictionary.getOres((String) input2).get(l);
-								if (this.compareItemStacks(compStack1, inputStack1) && this.compareItemStacks(compStack2, inputStack2) && entry.getKey().equals(entry2.getKey())) {
-									return entry.getKey();
+						if (useDictLeft && !(inputObjLeft instanceof String))
+							throw new IllegalArgumentException("input must be ItemStack or String: " + inputObjLeft.toString());
+						for (int k = 0; k < (useDictRight ? OreDictionary.getOres((String) inputObjRight).size() : 1); k++) {
+							if (useDictRight)
+								inputStackRight = OreDictionary.getOres((String) inputObjRight).get(k);
+							for (int l = 0; l < (useDictLeft ? OreDictionary.getOres((String) inputObjLeft).size() : 1); l++) {
+								if (useDictLeft)
+									inputStackLeft = OreDictionary.getOres((String) inputObjLeft).get(l);
+								if (this.compareItemStacks(compStackLeft, inputStackLeft) && this.compareItemStacks(compStackRight, inputStackRight) && rightListEntry.getKey().equals(leftListEntry.getKey())) {
+									return rightListEntry.getKey();
 								}
 							}
 						}

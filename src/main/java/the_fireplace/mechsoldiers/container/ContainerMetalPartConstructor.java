@@ -26,11 +26,12 @@ public class ContainerMetalPartConstructor extends Container {
 
 	public ContainerMetalPartConstructor(InventoryPlayer playerInventory, IInventory furnaceInventory) {
 		this.tileConstructor = furnaceInventory;
-		this.addSlotToContainer(new Slot(furnaceInventory, 0, 66, 17));
-		this.addSlotToContainer(new Slot(furnaceInventory, 1, 44, 17));
+		this.addSlotToContainer(new SlotMPC(furnaceInventory, 0, 66, 17, "right"));
+		this.addSlotToContainer(new SlotMPC(furnaceInventory, 1, 44, 17, "left"));
 		this.addSlotToContainer(new SlotMPConstructorFuel(furnaceInventory, 2, 56, 53));
 		this.addSlotToContainer(new SlotOutput(furnaceInventory, 3, 116, 35));
-		this.addSlotToContainer(new Slot(furnaceInventory, 4, 7, 7));
+		this.addSlotToContainer(new SlotWater(furnaceInventory, 4, 7, 7));
+		this.addSlotToContainer(new SlotOutput(furnaceInventory, 5, 116, 64));
 
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
@@ -100,11 +101,11 @@ public class ContainerMetalPartConstructor extends Container {
 			ItemStack is = slot.getStack();
 			ItemStack result = is.copy();
 
-			if (i >= 36) {
-				if (!mergeItemStack(is, 0, 36, false)) {
+			if (i >= tileConstructor.getSizeInventory()) {
+				if (!mergeItemStack(is, 0, tileConstructor.getSizeInventory(), false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!mergeItemStack(is, 36, 36 + tileConstructor.getSizeInventory(), false)) {
+			} else if (!mergeItemStack(is, tileConstructor.getSizeInventory(), 36 + tileConstructor.getSizeInventory(), false)) {
 				return ItemStack.EMPTY;
 			}
 			if (is.isEmpty()) {

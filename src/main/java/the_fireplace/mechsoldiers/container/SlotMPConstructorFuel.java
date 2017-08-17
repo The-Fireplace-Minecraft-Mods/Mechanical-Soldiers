@@ -14,11 +14,7 @@ public class SlotMPConstructorFuel extends Slot {
 	}
 
 	@Override
-	public boolean isItemValid(@Nullable ItemStack stack) {
-		return TileEntityPartConstructor.isItemFuel(stack) || isBucket(stack);
-	}
-
-	public static boolean isBucket(ItemStack stack) {
-		return stack != null && stack.getItem() != null && stack.getItem() == Items.BUCKET;
+	public boolean isItemValid(ItemStack stack) {
+		return TileEntityPartConstructor.isItemFuel(stack);
 	}
 }

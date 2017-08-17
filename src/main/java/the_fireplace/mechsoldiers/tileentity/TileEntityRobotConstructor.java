@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -47,8 +48,8 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 	}
 
 	@Override
-	public void spawnSkeleton(EntityPlayer playerSpawning) {
-		if (!canSpawnSkeleton())
+	public void spawnSkeleton(@Nullable EntityPlayer playerSpawning) {
+		if (!canSpawnSkeleton() || world.isRemote)
 			return;
 		ItemStack robotBox = new ItemStack(MechSoldiers.robot_box);
 		NBTTagCompound robotData = new NBTTagCompound();

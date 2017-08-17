@@ -68,7 +68,6 @@ public class GuiPartStainer extends GuiContainer implements GuiPageButtonList.Gu
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		this.drawDefaultBackground();
 		GlStateManager.color(1F, 1F, 1F, 1F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		int k = (this.width - this.xSize) / 2;
@@ -106,6 +105,14 @@ public class GuiPartStainer extends GuiContainer implements GuiPageButtonList.Gu
 				PacketDispatcher.sendToServer(new CreateSkeletonMessage(te.getPos()));
 			}
 		}
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override

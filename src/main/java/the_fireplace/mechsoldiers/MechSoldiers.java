@@ -1,6 +1,7 @@
 package the_fireplace.mechsoldiers;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
@@ -49,7 +50,7 @@ import the_fireplace.overlord.Overlord;
  * @author The_Fireplace
  */
 @Mod.EventBusSubscriber
-@Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,);after:theoneprobe", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json")
+@Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,);after:theoneprobe", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json", acceptedMinecraftVersions = "[1.12,)")
 public class MechSoldiers {
 	public static final String MODID = "mechsoldiers";
 	public static final String MODNAME = "Mechanical Soldiers";
@@ -144,6 +145,8 @@ public class MechSoldiers {
 		PartRegistry.registerCPU(cpu_alien, new AlienCPU(), ComponentDamageGeneric.getInstance(), "gold");
 		PartRegistry.registerPotatoCPU(Items.POTATO, 0, ComponentDamagePotato.getInstance(), "potato");
 		PartRegistry.registerPotatoCPU(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
+
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(robot_box), new DispenseBehaviorPlaceCrate());
 	}
 
 	private static IForgeRegistry<Block> blockRegistry = null;
@@ -251,6 +254,8 @@ public class MechSoldiers {
 		rmm(mini_tank);
 		rmm(cpu_melter);
 		rmm(part_stainer);
+		IStateMapper robot_constructor_mapper = new StateMap.Builder().ignore(BlockRobotConstructor.TRIGGERED).build();
+		ModelLoader.setCustomStateMapper(robot_constructor, robot_constructor_mapper);
 		IStateMapper mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY).build();
 		ModelLoader.setCustomStateMapper(mini_tank, mini_tank_mapper);
 		IStateMapper full_mini_tank_mapper = new StateMap.Builder().ignore(BlockMiniTank.VARIANT_PROPERTY, BlockSlab.HALF).build();

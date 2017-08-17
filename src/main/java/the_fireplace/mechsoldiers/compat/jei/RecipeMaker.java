@@ -57,8 +57,8 @@ public class RecipeMaker {
 			Object input2 = itemStackItemStackEntry.getValue();
 
 			List<Object> inputs = Lists.newLinkedList();
-			inputs.add(input2);
 			inputs.add(input1);
+			inputs.add(input2);
 			CPUMeltRecipe recipe = new CPUMeltRecipe(inputs, output);
 			if (isRecipeValid(recipe))
 				recipes.add(recipe);

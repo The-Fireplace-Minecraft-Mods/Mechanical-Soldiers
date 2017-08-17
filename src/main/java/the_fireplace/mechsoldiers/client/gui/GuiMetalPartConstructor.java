@@ -17,9 +17,6 @@ import the_fireplace.mechsoldiers.tileentity.TileEntityPartConstructor;
 @SideOnly(Side.CLIENT)
 public class GuiMetalPartConstructor extends GuiContainer {
 	private static final ResourceLocation MPC_GUI_TEX = new ResourceLocation(MechSoldiers.MODID, "textures/gui/metal_part_constructor.png");
-	/**
-	 * The player inventory bound to this GUI.
-	 */
 	private final InventoryPlayer playerInventory;
 	private final IInventory tileFurnace;
 
@@ -29,9 +26,7 @@ public class GuiMetalPartConstructor extends GuiContainer {
 		this.tileFurnace = furnaceInv;
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
+	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
@@ -43,11 +38,8 @@ public class GuiMetalPartConstructor extends GuiContainer {
 		this.drawTexturedModalRect(6, 35, 176, 31, 28, 46);
 	}
 
-	/**
-	 * Draws the background layer of this container (behind the items).
-	 */
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		this.drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(MPC_GUI_TEX);
 		int i = (this.width - this.xSize) / 2;
@@ -61,6 +53,14 @@ public class GuiMetalPartConstructor extends GuiContainer {
 
 		int l = this.getCookProgressScaled(24);
 		this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	private int getCookProgressScaled(int pixels) {
