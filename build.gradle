@@ -143,6 +143,8 @@ curseforge {
 			optionalLibrary 'applied-energistics-2'
 			optionalLibrary 'hwyla'
 			optionalLibrary 'the-one-probe'
+            optionalLibrary 'immersive-engineering'
+            optionalLibrary 'tinkers-construct'
 		}
     }
     addArtifact(sourceJar) {
