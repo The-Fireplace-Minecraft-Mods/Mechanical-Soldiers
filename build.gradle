@@ -24,9 +24,9 @@ apply plugin: 'net.cazzar.gradle.modsio'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-version = "1.1.1"
+version = "1.1.2"
 group= "the_fireplace.mechsoldiers"
-archivesBaseName = "MechSoldiers-1.12.1"
+archivesBaseName = "MechSoldiers-1.12.2"
 
 allprojects {
     sourceCompatibility = 1.8
@@ -34,7 +34,7 @@ allprojects {
 }
 
 minecraft {
-    version = "1.12.1-14.22.0.2456"
+    version = "1.12.2-14.23.0.2503"
     runDir = "run"
     replace '${version}', project.version
     mappings = "snapshot_20170815"
@@ -43,12 +43,12 @@ minecraft {
 }
 
 dependencies {
-	deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.4-56"
+	deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.4-57"
 	deobfCompile "the_fireplace.overlord:Overlord-1.12.1:2.4.5"
-	deobfProvided "appeng:applied-llamagistics-1.12:rv5-beta-3"
-	deobfCompile "appeng:appliedenergistics2:rv5-alpha-1"//AE2 is on the Forge Maven
-	deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.15-8"
-	deobfCompile "mcp.mobius.waila:Hwyla:1.8.19-B33_1.12"
+	deobfCompile "appeng:applied-llamagistics-1.12.1:rv5-beta-8"
+	deobfProvided "appeng:appliedenergistics2:rv5-alpha-7"//AE2 is on the Forge Maven
+	deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.18-10"
+	deobfCompile "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12"
 }
 
 repositories{
@@ -69,9 +69,6 @@ repositories{
 	}
 	maven { //CoFH Mods
         url = "http://maven.covers1624.net"
-    }
-	flatDir {
-        dirs "lib"
     }
 }
 
@@ -126,6 +123,7 @@ curseforge {
     id = '273117'
     changelog = file('changelog.txt')
     releaseType = 'release'
+    addGameVersion '1.12.2'
     addGameVersion '1.12.1'
     addGameVersion '1.12'
 	addGameVersion 'Java 8'
@@ -155,7 +153,7 @@ modsIO {
     project{
 		artifact = new File(jar.destinationDir, archivesBaseName+"-"+version+".jar")
 		modid = "1270"
-		minecraft = "1.12.1"
+		minecraft = "1.12.2"
 		try{changelog = file('changelog.txt').text}catch(Exception e){changelog=""}
 		tag = ""
 		current = true
