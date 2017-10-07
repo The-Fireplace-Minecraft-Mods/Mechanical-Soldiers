@@ -50,7 +50,7 @@ import the_fireplace.overlord.Overlord;
  * @author The_Fireplace
  */
 @Mod.EventBusSubscriber
-@Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,);after:theoneprobe", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json", acceptedMinecraftVersions = "[1.12,)")
+@Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,);after:theoneprobe", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json", acceptedMinecraftVersions = "[1.12,1.13)")
 public class MechSoldiers {
 	public static final String MODID = "mechsoldiers";
 	public static final String MODNAME = "Mechanical Soldiers";
