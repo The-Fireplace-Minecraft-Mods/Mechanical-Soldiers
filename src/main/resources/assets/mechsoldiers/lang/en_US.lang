@@ -22,6 +22,9 @@ item.cpu_wood.name=Wood-Encased CPU
 item.cpu_alien.name=Alien CPU
 item.blueprint.name=Skeletal Component Blueprint
 
+item.mold_skeleton.name=Metal Press Mold: Skeleton
+item.mold_joints.name=Metal Press Mold: Joints
+
 tile.robot_box.name=Robot Crate
 tile.robot_constructor.name=Robot Builder
 tile.metal_part_constructor.name=Skeleton Mould Melter

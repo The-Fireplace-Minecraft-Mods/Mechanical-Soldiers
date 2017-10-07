@@ -27,6 +27,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import the_fireplace.mechsoldiers.blocks.*;
+import the_fireplace.mechsoldiers.compat.IModCompat;
+import the_fireplace.mechsoldiers.compat.ie.IECompat;
 import the_fireplace.mechsoldiers.compat.top.TOPCompatibility;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.entity.ai.AlienCPU;
@@ -118,6 +120,11 @@ public class MechSoldiers {
 		proxy.registerClient();
 		if (Loader.isModLoaded("theoneprobe"))
 			TOPCompatibility.register();
+		IModCompat compat;
+		if(Loader.isModLoaded("immersiveengineering")){
+			compat = new IECompat();
+			compat.preInit(event.getSide().isClient());
+		}
 	}
 
 	@Mod.EventHandler
@@ -268,7 +275,7 @@ public class MechSoldiers {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static void rmm(Item i) {
+	public static void rmm(Item i) {
 		ModelLoader.setCustomModelResourceLocation(i, 0, new ModelResourceLocation(MODID + ":" + i.getUnlocalizedName().substring(5), "inventory"));
 	}
 }
