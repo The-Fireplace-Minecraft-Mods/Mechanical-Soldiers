@@ -1,5 +1,6 @@
 package the_fireplace.mechsoldiers.registry;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -11,8 +12,10 @@ import the_fireplace.mechsoldiers.util.EnumPartType;
 import the_fireplace.mechsoldiers.util.ICPU;
 import the_fireplace.mechsoldiers.util.IComponentDamageBehavior;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -121,6 +124,14 @@ public final class PartRegistry {
 			if (stack.getItem() == part.getItem() && (stack.getMetadata() == OreDictionary.WILDCARD_VALUE || stack.getMetadata() == part.getMetadata()))
 				return instance.partTypes.get(stack) == slotType;
 		return false;
+	}
+
+	public static ArrayList<ItemStack> getPartsOfType(EnumPartType type){
+		ArrayList<ItemStack> out = Lists.newArrayList();
+		for (ItemStack stack : instance.partTypes.keySet())
+			if(instance.partTypes.get(stack) == type)
+				out.add(stack);
+		return out;
 	}
 
 	public static ItemStack damagePart(ItemStack part, DamageSource source, float amount, EntityLivingBase entity) {

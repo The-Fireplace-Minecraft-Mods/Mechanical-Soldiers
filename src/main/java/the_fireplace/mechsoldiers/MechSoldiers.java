@@ -29,6 +29,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import the_fireplace.mechsoldiers.blocks.*;
 import the_fireplace.mechsoldiers.compat.IModCompat;
 import the_fireplace.mechsoldiers.compat.ie.IECompat;
+import the_fireplace.mechsoldiers.compat.ticon.TiconCompat;
 import the_fireplace.mechsoldiers.compat.top.TOPCompatibility;
 import the_fireplace.mechsoldiers.entity.EntityMechSkeleton;
 import the_fireplace.mechsoldiers.entity.ai.AlienCPU;
@@ -52,7 +53,7 @@ import the_fireplace.overlord.Overlord;
  * @author The_Fireplace
  */
 @Mod.EventBusSubscriber
-@Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,);after:theoneprobe", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json", acceptedMinecraftVersions = "[1.12,1.13)")
+@Mod(modid = MechSoldiers.MODID, name = MechSoldiers.MODNAME, dependencies = "required-after:overlord@[2.3.*,);after:theoneprobe;after:tconstruct", version = "${version}", updateJSON = "https://bitbucket.org/The_Fireplace/minecraft-mod-updates/raw/master/mechsoldiers.json", acceptedMinecraftVersions = "[1.12,1.13)")
 public class MechSoldiers {
 	public static final String MODID = "mechsoldiers";
 	public static final String MODNAME = "Mechanical Soldiers";
@@ -125,6 +126,10 @@ public class MechSoldiers {
 			compat = new IECompat();
 			compat.preInit(event.getSide().isClient());
 		}
+		if(Loader.isModLoaded("tconstruct")){
+			compat = new TiconCompat();
+			compat.preInit(event.getSide().isClient());
+		}
 	}
 
 	@Mod.EventHandler
@@ -154,6 +159,11 @@ public class MechSoldiers {
 		PartRegistry.registerPotatoCPU(Items.BAKED_POTATO, 0, ComponentDamagePotato.getInstance(), "baked_potato");
 
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(robot_box), new DispenseBehaviorPlaceCrate());
+		IModCompat compat;
+		if(Loader.isModLoaded("tconstruct")){
+			compat = new TiconCompat();
+			compat.init();
+		}
 	}
 
 	private static IForgeRegistry<Block> blockRegistry = null;

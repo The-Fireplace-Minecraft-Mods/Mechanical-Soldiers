@@ -22,6 +22,10 @@ public class IECompat implements IModCompat {
 		MinecraftForge.EVENT_BUS.register(this);
 		if(isClient)
 			MinecraftForge.EVENT_BUS.register(new IEClientEvents());
+	}
+
+	@Override
+	public void init() {
 		BlueprintCraftingRecipe.addRecipe("molds", new ItemStack(skeleton_mold), "plateSteel","plateSteel","plateSteel","plateSteel","plateSteel",new ItemStack(IEContent.itemTool, 1, 1));
 		BlueprintCraftingRecipe.addRecipe("molds", new ItemStack(joints_mold), "plateSteel","plateSteel","plateSteel","plateSteel","plateSteel",new ItemStack(IEContent.itemTool, 1, 1));
 
