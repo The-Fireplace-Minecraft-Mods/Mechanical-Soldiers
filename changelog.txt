@@ -1,3 +1,3 @@
-Added Chinese Language Localization (zh_CN) (yuanjie000)
-Added the Blueprint to the Lost Cities Rail Dungeons
-Skeletons and Joints can now be made in the Immersive Engineering Metal Press and TiCon's Smeltery
+Updated Chinese Language Localization (zh_CN) (yuanjie000)
+The robot crate now outputs a signal to the Redstone Comparator based on progress. Higher Signal = closer to completion.
+Bug fixes

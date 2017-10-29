@@ -9,6 +9,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,5 +135,18 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 			if (nbt.hasKey("RobotJoints"))
 				tooltip.add(proxy.translateToLocal("color.turq") + proxy.translateToLocal("tooltip.robot_joints") + ' ' + new ItemStack(nbt.getCompoundTag("RobotJoints")).getDisplayName());
 		}
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		TileEntity te = worldIn.getTileEntity(pos);
+		if(te instanceof TileEntityRobotBox)
+			return (int)((TileEntityRobotBox) te).getCompletion()*15;
+		return 0;
 	}
 }

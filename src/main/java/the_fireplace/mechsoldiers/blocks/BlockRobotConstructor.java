@@ -36,6 +36,7 @@ import java.util.Random;
 @MethodsReturnNonnullByDefault
 public class BlockRobotConstructor extends BlockContainer {
 	public static final PropertyBool TRIGGERED = PropertyBool.create("triggered");
+	private static boolean keepInventory;
 	public BlockRobotConstructor(String name) {
 		super(Material.IRON);
 		setUnlocalizedName(name);
@@ -86,9 +87,8 @@ public class BlockRobotConstructor extends BlockContainer {
 		else if (!playerIn.isSneaking()) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
-			if (tileentity instanceof TileEntityRobotConstructor) {
+			if (tileentity instanceof TileEntityRobotConstructor)
 				FMLNetworkHandler.openGui(playerIn, MechSoldiers.MODID, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
-			}
 			return true;
 		} else
 			return false;
@@ -96,11 +96,13 @@ public class BlockRobotConstructor extends BlockContainer {
 
 	@Override
 	public void breakBlock(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		if (!keepInventory) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
 
-		if (tileentity instanceof TileEntityRobotConstructor) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
-			worldIn.updateComparatorOutputLevel(pos, this);
+			if (tileentity instanceof TileEntityRobotConstructor) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+				worldIn.updateComparatorOutputLevel(pos, this);
+			}
 		}
 
 		super.breakBlock(worldIn, pos, state);
@@ -109,18 +111,16 @@ public class BlockRobotConstructor extends BlockContainer {
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
 	{
-		boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.up());
-		boolean flag1 = ((Boolean)state.getValue(TRIGGERED)).booleanValue();
+		boolean blockIsPowered = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(pos.up());
+		boolean blockStateIsPowered = ((Boolean)state.getValue(TRIGGERED)).booleanValue();
 
-		if (flag && !flag1)
+		if (blockIsPowered && !blockStateIsPowered)
 		{
 			worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
-			worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(true)), 4);
+			setState(true, worldIn, pos);
 		}
-		else if (!flag && flag1)
-		{
-			worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(false)), 4);
-		}
+		else if (!blockIsPowered && blockStateIsPowered)
+			setState(false, worldIn, pos);
 	}
 
 	@Override
@@ -128,9 +128,7 @@ public class BlockRobotConstructor extends BlockContainer {
 	{
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (!worldIn.isRemote && te instanceof ISkeletonMaker)
-		{
 			((ISkeletonMaker)te).spawnSkeleton(null);
-		}
 	}
 
 	@Override
@@ -139,18 +137,13 @@ public class BlockRobotConstructor extends BlockContainer {
 		return this.getDefaultState().withProperty(TRIGGERED, Boolean.valueOf((meta & 8) > 0));
 	}
 
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		int i = 0;
 
 		if (((Boolean)state.getValue(TRIGGERED)).booleanValue())
-		{
 			i |= 8;
-		}
 
 		return i;
 	}
@@ -159,6 +152,19 @@ public class BlockRobotConstructor extends BlockContainer {
 	protected BlockStateContainer createBlockState()
 	{
 		return new BlockStateContainer(this, TRIGGERED);
+	}
+
+	public static void setState(boolean triggered, World worldIn, BlockPos pos) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+		keepInventory = true;
+		worldIn.setBlockState(pos, MechSoldiers.robot_constructor.getDefaultState().withProperty(TRIGGERED, triggered), 3);
+		worldIn.setBlockState(pos, MechSoldiers.robot_constructor.getDefaultState().withProperty(TRIGGERED, triggered), 3);
+		keepInventory = false;
+
+		if (tileentity != null) {
+			tileentity.validate();
+			worldIn.setTileEntity(pos, tileentity);
+		}
 	}
 }
 
