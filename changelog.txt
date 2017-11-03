@@ -1,3 +1,1 @@
-Updated Chinese Language Localization (zh_CN) (yuanjie000)
-The robot crate now outputs a signal to the Redstone Comparator based on progress. Higher Signal = closer to completion.
-Bug fixes
+Fixed an issue with extracting crates from the robot contructor

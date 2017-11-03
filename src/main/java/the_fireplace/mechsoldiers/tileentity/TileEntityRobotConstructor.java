@@ -249,9 +249,9 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 		if (side == EnumFacing.EAST || side == EnumFacing.WEST || side == EnumFacing.NORTH || side == EnumFacing.SOUTH || side == EnumFacing.UP)
-			return new int[]{0, 1, 2, 3, 4, 5};
+			return new int[]{0, 1, 2, 3, 4};
 		else if (side == EnumFacing.DOWN)
-			return new int[]{6};
+			return new int[]{5};
 		else
 			throw new IllegalArgumentException("Invalid EnumFacing: " + side);
 	}
