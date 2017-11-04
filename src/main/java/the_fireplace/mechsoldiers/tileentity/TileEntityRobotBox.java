@@ -106,6 +106,18 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 		return skeletonData.getString("OwnerUUID");
 	}
 
+	public boolean validate(boolean destroyIfInvalid){
+		boolean valid = true;
+		if(skeletonData == null || getCPU().isEmpty() ||  getJoints().isEmpty() || getSkeleton().isEmpty())
+			valid = false;
+		if(destroyIfInvalid){
+			Overlord.logError("Invalid Robot Crate at "+pos.toString()+", destroying...");
+			world.setBlockToAir(pos);
+			world.removeTileEntity(pos);
+		}
+		return valid;
+	}
+
 	public float getCompletion() {
 		return 1.0F - (float) ticksRemaining / (float) maxTicks;
 	}
