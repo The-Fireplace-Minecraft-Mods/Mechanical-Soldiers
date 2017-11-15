@@ -110,7 +110,7 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 		boolean valid = true;
 		if(skeletonData == null || getCPU().isEmpty() ||  getJoints().isEmpty() || getSkeleton().isEmpty())
 			valid = false;
-		if(destroyIfInvalid){
+		if(!valid && destroyIfInvalid){
 			Overlord.logError("Invalid Robot Crate at "+pos.toString()+", destroying...");
 			world.setBlockToAir(pos);
 			world.removeTileEntity(pos);
