@@ -52,6 +52,8 @@ public class TOPCompatibility {
 					if (blockState.getBlock() instanceof BlockRobotBox && robotBox instanceof TileEntityRobotBox) {
 						if (((TileEntityRobotBox) robotBox).validate(!world.isRemote))
 							probeInfo.text(TextFormatting.YELLOW + Overlord.proxy.translateToLocal("mechsoldiers.top.robotbox", (int) (100f * ((TileEntityRobotBox) robotBox).getCompletion())));
+						else
+							probeInfo.text(TextFormatting.DARK_RED + Overlord.proxy.translateToLocal("mechsoldiers.top.robotbox.invalid"));
 					}
 				}
 			});
