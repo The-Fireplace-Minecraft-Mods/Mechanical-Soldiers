@@ -45,6 +45,9 @@ mechsoldiers.top.robotbox=Building: %d percent done.
 mechsoldiers.top.cpu=CPU Health: %d/%d
 mechsoldiers.top.skeleton=Skeleton Health: %d/%d
 mechsoldiers.top.joints=Joints Health: %d/%d
+mechsoldiers.top.boxed_cpu=CPU: %s
+mechsoldiers.top.boxed_skeleton=Skeleton: %s
+mechsoldiers.top.boxed_joints=Joints: %s
 mechsoldiers.top.robotbox.invalid=This robot crate may be invalid.
 
 Red=Red
