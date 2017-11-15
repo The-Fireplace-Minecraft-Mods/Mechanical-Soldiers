@@ -49,8 +49,10 @@ public class TOPCompatibility {
 				@Override
 				public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
 					TileEntity robotBox = world.getTileEntity(data.getPos());
-					if (blockState.getBlock() instanceof BlockRobotBox && robotBox instanceof TileEntityRobotBox)
-						probeInfo.text(TextFormatting.YELLOW + Overlord.proxy.translateToLocal("mechsoldiers.top.robotbox", (int)(100f*((TileEntityRobotBox)robotBox).getCompletion())));
+					if (blockState.getBlock() instanceof BlockRobotBox && robotBox instanceof TileEntityRobotBox) {
+						if (((TileEntityRobotBox) robotBox).validate(!world.isRemote))
+							probeInfo.text(TextFormatting.YELLOW + Overlord.proxy.translateToLocal("mechsoldiers.top.robotbox", (int) (100f * ((TileEntityRobotBox) robotBox).getCompletion())));
+					}
 				}
 			});
 			//probe.registerEntityDisplayOverride((mode, probeInfo, player, world, entity, data) -> entity instanceof EntityMechSkeleton);
