@@ -1,3 +1,1 @@
-Fixed invalid crates crasing TOP
-Added more data to TOP
-Added the command /opencrate <x> <y> <z> to allow ops to instantly open robot crates.
+Graphical improvements
