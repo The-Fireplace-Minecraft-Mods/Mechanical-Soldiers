@@ -2,12 +2,12 @@
 	"parent": "block/orientable",
 	"credit": "Made with Blockbench, a free, modern block model editor made by JannisX11",
 	"textures": {
-		"0": "blocks/glass",
+		"0": "mechsoldiers:blocks/tank",
 		"1": "blocks/iron_block",
 		"2": "blocks/dispenser_front_vertical",
 		"3": "blocks/furnace_side",
 		"4": "blocks/furnace_front_off",
-		"particle": "blocks/glass"
+		"particle": "mechsoldiers:blocks/tank"
 	},
 	"elements": [
 		{
