@@ -24,7 +24,7 @@ apply plugin: 'net.cazzar.gradle.modsio'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-version = "1.1.5"
+version = "1.1.6"
 group= "the_fireplace.mechsoldiers"
 archivesBaseName = "MechSoldiers-1.12.2"
 
@@ -34,7 +34,7 @@ allprojects {
 }
 
 minecraft {
-    version = "1.12.2-14.23.1.2557"
+    version = "1.12.2-14.23.1.2555"
     runDir = "run"
     replace '${version}', project.version
     mappings = "snapshot_20170815"
@@ -44,7 +44,7 @@ minecraft {
 
 dependencies {
 	deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.4-57"
-	deobfCompile "the_fireplace.overlord:Overlord-1.12.1:2.4.6"
+	//deobfCompile "the_fireplace.overlord:Overlord-1.12.1:2.4.6"
 	deobfCompile "appeng:applied-llamagistics-1.12.1:rv5-beta-10"
 	deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.19-11"
 	deobfCompile "mcp.mobius.waila:Hwyla:1.8.22-B37_1.12"
@@ -62,9 +62,9 @@ repositories{
     maven { //Guide API, Waila
 		url "http://tehnut.info/maven/"
 	}
-    maven { //Overlord
+    /*maven { //Overlord
 		url "http://maven.brainstonemod.com/"
-	}
+	}*/
 	maven { //Applied Llamagistics
         url = "http://maven.thiakil.com/"
     }
