@@ -45,6 +45,10 @@ mechsoldiers.top.robotbox=生成中：已完成百分之 %d 。
 mechsoldiers.top.cpu=CPU生命值： %d/%d
 mechsoldiers.top.skeleton=骨架生命值： %d/%d
 mechsoldiers.top.joints=关节生命值： %d/%d
+mechsoldiers.top.boxed_cpu=CPU： %s 
+mechsoldiers.top.boxed_skeleton=骨架： %s 
+mechsoldiers.top.boxed_joints=关节： %s
+mechsoldiers.top.robotbox.invalid=这个机器人箱可能是无效的。
 
 Red=红
 Green=绿
