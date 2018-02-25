@@ -1,50 +1,42 @@
 {
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"parent": "block/orientable",
-	"credit": "Made with Blockbench, a free, modern block model editor made by JannisX11",
 	"textures": {
-		"0": "blocks/glass",
-		"1": "blocks/iron_block",
+		"0": "mechsoldiers:blocks/tank",
 		"2": "blocks/dispenser_front_vertical",
-		"3": "blocks/furnace_side",
-		"4": "blocks/furnace_front_off",
-		"particle": "blocks/glass"
+		"3": "mechsoldiers:blocks/mpc_side",
+		"4": "mechsoldiers:blocks/mpc_off",
+		"5": "blocks/glass",
+		"particle": "mechsoldiers:blocks/tank"
 	},
 	"elements": [
 		{
-			"name": "base",
-			"from": [0, 0, 0],
-			"to": [16, 0, 16],
-			"shade": true,
-			"faces": {
-				"up": {"uv": [0, 0, 16, 16], "texture": "#1"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#1", "cullface": "down"}
-			}
-		},
-		{
 			"name": "glass",
 			"from": [0, 0, 0],
-			"to": [16, 4, 16],
-			"shade": true,
+			"to": [16, 6, 16],
 			"faces": {
-				"north": {"uv": [0, 12, 16, 16], "texture": "#0"},
-				"east": {"uv": [0, 12, 16, 16], "texture": "#0"},
-				"south": {"uv": [0, 12, 16, 16], "texture": "#0"},
-				"west": {"uv": [0, 12, 16, 16], "texture": "#0"}
-			}
+				"north": {"uv": [0, 10, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 10, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 10, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 10, 16, 16], "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#5"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#5"}
+			},
+			"type": "cube"
 		},
 		{
 			"name": "machine",
-			"from": [0, 4, 0],
+			"from": [0, 6, 0],
 			"to": [16, 16, 16],
-			"shade": true,
 			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#3"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#3"},
-				"north": {"uv": [0, 0, 16, 16], "texture": "#4"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"north": {"uv": [0, 0, 16, 10], "texture": "#4"},
+				"east": {"uv": [0, 0, 16, 10], "texture": "#3"},
+				"south": {"uv": [0, 0, 16, 10], "texture": "#3"},
+				"west": {"uv": [0, 0, 16, 10], "texture": "#3"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#2"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
-			}
+			},
+			"type": "cube"
 		}
 	]
 }

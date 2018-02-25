@@ -3,6 +3,6 @@
     "textures": {
         "bottom": "blocks/glass",
         "top": "blocks/glass",
-        "side": "blocks/glass"
+        "side": "mechsoldiers:blocks/tank_half"
     }
 }

@@ -40,6 +40,10 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 		skeletonData = nbt;
 	}
 
+	public void instBreak(){
+		ticksRemaining = 1;
+	}
+
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		return new SPacketUpdateTileEntity(this.pos, getBlockMetadata(), getUpdateTag());
@@ -106,6 +110,18 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 		return skeletonData.getString("OwnerUUID");
 	}
 
+	public boolean validate(boolean destroyIfInvalid){
+		boolean valid = true;
+		if(skeletonData == null || getCPU().isEmpty() ||  getJoints().isEmpty() || getSkeleton().isEmpty())
+			valid = false;
+		if(!valid && destroyIfInvalid){
+			Overlord.logError("Invalid Robot Crate at "+pos.toString()+", destroying...");
+			world.setBlockToAir(pos);
+			world.removeTileEntity(pos);
+		}
+		return valid;
+	}
+
 	public float getCompletion() {
 		return 1.0F - (float) ticksRemaining / (float) maxTicks;
 	}
@@ -122,7 +138,8 @@ public class TileEntityRobotBox extends TileEntity implements ITickable {
 		world.playSound(null, pos, Overlord.CREATE_SKELETON_2_SOUND, SoundCategory.BLOCKS, 1.0f, 0.5f + world.rand.nextFloat());
 
 		world.removeTileEntity(pos);
-		world.destroyBlock(pos, false);
+		//world.destroyBlock(pos, false);
+		world.setBlockToAir(pos);
 	}
 }
 

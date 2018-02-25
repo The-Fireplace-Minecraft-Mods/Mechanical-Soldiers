@@ -6,11 +6,14 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.command.ICommandManager;
+import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -19,6 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -27,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import the_fireplace.mechsoldiers.blocks.*;
+import the_fireplace.mechsoldiers.command.CommandOpenCrate;
 import the_fireplace.mechsoldiers.compat.IModCompat;
 import the_fireplace.mechsoldiers.compat.ie.IECompat;
 import the_fireplace.mechsoldiers.compat.ticon.TiconCompat;
@@ -164,6 +169,16 @@ public class MechSoldiers {
 			compat = new TiconCompat();
 			compat.init();
 		}
+	}
+
+	@Mod.EventHandler
+	public void serverStart(FMLServerStartingEvent event) {
+		MinecraftServer server = event.getServer();
+		ICommandManager command = server.getCommandManager();
+
+		ServerCommandManager serverCommand = (ServerCommandManager) command;
+
+		serverCommand.registerCommand(new CommandOpenCrate());
 	}
 
 	private static IForgeRegistry<Block> blockRegistry = null;

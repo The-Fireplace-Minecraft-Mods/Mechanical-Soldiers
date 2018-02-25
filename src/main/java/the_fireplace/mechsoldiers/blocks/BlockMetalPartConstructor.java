@@ -233,4 +233,9 @@ public class BlockMetalPartConstructor extends BlockContainer {
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 }
