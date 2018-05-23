@@ -18,4 +18,3 @@ build
 eclipse
 run
 runclient
-libs/*

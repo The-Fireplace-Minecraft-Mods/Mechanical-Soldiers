@@ -30,7 +30,11 @@ public class WailaBlockProvider implements IWailaDataProvider {
 	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 		TileEntity robotBox = accessor.getTileEntity();
 		if (robotBox instanceof TileEntityRobotBox)
-			currenttip.add(TextFormatting.YELLOW + Overlord.proxy.translateToLocal("mechsoldiers.top.robotbox", (int)(100f*((TileEntityRobotBox)robotBox).getCompletion())));
+			if (((TileEntityRobotBox) robotBox).validate(false)) {
+				currenttip.add(TextFormatting.YELLOW + Overlord.proxy.translateToLocal("mechsoldiers.top.robotbox", (int) (100f * ((TileEntityRobotBox) robotBox).getCompletion())));
+			} else {
+				currenttip.add(TextFormatting.DARK_RED + Overlord.proxy.translateToLocal("mechsoldiers.top.robotbox.invalid"));
+			}
 
 		return currenttip;
 	}

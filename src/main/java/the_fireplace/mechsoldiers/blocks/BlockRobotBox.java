@@ -9,6 +9,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -109,14 +110,16 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		ItemStack pick = new ItemStack(MechSoldiers.robot_box);
 		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileEntityRobotBox) {
-			NBTTagCompound skellyData = new NBTTagCompound();
-			skellyData.setTag("RobotCPU", ((TileEntityRobotBox) te).getCPU().writeToNBT(new NBTTagCompound()));
-			skellyData.setTag("RobotSkeleton", ((TileEntityRobotBox) te).getSkeleton().writeToNBT(new NBTTagCompound()));
-			skellyData.setTag("RobotJoints", ((TileEntityRobotBox) te).getJoints().writeToNBT(new NBTTagCompound()));
-			skellyData.setString("OwnerUUID", player.isSneaking() ? player.getUniqueID().toString() : ((TileEntityRobotBox) te).getOwnerId());
-			pick.setTagCompound(skellyData);
-		}
+		if (te instanceof TileEntityRobotBox)
+			if (((TileEntityRobotBox) te).validate(!player.world.isRemote)) {
+				NBTTagCompound skellyData = new NBTTagCompound();
+				skellyData.setTag("RobotCPU", ((TileEntityRobotBox) te).getCPU().writeToNBT(new NBTTagCompound()));
+				skellyData.setTag("RobotSkeleton", ((TileEntityRobotBox) te).getSkeleton().writeToNBT(new NBTTagCompound()));
+				skellyData.setTag("RobotJoints", ((TileEntityRobotBox) te).getJoints().writeToNBT(new NBTTagCompound()));
+				skellyData.setString("OwnerUUID", player.isSneaking() ? player.getUniqueID().toString() : ((TileEntityRobotBox) te).getOwnerId());
+				pick.setTagCompound(skellyData);
+			}else
+				pick.setStackDisplayName("Invalid Robot Crate");
 		return pick;
 	}
 
@@ -134,5 +137,18 @@ public class BlockRobotBox extends Block implements ITileEntityProvider {
 			if (nbt.hasKey("RobotJoints"))
 				tooltip.add(proxy.translateToLocal("color.turq") + proxy.translateToLocal("tooltip.robot_joints") + ' ' + new ItemStack(nbt.getCompoundTag("RobotJoints")).getDisplayName());
 		}
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		TileEntity te = worldIn.getTileEntity(pos);
+		if(te instanceof TileEntityRobotBox)
+			return (int)(((TileEntityRobotBox) te).getCompletion()*15);
+		return 0;
 	}
 }

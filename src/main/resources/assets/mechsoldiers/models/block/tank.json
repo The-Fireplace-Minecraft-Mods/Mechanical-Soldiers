@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "top": "blocks/glass",
+    "side": "mechsoldiers:blocks/tank",
+    "bottom": "blocks/glass"
+  }
+}

@@ -87,9 +87,8 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		this.furnaceItemStacks.set(index, stack);
 
-		if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit()) {
+		if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
 			stack.setCount(this.getInventoryStackLimit());
-		}
 	}
 
 	@Override
@@ -112,17 +111,15 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 			NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
 			int j = nbttagcompound.getByte("Slot");
 
-			if (j >= 0 && j < this.furnaceItemStacks.size()) {
+			if (j >= 0 && j < this.furnaceItemStacks.size())
 				this.furnaceItemStacks.set(j, new ItemStack(nbttagcompound));
-			}
 		}
 
 		this.furnaceBurnTime = compound.getInteger("BurnTime");
 		this.heldLavaAmount = compound.getInteger("HeldLava");
 
-		if (compound.hasKey("CustomName", 8)) {
+		if (compound.hasKey("CustomName", 8))
 			this.furnaceCustomName = compound.getString("CustomName");
-		}
 	}
 
 	@Override
@@ -143,9 +140,8 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 
 		compound.setTag("Items", nbttaglist);
 
-		if (this.hasCustomName()) {
+		if (this.hasCustomName())
 			compound.setString("CustomName", this.furnaceCustomName);
-		}
 
 		return compound;
 	}
@@ -193,9 +189,8 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 				if (!this.isActive() && this.canSmelt()) {
 					this.furnaceBurnTime = 5000;
 
-					if (this.isActive()) {
+					if (this.isActive())
 						tileChanged = true;
-					}
 				}
 
 				if (this.isActive() && this.canSmelt()) {
@@ -207,27 +202,23 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 						this.smeltItem();
 						tileChanged = true;
 					}
-				} else {
+				} else
 					this.furnaceBurnTime = 0;
-				}
-			} else if (!this.isActive() && this.furnaceBurnTime > 0) {
+			} else if (!this.isActive() && this.furnaceBurnTime > 0)
 				this.furnaceBurnTime = 0;
-			}
 
-			if (isInitiallyActive != this.isActive()) {
+			if (isInitiallyActive != this.isActive())
 				tileChanged = true;
-			}
 		}
 
-		if (tileChanged) {
+		if (tileChanged)
 			this.markDirty();
-		}
 	}
 
 	private boolean canSmelt() {
-		if (this.furnaceItemStacks.get(1).isEmpty() || this.furnaceItemStacks.get(2).isEmpty() || heldLavaAmount <= 0) {
+		if (this.furnaceItemStacks.get(1).isEmpty() || this.furnaceItemStacks.get(2).isEmpty() || heldLavaAmount <= 0)
 			return false;
-		} else {
+		else {
 			ItemStack result = CPUMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks.get(1), this.furnaceItemStacks.get(2));
 			if (result.isEmpty()) return false;
 			if (this.furnaceItemStacks.get(3).isEmpty()) return true;
@@ -298,11 +289,9 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		if (direction == EnumFacing.DOWN && index == 0) {
-			if (FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == FluidRegistry.LAVA) {
+		if (direction == EnumFacing.DOWN && index == 0)
+			if (FluidUtil.getFluidContained(stack) != null && FluidUtil.getFluidContained(stack).getFluid() == FluidRegistry.LAVA)
 				return false;
-			}
-		}
 
 		return true;
 	}
@@ -352,20 +341,17 @@ public class TileEntityCPUMelter extends TileEntityLockable implements ITickable
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.furnaceItemStacks) {
-			if (!itemstack.isEmpty()) {
+		for (ItemStack itemstack : this.furnaceItemStacks)
+			if (!itemstack.isEmpty())
 				return false;
-			}
-		}
 
 		return true;
 	}
 
 	@Override
 	public void clear() {
-		for (int i = 0; i < this.furnaceItemStacks.size(); ++i) {
+		for (int i = 0; i < this.furnaceItemStacks.size(); ++i)
 			this.furnaceItemStacks.set(i, ItemStack.EMPTY);
-		}
 	}
 
 	IItemHandler handlerTop = new SidedInvWrapper(this, EnumFacing.UP);

@@ -53,11 +53,10 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 			return;
 		ItemStack robotBox = new ItemStack(MechSoldiers.robot_box);
 		NBTTagCompound robotData = new NBTTagCompound();
-		if (!getStackInSlot(0).isEmpty() && getStackInSlot(0).getTagCompound() != null && !getStackInSlot(0).getTagCompound().getString("Owner").isEmpty()) {
+		if (!getStackInSlot(0).isEmpty() && getStackInSlot(0).getTagCompound() != null && !getStackInSlot(0).getTagCompound().getString("Owner").isEmpty())
 			robotData.setString("OwnerUUID", getStackInSlot(0).getTagCompound().getString("Owner"));
-		} else {
+		else
 			robotData.setString("OwnerUUID", "0b1ec5ad-cb2a-43b7-995d-889320eb2e5b");
-		}
 		ItemStack oneCPU = getStackInSlot(1).copy();
 		oneCPU.setCount(1);
 		ItemStack oneSkeleton = getStackInSlot(2).copy();
@@ -127,11 +126,9 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.inventory) {
-			if (!itemstack.isEmpty()) {
+		for (ItemStack itemstack : this.inventory)
+			if (!itemstack.isEmpty())
 				return false;
-			}
-		}
 
 		return true;
 	}
@@ -145,9 +142,9 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack is = getStackInSlot(index);
 		if (!is.isEmpty()) {
-			if (is.getCount() <= count) {
+			if (is.getCount() <= count)
 				setInventorySlotContents(index, ItemStack.EMPTY);
-			} else {
+			else {
 				is = is.splitStack(count);
 				markDirty();
 			}
@@ -166,9 +163,8 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		inventory.set(index, stack);
 
-		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
 			stack.setCount(getInventoryStackLimit());
-		}
 		markDirty();
 	}
 
@@ -211,9 +207,8 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 
 	@Override
 	public void clear() {
-		for (int i = 0; i < inventory.size(); ++i) {
+		for (int i = 0; i < inventory.size(); ++i)
 			inventory.set(i, ItemStack.EMPTY);
-		}
 	}
 
 	@Override
@@ -244,33 +239,29 @@ public class TileEntityRobotConstructor extends TileEntity implements ISidedInve
 			for (int i = 0; i < list.tagCount(); i++) {
 				NBTTagCompound item = (NBTTagCompound) list.get(i);
 				int slot = item.getByte("SlotRobotConstructor");
-				if (slot >= 0 && slot < getSizeInventory()) {
+				if (slot >= 0 && slot < getSizeInventory())
 					setInventorySlotContents(slot, new ItemStack(item));
-				}
 			}
-		} else {
+		} else
 			Overlord.logWarn("List was null when reading TileEntityRobotConstructor NBTTagCompound");
-		}
 	}
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
-		if (side == EnumFacing.EAST || side == EnumFacing.WEST || side == EnumFacing.NORTH || side == EnumFacing.SOUTH || side == EnumFacing.UP) {
-			return new int[]{0, 1, 2, 3, 4, 5};
-		} else if (side == EnumFacing.DOWN) {
-			return new int[]{6};
-		} else
+		if (side == EnumFacing.EAST || side == EnumFacing.WEST || side == EnumFacing.NORTH || side == EnumFacing.SOUTH || side == EnumFacing.UP)
+			return new int[]{0, 1, 2, 3, 4};
+		else if (side == EnumFacing.DOWN)
+			return new int[]{5};
+		else
 			throw new IllegalArgumentException("Invalid EnumFacing: " + side);
 	}
 
 	@Override
 	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
-		if (!stack.isEmpty()) {
-			if (index >= 0 && index < 5) {
+		if (!stack.isEmpty())
+			if (index >= 0 && index < 5)
 				if (this.isItemValidForSlot(index, stack))
 					return true;
-			}
-		}
 		return false;
 	}
 

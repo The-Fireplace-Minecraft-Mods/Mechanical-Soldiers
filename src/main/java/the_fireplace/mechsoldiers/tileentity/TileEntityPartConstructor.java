@@ -64,11 +64,9 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.furnaceItemStacks) {
-			if (!itemstack.isEmpty()) {
+		for (ItemStack itemstack : this.furnaceItemStacks)
+			if (!itemstack.isEmpty())
 				return false;
-			}
-		}
 
 		return true;
 	}
@@ -108,9 +106,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 		boolean flag = !stack.isEmpty() && stack.isItemEqual(this.furnaceItemStacks.get(index)) && ItemStack.areItemStackTagsEqual(stack, this.furnaceItemStacks.get(index));
 		this.furnaceItemStacks.set(index, stack);
 
-		if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit()) {
+		if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
 			stack.setCount(this.getInventoryStackLimit());
-		}
 
 		if (index == 0 && !flag) {
 			this.totalCookTime = this.getCookTime(stack);
@@ -139,9 +136,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 			NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
 			int j = nbttagcompound.getByte("Slot");
 
-			if (j >= 0 && j < this.furnaceItemStacks.size()) {
+			if (j >= 0 && j < this.furnaceItemStacks.size())
 				this.furnaceItemStacks.set(j, new ItemStack(nbttagcompound));
-			}
 		}
 
 		this.furnaceBurnTime = compound.getInteger("BurnTime");
@@ -150,9 +146,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 		this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks.get(2));
 		this.heldWaterAmount = compound.getInteger("HeldWater");
 
-		if (compound.hasKey("CustomName", 8)) {
+		if (compound.hasKey("CustomName", 8))
 			this.furnaceCustomName = compound.getString("CustomName");
-		}
 	}
 
 	@Override
@@ -175,9 +170,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 		compound.setTag("Items", nbttaglist);
 
-		if (this.hasCustomName()) {
+		if (this.hasCustomName())
 			compound.setString("CustomName", this.furnaceCustomName);
-		}
 
 		return compound;
 	}
@@ -198,12 +192,11 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public void update() {
-		boolean flag = this.isActive();
-		boolean flag1 = false;
+		boolean currentlyBurning = this.isActive();
+		boolean somethingChanged = false;
 
-		if (this.isActive()) {
+		if (this.isActive())
 			--this.furnaceBurnTime;
-		}
 
 		if (!this.world.isRemote) {
 			if (!isLoaded)
@@ -231,14 +224,13 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 					this.currentItemBurnTime = this.furnaceBurnTime;
 
 					if (this.isActive()) {
-						flag1 = true;
+						somethingChanged = true;
 
 						if (!this.furnaceItemStacks.get(2).isEmpty()) {
 							this.furnaceItemStacks.get(2).shrink(1);
 
-							if (this.furnaceItemStacks.get(2).isEmpty()) {
+							if (this.furnaceItemStacks.get(2).isEmpty())
 								this.furnaceItemStacks.set(2, furnaceItemStacks.get(2).getItem().getContainerItem(furnaceItemStacks.get(2)));
-							}
 						}
 					}
 				}
@@ -250,24 +242,21 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 						this.cookTime = 0;
 						this.totalCookTime = this.getCookTime(this.furnaceItemStacks.get(0));
 						this.smeltItem();
-						flag1 = true;
+						somethingChanged = true;
 					}
-				} else {
+				} else
 					this.cookTime = 0;
-				}
-			} else if (!this.isActive() && this.cookTime > 0) {
+			} else if (!this.isActive() && this.cookTime > 0)
 				this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
-			}
 
-			if (flag != this.isActive()) {
-				flag1 = true;
+			if (currentlyBurning != this.isActive()) {
+				somethingChanged = true;
 				BlockMetalPartConstructor.setState(this.isActive(), this.world, this.pos);
 			}
 		}
 
-		if (flag1) {
+		if (somethingChanged)
 			this.markDirty();
-		}
 	}
 
 	public int getCookTime(ItemStack stack) {
@@ -292,22 +281,19 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 		if (this.canSmelt()) {
 			ItemStack itemstack = MetalMeltRecipes.instance().getMeltingResult(this.furnaceItemStacks.get(0), this.furnaceItemStacks.get(1));
 
-			if (this.furnaceItemStacks.get(3).isEmpty()) {
+			if (this.furnaceItemStacks.get(3).isEmpty())
 				this.furnaceItemStacks.set(3, itemstack.copy());
-			} else if (this.furnaceItemStacks.get(3).getItem() == itemstack.getItem()) {
+			else if (this.furnaceItemStacks.get(3).getItem() == itemstack.getItem())
 				this.furnaceItemStacks.get(3).grow(itemstack.getCount());
-			}
 
 			this.furnaceItemStacks.get(0).shrink(1);
 			this.furnaceItemStacks.get(1).shrink(1);
 
-			if (this.furnaceItemStacks.get(0).isEmpty()) {
+			if (this.furnaceItemStacks.get(0).isEmpty())
 				this.furnaceItemStacks.set(0, ItemStack.EMPTY);
-			}
 
-			if (this.furnaceItemStacks.get(1).isEmpty()) {
+			if (this.furnaceItemStacks.get(1).isEmpty())
 				this.furnaceItemStacks.set(1, ItemStack.EMPTY);
-			}
 
 			drain(MetalMeltRecipes.instance().getWaterCost(itemstack), true);
 			world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 0.8f + ((float) world.rand.nextInt(4)) * 0.1f);
@@ -315,25 +301,22 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 	}
 
 	public static int getItemBurnTime(ItemStack stack) {
-		if (stack.isEmpty()) {
+		if (stack.isEmpty())
 			return 0;
-		} else {
+		else {
 			Item item = stack.getItem();
 
 			if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR) {
 				Block block = Block.getBlockFromItem(item);
 
-				if (block == Blocks.WOODEN_SLAB) {
+				if (block == Blocks.WOODEN_SLAB)
 					return 150;
-				}
 
-				if (block.getDefaultState().getMaterial() == Material.WOOD) {
+				if (block.getDefaultState().getMaterial() == Material.WOOD)
 					return 300;
-				}
 
-				if (block == Blocks.COAL_BLOCK) {
+				if (block == Blocks.COAL_BLOCK)
 					return 16000;
-				}
 			}
 
 			if (item instanceof ItemTool && "WOOD".equals(((ItemTool) item).getToolMaterialName())) return 200;
@@ -465,9 +448,8 @@ public class TileEntityPartConstructor extends TileEntityLockable implements ITi
 
 	@Override
 	public void clear() {
-		for (int i = 0; i < this.furnaceItemStacks.size(); ++i) {
+		for (int i = 0; i < this.furnaceItemStacks.size(); ++i)
 			this.furnaceItemStacks.set(i, ItemStack.EMPTY);
-		}
 	}
 
 	IItemHandler handlerTop = new SidedInvWrapper(this, EnumFacing.UP);

@@ -1,3 +1,1 @@
-Added Chinese Language Localization (zh_CN) (yuanjie000)
-Added the Blueprint to the Lost Cities Rail Dungeons
-Skeletons and Joints can now be made in the Immersive Engineering Metal Press and TiCon's Smeltery
+Graphical improvements
